@@ -85,7 +85,7 @@ legend{font-size:24px;font-weight:600;letter-spacing:-.7px;padding:0}
 .keypad-hint{text-align:center;color:var(--muted);font-size:11px;margin:0 0 9px}
 .keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;max-width:360px;width:100%;margin:auto}
 .keypad button{min-height:48px;height:clamp(48px,7.4dvh,70px);border:1px solid #d8ddcf;border-radius:15px;background:var(--white);color:var(--ink);font-size:28px;box-shadow:0 3px 0 #e2e4d8;font-weight:500}
-.keypad button:enabled:hover{background:var(--sage)}
+/* Touch browsers can retain hover after a tap. Color changes only while pressing. */
 .keypad button:enabled:active{transform:translateY(2px);box-shadow:none;background:#d8e3cf}
 .keypad button:disabled{opacity:.38;cursor:default;box-shadow:none}
 .keypad-decoration{display:grid;place-items:center;color:#c2c7b6;font-size:17px}

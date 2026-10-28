@@ -33,9 +33,10 @@ export class GameAudio {
         [1046.5, 1.03, .12, .12], [1318.51, 1.11, .12, .12], [1567.98, 1.19, .12, .12], [2093, 1.27, .2, .11],
         [1046.5, 1.52, .8, .075], [1318.51, 1.52, .8, .065], [1567.98, 1.52, .8, .065], [2093, 1.68, .85, .05],
       ]
-      : [[880, 0, .12, .14], [1174.66, .09, .16, .13], [1567.98, .18, .2, .11]];
+      // Lower, overlapping major tones make a soft bell-like "bling".
+      : [[523.25, 0, .40, .10], [659.25, .07, .42, .085], [783.99, .14, .45, .07]];
     const voices = kind === 'wrong' ? [[1, .85, 'sawtooth'], [.5, .15, 'triangle']]
-      : kind === 'win' ? [[1, .8, 'triangle'], [2, .2, 'sine']] : [[1, 1, 'sine']];
+      : kind === 'win' ? [[1, .8, 'triangle'], [2, .2, 'sine']] : [[1, .9, 'sine'], [2, .1, 'sine']];
     const start = this.context.currentTime + .01;
     for (const [frequency, offset, duration, volume] of notes) {
       for (const [harmonic, mix, type] of voices) {
@@ -45,7 +46,8 @@ export class GameAudio {
         oscillator.frequency.setValueAtTime(frequency * harmonic, start + offset);
         if (kind === 'wrong') oscillator.frequency.exponentialRampToValueAtTime(frequency * harmonic * .7, start + offset + duration);
         gain.gain.setValueAtTime(0, start + offset);
-        gain.gain.linearRampToValueAtTime(volume * mix, start + offset + .008);
+        const attack = kind === 'correct' ? .018 : .008;
+        gain.gain.linearRampToValueAtTime(volume * mix, start + offset + attack);
         gain.gain.exponentialRampToValueAtTime(.0001, start + offset + duration);
         let filter = null;
         if (kind === 'wrong') {
