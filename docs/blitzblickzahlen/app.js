@@ -51,6 +51,7 @@ form.addEventListener('change', updateSelection);
 
 function cancelPending() { clearTimeout(timer); cancelAnimationFrame(paintFrame); }
 function later(callback, delay) { cancelPending(); timer = setTimeout(callback, delay); }
+const canAnswer = () => phase === 'show' || phase === 'answer';
 
 function setPhase(next, title, hint, icon = '', copy = '') {
   phase = next;
@@ -62,8 +63,9 @@ function setPhase(next, title, hint, icon = '', copy = '') {
   $('feedback-icon').textContent = icon;
   $('feedback-copy').textContent = copy;
   $('resume-button').hidden = next !== 'paused';
-  for (const key of keys) key.disabled = next !== 'answer';
-  $('keypad-hint').textContent = next === 'answer' ? 'Tippe auf die passende Zahl.' : 'Erst schauen, dann tippen.';
+  for (const key of keys) key.disabled = !canAnswer();
+  $('keypad-hint').textContent = next === 'show' ? 'Du kannst jetzt schon antworten.'
+    : next === 'answer' ? 'Tippe auf die passende Zahl.' : 'Gleich kannst du wieder tippen.';
 }
 
 function updateProgress() {
@@ -78,7 +80,7 @@ function showPoints() {
   [...frame.children].forEach((cell, index) => cell.classList.toggle('filled', cells[index]));
   // The field becomes visible inside an animation frame; no fading shortens the flash.
   paintFrame = requestAnimationFrame(() => {
-    setPhase('show', 'Schau genau!', 'Merke dir, wie viele Punkte du siehst.');
+    setPhase('show', 'Schau genau!', 'Tippe, sobald du die Anzahl erkennst.');
     timer = setTimeout(askForAnswer, durationForLevel(level));
   });
 }
@@ -122,7 +124,9 @@ form.addEventListener('submit', (event) => {
 });
 
 function answer(number) {
-  if (phase !== 'answer') return;
+  if (!canAnswer()) return;
+  // An early answer ends the flash. Its old timeout must not reopen the keypad.
+  cancelPending();
   const result = session.answer(number);
   updateProgress();
   if (result.correct) {
@@ -130,13 +134,14 @@ function answer(number) {
     audio.play('correct');
   } else {
     setPhase('incorrect', 'Noch mal üben!', 'Beim nächsten Mal klappt’s.', '👎', `Es ${result.expected === 1 ? 'war 1 Punkt' : `waren ${result.expected} Punkte`}.`);
+    audio.play('wrong');
   }
   $('phase-title').focus({ preventScroll: true });
   later(result.finished ? celebrate : nextRound, result.correct ? 650 : 1200);
 }
 for (const key of keys) key.addEventListener('click', () => answer(Number(key.dataset.answer)));
 document.addEventListener('keydown', (event) => {
-  if (phase !== 'answer' || event.repeat || event.ctrlKey || event.altKey || event.metaKey) return;
+  if (!canAnswer() || event.repeat || event.ctrlKey || event.altKey || event.metaKey) return;
   if (/^[0-9]$/.test(event.key)) { event.preventDefault(); answer(event.key === '0' ? 10 : Number(event.key)); }
 });
 

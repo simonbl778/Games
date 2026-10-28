@@ -57,15 +57,15 @@ Im Silbengenerator gibt es keinen Zeitdruck, keine Punkte, keine Werbung, keine 
 
 ## Blitzblickzahlen
 
-Ein Blitzblick-Spiel für Erstklässler: schwarze Punkte auf einem weißen Zehnerfeld kurz anschauen und anschließend die Anzahl wählen.
+Ein Blitzblick-Spiel für Erstklässler: schwarze Punkte auf einem weißen Zehnerfeld kurz anschauen und die Anzahl wählen, sobald sie erkannt wurde.
 
 ![Blitzblickzahlen im Handy-Hochformat](screenshots/blitzblickzahlen-spiel.png)
 
 1. Die Spieladresse in Chrome öffnen und eine der zehn Stufen wählen.
 2. **Los geht’s** antippen und das Handy hoch halten. Die App fordert Vollbild und Hochformat an, soweit der Browser es erlaubt.
 3. Nach „Mach dich bereit“ erscheint das Zahlbild. Das Feld wird zeilenweise von oben links nach unten rechts gefüllt: erst beide Punkte der obersten Reihe, dann die nächste Reihe. Bei ungeraden Zahlen steht der letzte Punkt links. Die Zahl selbst wird nicht verraten.
-4. Das ganze Feld verschwindet. Anschließend die Anzahl auf den Telefontasten **1–9** oder auf der mittigen Taste **10** wählen. Zum Antworten gibt es keine Zeitbegrenzung.
-5. Richtig: fröhlicher Ton und lächelndes Gesicht. Falsch: Daumen nach unten und die richtige Anzahl; die Serie beginnt wieder bei null.
+4. Die Anzahl auf den Telefontasten **1–9** oder auf der mittigen Taste **10** wählen: bereits während der Punkteanzeige oder danach. Eine frühe Antwort blendet das Feld sofort aus und beendet die Frage. Ohne Antwort verschwindet es nach der gewählten Zeit; die Tasten bleiben danach frei. Zum Antworten gibt es keine Zeitbegrenzung.
+5. Richtig: fröhlicher Ton und lächelndes Gesicht. Falsch: kurzer absteigender „Zonk“-Ton, Daumen nach unten und die richtige Anzahl; die Serie beginnt wieder bei null. **Ton aus** schaltet alle Rückmeldetöne stumm.
 6. Nach **30 richtigen Antworten hintereinander** gibt es einen Pokal, Konfetti und eine fröhliche Siegermelodie mit aufsteigenden Glöckchen und einem Dur-Akkord. Danach erneut spielen oder die Stufe wechseln.
 
 | Stufe | Sichtbare Dauer |
@@ -158,4 +158,4 @@ npm run check
 - [GitHub: Eine Pages-Website erstellen](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
 - [MDN: Grenzen der Orientierungssperre](https://developer.mozilla.org/en-US/docs/Web/API/ScreenOrientation/lock)
 
-Games 1.1.0 · Silbengenerator 1.0.1 · Blitzblickzahlen 1.0.1 · 28. Oktober 2026
+Games 1.1.0 · Silbengenerator 1.0.1 · Blitzblickzahlen 1.0.2 · 28. Oktober 2026
