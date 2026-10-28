@@ -2,6 +2,11 @@
 
 [**Installationsdatei herunterladen**](https://github.com/simonbl778/Games/raw/refs/heads/main/downloads/Silbengenerator-1.0.1.apk)
 
+**Alternative bei Downloadproblemen:** [ZIP-Datei mit APK und Anleitung herunterladen](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/downloads/Silbengenerator-Android-1.0.1.zip).
+Die ZIP-Datei auf dem Handy entpacken und dann die enthaltene APK öffnen.
+Falls ein Download im eingebauten Chat-Browser nicht startet, den Link über
+**Im Browser öffnen** in Chrome öffnen und dort herunterladen.
+
 Die APK kann auf OneDrive abgelegt und ihr Downloadlink per WhatsApp oder Mail
 weitergegeben werden. Empfänger benötigen kein ChatGPT-Konto.
 
