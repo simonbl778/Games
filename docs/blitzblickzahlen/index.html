@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#f7f5ee">
+    <meta name="description" content="Kurz schauen, Punkte erkennen: ein Zahlenspiel von 1 bis 10 für die erste Klasse. Mit zehn Stufen, für Android im Hochformat und offline.">
+    <meta name="application-name" content="Blitzblickzahlen">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Blitzblickzahlen">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./icons/icon-192.png">
+    <link rel="stylesheet" href="./styles.css">
+    <script type="module" src="./app.js"></script>
+    <title>Blitzblickzahlen</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="../" aria-label="Zur Spieleauswahl">
+          <span class="brand-mark" aria-hidden="true">ϟ</span>
+          <span><span class="brand-name">Blitzblickzahlen</span><span class="brand-subtitle">Ein kleines Zahlenspiel</span></span>
+        </a>
+        <button id="settings-button" class="soft-button" type="button" hidden>Ändern</button>
+        <span id="setup-spark" class="spark" aria-hidden="true">✦</span>
+      </header>
+      <main>
+        <section id="setup-screen" class="setup-screen" aria-labelledby="welcome-title">
+          <div class="welcome-copy">
+            <p class="eyebrow"><span></span> Kleine Punkte. Großer Blick.</p>
+            <h1 id="welcome-title">Ein Blick.<br><span>Wie viele sind’s?</span></h1>
+            <p class="intro">Schau dir die Punkte kurz an.<br>Tippe danach auf die passende Zahl.</p>
+            <div class="preview" aria-hidden="true"><span class="mini-frame"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="preview-arrow">→</span><span class="preview-number">7</span><span class="preview-smile">☺</span></div>
+          </div>
+          <form id="setup-form" class="setup-card">
+            <fieldset>
+              <legend>Wie schnell schaust du?</legend>
+              <p class="field-help" id="level-help">Stufe 1: ganz leicht · Stufe 10: ganz schwer</p>
+              <div id="level-options" class="number-options" aria-describedby="level-help"></div>
+              <p class="selection-summary" id="selection-summary" aria-live="polite"></p>
+            </fieldset>
+            <button class="start-button" type="submit">Los geht’s <span aria-hidden="true">→</span></button>
+            <p class="goal-note"><span aria-hidden="true">✦</span> Dein Ziel: 30 richtige Antworten am Stück.</p>
+          </form>
+          <p class="learning-note">Was noch knifflig ist, übst du etwas öfter.<br>Am schönsten im Hochformat.</p>
+        </section>
+
+        <section id="game-screen" class="game-screen" aria-label="Zahlenspiel" hidden>
+          <div class="progress-area">
+            <div class="progress-copy"><span id="level-badge"></span><span><strong id="streak-count">0</strong> / 30 am Stück</span></div>
+            <div id="streak-progress" class="progress-track" role="progressbar" aria-label="Richtige Antworten am Stück" aria-valuemin="0" aria-valuemax="30" aria-valuenow="0"><span id="progress-fill"></span></div>
+          </div>
+          <div class="play-area">
+            <div class="display-area" id="display-area">
+              <div class="phase-heading"><h2 id="phase-title" tabindex="-1" aria-live="polite">Mach dich bereit!</h2><p id="phase-hint">Gleich kommen die Punkte.</p></div>
+              <div class="frame-stage">
+                <div id="ten-frame" class="ten-frame" role="img" aria-label="Zehnerfeld mit schwarzen Punkten" hidden></div>
+                <div id="round-message" class="round-message"><span id="feedback-icon" aria-hidden="true">✦</span><p id="feedback-copy">Augen auf!</p></div>
+              </div>
+              <button id="resume-button" type="button" class="start-button" hidden>Weiter geht’s →</button>
+            </div>
+            <div class="answer-area">
+              <p id="keypad-hint" class="keypad-hint">Erst schauen, dann tippen.</p>
+              <div id="keypad" class="keypad" role="group" aria-label="Wie viele Punkte waren es?">
+                <button type="button" data-answer="1" disabled>1</button><button type="button" data-answer="2" disabled>2</button><button type="button" data-answer="3" disabled>3</button>
+                <button type="button" data-answer="4" disabled>4</button><button type="button" data-answer="5" disabled>5</button><button type="button" data-answer="6" disabled>6</button>
+                <button type="button" data-answer="7" disabled>7</button><button type="button" data-answer="8" disabled>8</button><button type="button" data-answer="9" disabled>9</button>
+                <span class="keypad-decoration" aria-hidden="true">✦</span><button type="button" data-answer="10" disabled>10</button><span class="keypad-decoration" aria-hidden="true">✦</span>
+              </div>
+            </div>
+          </div>
+          <div class="game-footer"><button id="sound-button" class="text-button" type="button" aria-pressed="true">♪ Ton an</button><button id="fullscreen-button" class="text-button" type="button">⛶ Vollbild</button></div>
+        </section>
+
+        <section id="win-screen" class="win-screen" aria-labelledby="win-title" hidden>
+          <div id="confetti" class="confetti" aria-hidden="true"></div>
+          <div class="trophy" aria-hidden="true">🏆<span>✦</span><span>✦</span></div>
+          <p class="eyebrow">Was für ein Blitzblick!</p>
+          <h1 id="win-title" tabindex="-1">Hurra,<br><span>du hast es geschafft!</span></h1>
+          <p class="win-achievement">30 richtig am Stück!</p>
+          <p class="intro">Du bist ein echter Punkte-Profi.</p>
+          <p id="win-summary" class="win-summary"></p>
+          <button id="replay-button" class="start-button" type="button">Noch einmal spielen <span aria-hidden="true">→</span></button>
+          <button id="choose-level-button" class="text-button" type="button">Andere Stufe wählen</button>
+        </section>
+      </main>
+      <footer class="app-footer" id="app-footer"><span id="offline-status" role="status" aria-live="polite"></span><button id="install-button" type="button" class="text-button">Aufs Handy</button></footer>
+      <div id="update-notice" class="update-notice" role="status" hidden><span>Eine neue Version ist bereit.</span><button id="update-button" type="button">Jetzt laden</button></div>
+      <dialog id="install-dialog" aria-labelledby="install-title">
+        <button class="dialog-close" id="close-install" aria-label="Schließen" type="button">×</button>
+        <p class="eyebrow">Dein Zahlenspiel für unterwegs</p>
+        <h2 id="install-title">Auf den Startbildschirm</h2>
+        <p>Öffne das Spiel in <strong>Chrome</strong> auf deinem Android-Handy.</p>
+        <ol><li>Tippe auf das <strong>Dreipunkt-Menü ⋮</strong>.</li><li>Wähle <strong>„Installieren und Verknüpfung erstellen“</strong> oder <strong>„Zum Startbildschirm hinzufügen“</strong>.</li><li>Tippe auf <strong>„Installieren“</strong>.</li></ol>
+        <p class="dialog-note">Sobald „Offline bereit“ angezeigt wird, kannst du auch ohne Internet spielen. Starte das Spiel später über sein eigenes Symbol.</p>
+      </dialog>
+      <noscript><p>Bitte aktiviere JavaScript, um Blitzblickzahlen zu spielen.</p></noscript>
+    </div>
+  </body>
+</html>

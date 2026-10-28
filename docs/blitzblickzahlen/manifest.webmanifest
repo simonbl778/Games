@@ -1,0 +1,20 @@
+{
+  "id": "./",
+  "name": "Blitzblickzahlen",
+  "short_name": "Blitzblick",
+  "description": "Punkte von 1 bis 10 auf einen Blick erkennen. Ein Zahlenspiel für die erste Klasse.",
+  "lang": "de",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f5ee",
+  "theme_color": "#f7f5ee",
+  "categories": ["education", "games"],
+  "prefer_related_applications": false,
+  "icons": [
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

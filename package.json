@@ -1,12 +1,12 @@
 {
-  "name": "games-silbengenerator",
-  "version": "1.0.1",
+  "name": "games",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
-  "description": "Ein einfaches Lesespiel für Android und den Browser.",
+  "description": "Silbengenerator und Blitzblickzahlen: Lernspiele für Android und den Browser.",
   "scripts": {
-    "test": "node tests/generator.test.mjs",
-    "check": "node --check docs/silbengenerator/app.js && node --check docs/silbengenerator/service-worker.js && node --check docs/silbengenerator/generator.js"
+    "test": "node --test tests/*.test.mjs",
+    "check": "node --check docs/silbengenerator/app.js && node --check docs/silbengenerator/service-worker.js && node --check docs/silbengenerator/generator.js && node --check docs/blitzblickzahlen/app.js && node --check docs/blitzblickzahlen/game.js && node --check docs/blitzblickzahlen/audio.js && node --check docs/blitzblickzahlen/service-worker.js"
   },
   "engines": { "node": ">=20" }
 }

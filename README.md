@@ -1,7 +1,20 @@
-# Games · Silbengenerator
+# Games · Kleine Lernspiele
 
-Ein kleines Lesespiel für Kinder: eine große Silbenkette lesen, antippen und weiterlesen.
-Als installierbare Web-App für Android gebaut. Der Code wird in diesem Repository gepflegt.
+Zwei Lernspiele für Kinder, als installierbare Web-Apps für Android gebaut.
+Beide verwenden dieselben ruhigen Farben, große Bedienelemente und einen eigenen Offlinecache.
+Der Code wird in diesem Repository gepflegt.
+
+| Spiel | Übung | Ausrichtung | Adresse nach Aktivierung von GitHub Pages |
+| --- | --- | --- | --- |
+| **Silbengenerator** | Silbenketten lesen | Querformat | https://simonbl778.github.io/Games/silbengenerator/ |
+| **Blitzblickzahlen** | Mengen von 1–10 auf einen Blick erkennen | Hochformat | https://simonbl778.github.io/Games/blitzblickzahlen/ |
+
+Die Startseite unter https://simonbl778.github.io/Games/ bietet die Auswahl beider Spiele.
+GitHub Pages muss dafür einmalig wie unten beschrieben aktiviert werden.
+
+## Silbengenerator
+
+Eine große Silbenkette lesen, antippen und weiterlesen.
 
 ![Silbengenerator im Handy-Querformat](screenshots/silbengenerator-20261028.jpg)
 
@@ -39,7 +52,41 @@ Die Browseransicht in einer anderen App kann Installieren, Vollbild oder Drehen 
 - Die App zeigt beim erneuten Öffnen zuerst die Auswahl. Die zuletzt verwendete Höchstzahl ist lediglich vorausgewählt.
 - Die Schriftgröße passt sich an die Kettenlänge und den verfügbaren Platz an. Die Kette bleibt in einer Zeile.
 
-Es gibt keinen Zeitdruck, keine Punkte, keine Werbung, keine Tonwiedergabe und keine Spielerkonten. Das Spiel selbst sendet keine Lern- oder Nutzungsdaten. Es speichert lokal nur die letzte Auswahl und die Dateien für den Offlinebetrieb; das Hosting hat seine üblichen technischen Zugriffs- und ggf. Anmeldedaten.
+Im Silbengenerator gibt es keinen Zeitdruck, keine Punkte, keine Werbung, keine Tonwiedergabe und keine Spielerkonten. Das Spiel selbst sendet keine Lern- oder Nutzungsdaten. Es speichert lokal nur die letzte Auswahl und die Dateien für den Offlinebetrieb; das Hosting hat seine üblichen technischen Zugriffs- und ggf. Anmeldedaten.
+
+## Blitzblickzahlen
+
+Ein Blitzblick-Spiel für Erstklässler: schwarze Punkte auf einem weißen Zehnerfeld kurz anschauen und anschließend die Anzahl wählen.
+
+![Blitzblickzahlen im Handy-Hochformat](screenshots/blitzblickzahlen-spiel.png)
+
+1. Die Spieladresse in Chrome öffnen und eine der zehn Stufen wählen.
+2. **Los geht’s** antippen und das Handy hoch halten. Die App fordert Vollbild und Hochformat an, soweit der Browser es erlaubt.
+3. Nach „Mach dich bereit“ erscheint das Zahlbild. Zuerst wird die linke Fünferspalte gefüllt, dann die rechte. Die Zahl selbst wird nicht verraten.
+4. Das ganze Feld verschwindet. Anschließend die Anzahl auf den Telefontasten **1–9** oder auf der mittigen Taste **10** wählen. Zum Antworten gibt es keine Zeitbegrenzung.
+5. Richtig: fröhlicher Ton und lächelndes Gesicht. Falsch: Daumen nach unten und die richtige Anzahl; die Serie beginnt wieder bei null.
+6. Nach **30 richtigen Antworten hintereinander** gibt es einen Pokal, Konfetti und eine Siegermelodie. Danach erneut spielen oder die Stufe wechseln.
+
+| Stufe | Sichtbare Dauer |
+| --- | --- |
+| 1 · ganz leicht | 5 s |
+| 2 | 4 s |
+| 3 | 3 s |
+| 4 | 2,5 s |
+| 5 | 2 s |
+| 6 | 1,5 s |
+| 7 | 1 s |
+| 8 | 0,7 s |
+| 9 | 0,5 s |
+| 10 · ganz schwer | 0,3 s |
+
+Jede Zahl ist anfangs gleich wahrscheinlich. Falsche Antworten erhöhen die Gewichtung der **gesuchten** Zahl schrittweise bis zum Dreifachen. Richtige Antworten senken die zusätzliche Gewichtung allmählich wieder. Alle Zahlen bleiben möglich; direkte Wiederholungen sind erlaubt. Diese Anpassung und die Serie gelten nur für die aktuelle Partie. **Ändern**, **Noch einmal spielen** oder ein Neuladen beginnen eine neue Session. Nur die letzte Stufe und die Toneinstellung bleiben lokal gespeichert.
+
+Beim App-Wechsel wird das Spiel angehalten. Nach **Weiter geht’s** wird ein unterbrochenes Zahlbild erneut für die volle Dauer gezeigt. Eine bereits offene Antwort bleibt offen. Versteckte Zeit zählt nicht als Fehler. **Ton an/aus** schaltet die Melodien um. Am Computer entsprechen die Tasten `1`–`9` den Zahlen, `0` steht für `10`.
+
+Installation und Offlinebetrieb funktionieren wie beim Silbengenerator über **Aufs Handy**. Jedes Spiel hat ein eigenes Symbol und einen eigenen Service-Worker-Bereich; die Offlinecaches beeinflussen sich nicht. Töne werden direkt im Browser erzeugt und funktionieren ebenfalls offline. Es gibt keine Werbung, Konten oder Übertragung von Lerndaten. Die tatsächliche Installation, Ausrichtungssperre und Tonwiedergabe bitte zusätzlich auf dem Android-Zielgerät prüfen.
+
+Die neuen Dateien stehen in [`docs/blitzblickzahlen/`](docs/blitzblickzahlen/): `game.js` enthält Zeitstufen, Zahlbilder, Fehlergewichtung und Spielende; `app.js` steuert den Ablauf und die Handyfunktionen; `audio.js` erzeugt die Melodien. Die Spielregeln sind in [`tests/blitzblickzahlen.test.mjs`](tests/blitzblickzahlen.test.mjs) geprüft.
 
 ## GitHub Pages einmalig einschalten
 
@@ -84,7 +131,7 @@ Python 3 reicht für einen lokalen Webserver:
 python3 -m http.server 8000 --directory docs
 ```
 
-Danach `http://localhost:8000/silbengenerator/` öffnen. Die HTML-Datei nicht nur per Doppelklick als `file://` öffnen: ES-Module und Service Worker benötigen einen Webserver. Für PWA-Funktionen im Internet wird HTTPS benötigt; `localhost` eignet sich zum Entwickeln. Die eigentliche Android-Drehung und Installation bitte auf einem Android-Gerät prüfen.
+Danach `http://localhost:8000/` öffnen und ein Spiel wählen. Die HTML-Datei nicht nur per Doppelklick als `file://` öffnen: ES-Module und Service Worker benötigen einen Webserver. Für PWA-Funktionen im Internet wird HTTPS benötigt; `localhost` eignet sich zum Entwickeln. Die eigentliche Android-Drehung und Installation bitte auf einem Android-Gerät prüfen.
 
 ### Prüfen
 
@@ -98,7 +145,7 @@ npm run check
 ### Eine Änderung veröffentlichen
 
 1. Gewünschte Dateien ändern und die Tests ausführen.
-2. **Bei jeder Änderung an einer ausgelieferten Spieldatei** `VERSION` in `service-worker.js` erhöhen, zum Beispiel von `1.0.0` auf `1.0.1`. Sonst bleibt auf bereits installierten Geräten möglicherweise die alte Offline-Version aktiv.
+2. **Bei jeder Änderung an einer ausgelieferten Spieldatei** `VERSION` in der `service-worker.js` des jeweiligen Spiels erhöhen, zum Beispiel von `1.0.0` auf `1.0.1`. Sonst bleibt auf bereits installierten Geräten möglicherweise die alte Offline-Version aktiv.
 3. Änderungen auf GitHub in `main` übernehmen. Wenn GitHub Pages aktiviert ist, veröffentlicht GitHub den neuen Stand automatisch.
 4. Das Spiel mit Internet erneut öffnen. Wenn **Eine neue Version ist bereit** erscheint, **Jetzt laden** antippen. Dabei wird wieder die Startauswahl angezeigt.
 5. Zusätzliche Bereitstellungen auf anderen Hostingdiensten müssen getrennt aktualisiert werden. Künftige Pflege beginnt immer in diesem GitHub-Repository.
@@ -109,4 +156,4 @@ npm run check
 - [GitHub: Eine Pages-Website erstellen](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
 - [MDN: Grenzen der Orientierungssperre](https://developer.mozilla.org/en-US/docs/Web/API/ScreenOrientation/lock)
 
-Version 1.0.1 · 28. Oktober 2026
+Games 1.1.0 · Silbengenerator 1.0.1 · Blitzblickzahlen 1.0.0 · 28. Oktober 2026
