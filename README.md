@@ -4,13 +4,12 @@ Zwei Lernspiele für Kinder, als installierbare Web-Apps für Android gebaut.
 Beide verwenden dieselben ruhigen Farben, große Bedienelemente und einen eigenen Offlinecache.
 Der Code wird in diesem Repository gepflegt.
 
-| Spiel | Übung | Ausrichtung | Adresse nach Aktivierung von GitHub Pages |
+| Spiel | Übung | Ausrichtung | Spieladresse über ChatGPT Sites |
 | --- | --- | --- | --- |
-| **Silbengenerator** | Silbenketten lesen | Querformat | https://simonbl778.github.io/Games/silbengenerator/ |
-| **Blitzblickzahlen** | Mengen von 1–10 auf einen Blick erkennen | Hochformat | https://simonbl778.github.io/Games/blitzblickzahlen/ |
+| **Silbengenerator** | Silbenketten lesen | Querformat | https://silbengenerator-simonbl778.groovychair.chatgpt.site |
+| **Blitzblickzahlen** | Mengen von 1–10 auf einen Blick erkennen | Hochformat | https://blitzblickzahlen-simonbl778.groovychair.chatgpt.site/blitzblickzahlen/ |
 
-Die Startseite unter https://simonbl778.github.io/Games/ bietet die Auswahl beider Spiele.
-GitHub Pages muss dafür einmalig wie unten beschrieben aktiviert werden.
+Die gemeinsame Startseite unter https://blitzblickzahlen-simonbl778.groovychair.chatgpt.site/ bietet die Auswahl beider Spiele. Der Zugriff erfolgt wie beim bisherigen Silbengenerator über das eigene ChatGPT-Konto. Für diese Spieladressen muss GitHub Pages nicht aktiviert werden.
 
 ## Silbengenerator
 
@@ -20,9 +19,11 @@ Eine große Silbenkette lesen, antippen und weiterlesen.
 
 ## Spielen
 
-**GitHub-Pages-Adresse nach einmaliger Aktivierung:** https://simonbl778.github.io/Games/silbengenerator/
+**Silbengenerator öffnen:** https://silbengenerator-simonbl778.groovychair.chatgpt.site
 
-Die GitHub-Pages-Adresse funktioniert erst, nachdem Pages wie unten beschrieben aktiviert und veröffentlicht wurde. Danach wird die spielbare Version automatisch bei Änderungen an `main` aktualisiert.
+**Blitzblickzahlen öffnen:** https://blitzblickzahlen-simonbl778.groovychair.chatgpt.site/blitzblickzahlen/
+
+Beide Spiele bieten auf ihrer Auswahlseite **Aufs Handy** zum Installieren. Nach dem vollständigen Laden zeigt **Offline bereit** an, dass das jeweilige Spiel ohne Internet genutzt werden kann. GitHub Pages bleibt eine optionale weitere Bereitstellung.
 
 ## Auf einem Android-Handy starten
 
@@ -88,7 +89,7 @@ Installation und Offlinebetrieb funktionieren wie beim Silbengenerator über **A
 
 Die neuen Dateien stehen in [`docs/blitzblickzahlen/`](docs/blitzblickzahlen/): `game.js` enthält Zeitstufen, Zahlbilder, Fehlergewichtung und Spielende; `app.js` steuert den Ablauf und die Handyfunktionen; `audio.js` erzeugt die Melodien. Die Spielregeln sind in [`tests/blitzblickzahlen.test.mjs`](tests/blitzblickzahlen.test.mjs) geprüft.
 
-## GitHub Pages einmalig einschalten
+## GitHub Pages optional einschalten
 
 1. Im Repository **Games** zu **Settings → Pages** gehen.
 2. Unter **Build and deployment → Source** die Option **Deploy from a branch** wählen.
@@ -146,9 +147,10 @@ npm run check
 
 1. Gewünschte Dateien ändern und die Tests ausführen.
 2. **Bei jeder Änderung an einer ausgelieferten Spieldatei** `VERSION` in der `service-worker.js` des jeweiligen Spiels erhöhen, zum Beispiel von `1.0.0` auf `1.0.1`. Sonst bleibt auf bereits installierten Geräten möglicherweise die alte Offline-Version aktiv.
-3. Änderungen auf GitHub in `main` übernehmen. Wenn GitHub Pages aktiviert ist, veröffentlicht GitHub den neuen Stand automatisch.
-4. Das Spiel mit Internet erneut öffnen. Wenn **Eine neue Version ist bereit** erscheint, **Jetzt laden** antippen. Dabei wird wieder die Startauswahl angezeigt.
-5. Zusätzliche Bereitstellungen auf anderen Hostingdiensten müssen getrennt aktualisiert werden. Künftige Pflege beginnt immer in diesem GitHub-Repository.
+3. Änderungen auf GitHub in `main` übernehmen. Die Sites-Veröffentlichung ist ein eigener Schritt; ein GitHub-Push aktualisiert sie nicht automatisch.
+4. Für die gemeinsame Sites-Bereitstellung `npm run build:sites` ausführen. Das kopiert den aktuellen Inhalt aus `docs/` nach `dist/`. `.openai/hosting.json` enthält die feste Site-ID und das Ausgabeverzeichnis. Den identischen Commit mit dem Sites-Werkzeug in das zugehörige Quellen-Repository synchronisieren und als neue Site-Version samt `dist/` veröffentlichen. **Games bleibt die Quelle für Änderungen**, die Site-ID und die bestehenden Zugriffsrechte bleiben erhalten.
+5. Die bisherige eigenständige Silbengenerator-Site ist eine getrennte Veröffentlichung; bei Silbenänderungen gegebenenfalls ebenfalls aktualisieren. Wenn GitHub Pages aktiviert ist, wird diese zusätzliche Bereitstellung automatisch aus `main` aktualisiert.
+6. Das Spiel mit Internet erneut öffnen. Wenn **Eine neue Version ist bereit** erscheint, **Jetzt laden** antippen. Dabei wird wieder die Startauswahl angezeigt.
 
 ## Offizielle Hinweise
 
