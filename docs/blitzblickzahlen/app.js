@@ -106,7 +106,7 @@ function startGame() {
   cancelPending(); audio.stop(); audio.unlock();
   session = new Session();
   setup.hidden = true; win.hidden = true; game.hidden = false;
-  $('settings-button').hidden = false; $('setup-spark').hidden = true; $('app-footer').hidden = true;
+  $('end-game-button').hidden = false; $('setup-spark').hidden = true; $('app-footer').hidden = true;
   $('confetti').replaceChildren();
   document.body.classList.add('game-mode');
   $('level-badge').textContent = `Stufe ${level} · ${seconds(durationForLevel(level))}`;
@@ -160,13 +160,16 @@ function celebrate() {
 
 function showSetup() {
   cancelPending(); audio.stop(); phase = 'setup'; session = null;
+  resumeAction = null;
+  frame.hidden = true;
+  for (const key of keys) key.disabled = true;
   setup.hidden = false; game.hidden = true; win.hidden = true;
-  $('settings-button').hidden = true; $('setup-spark').hidden = false; $('app-footer').hidden = false;
+  $('end-game-button').hidden = true; $('setup-spark').hidden = false; $('app-footer').hidden = false;
   $('confetti').replaceChildren();
   document.body.classList.remove('game-mode');
   form.querySelector('input:checked').focus({ preventScroll: true });
 }
-$('settings-button').addEventListener('click', showSetup);
+$('end-game-button').addEventListener('click', showSetup);
 $('choose-level-button').addEventListener('click', showSetup);
 $('replay-button').addEventListener('click', startGame);
 

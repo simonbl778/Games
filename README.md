@@ -63,10 +63,10 @@ Ein Blitzblick-Spiel für Erstklässler: schwarze Punkte auf einem weißen Zehne
 
 1. Die Spieladresse in Chrome öffnen und eine der zehn Stufen wählen.
 2. **Los geht’s** antippen und das Handy hoch halten. Die App fordert Vollbild und Hochformat an, soweit der Browser es erlaubt.
-3. Nach „Mach dich bereit“ erscheint das Zahlbild. Zuerst wird die linke Fünferspalte gefüllt, dann die rechte. Die Zahl selbst wird nicht verraten.
+3. Nach „Mach dich bereit“ erscheint das Zahlbild. Das Feld wird zeilenweise von oben links nach unten rechts gefüllt: erst beide Punkte der obersten Reihe, dann die nächste Reihe. Bei ungeraden Zahlen steht der letzte Punkt links. Die Zahl selbst wird nicht verraten.
 4. Das ganze Feld verschwindet. Anschließend die Anzahl auf den Telefontasten **1–9** oder auf der mittigen Taste **10** wählen. Zum Antworten gibt es keine Zeitbegrenzung.
 5. Richtig: fröhlicher Ton und lächelndes Gesicht. Falsch: Daumen nach unten und die richtige Anzahl; die Serie beginnt wieder bei null.
-6. Nach **30 richtigen Antworten hintereinander** gibt es einen Pokal, Konfetti und eine Siegermelodie. Danach erneut spielen oder die Stufe wechseln.
+6. Nach **30 richtigen Antworten hintereinander** gibt es einen Pokal, Konfetti und eine fröhliche Siegermelodie mit aufsteigenden Glöckchen und einem Dur-Akkord. Danach erneut spielen oder die Stufe wechseln.
 
 | Stufe | Sichtbare Dauer |
 | --- | --- |
@@ -81,7 +81,7 @@ Ein Blitzblick-Spiel für Erstklässler: schwarze Punkte auf einem weißen Zehne
 | 9 | 0,5 s |
 | 10 · ganz schwer | 0,3 s |
 
-Jede Zahl ist anfangs gleich wahrscheinlich. Falsche Antworten erhöhen die Gewichtung der **gesuchten** Zahl schrittweise bis zum Dreifachen. Richtige Antworten senken die zusätzliche Gewichtung allmählich wieder. Alle Zahlen bleiben möglich; direkte Wiederholungen sind erlaubt. Diese Anpassung und die Serie gelten nur für die aktuelle Partie. **Ändern**, **Noch einmal spielen** oder ein Neuladen beginnen eine neue Session. Nur die letzte Stufe und die Toneinstellung bleiben lokal gespeichert.
+Jede Zahl ist anfangs gleich wahrscheinlich. Falsche Antworten erhöhen die Gewichtung der **gesuchten** Zahl schrittweise bis zum Dreifachen. Richtige Antworten senken die zusätzliche Gewichtung allmählich wieder. Alle Zahlen bleiben möglich; direkte Wiederholungen sind erlaubt. Diese Anpassung und die Serie gelten nur für die aktuelle Partie. **Spiel beenden** führt jederzeit zur Schwierigkeitsauswahl zurück und stoppt die Partie samt Ton. **Noch einmal spielen** oder ein Neuladen beginnen ebenfalls eine neue Session. Nur die letzte Stufe und die Toneinstellung bleiben lokal gespeichert.
 
 Beim App-Wechsel wird das Spiel angehalten. Nach **Weiter geht’s** wird ein unterbrochenes Zahlbild erneut für die volle Dauer gezeigt. Eine bereits offene Antwort bleibt offen. Versteckte Zeit zählt nicht als Fehler. **Ton an/aus** schaltet die Melodien um. Am Computer entsprechen die Tasten `1`–`9` den Zahlen, `0` steht für `10`.
 
@@ -158,4 +158,4 @@ npm run check
 - [GitHub: Eine Pages-Website erstellen](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
 - [MDN: Grenzen der Orientierungssperre](https://developer.mozilla.org/en-US/docs/Web/API/ScreenOrientation/lock)
 
-Games 1.1.0 · Silbengenerator 1.0.1 · Blitzblickzahlen 1.0.0 · 28. Oktober 2026
+Games 1.1.0 · Silbengenerator 1.0.1 · Blitzblickzahlen 1.0.1 · 28. Oktober 2026

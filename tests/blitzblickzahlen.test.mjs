@@ -10,12 +10,21 @@ test('zehn Stufen werden streng schneller: von 5 Sekunden bis 0,3 Sekunden', () 
   for (const level of [0, 11, 1.5, '1', null, NaN]) assert.throws(() => durationForLevel(level), RangeError);
 });
 
-test('jedes Zahlbild enthält genau die richtige Menge und bewahrt die Fünferstruktur', () => {
+test('alle Zahlbilder füllen Zweierreihen von oben links nach unten rechts', () => {
+  const expectedRows = [
+    [1, 0, 0, 0, 0], [2, 0, 0, 0, 0], [2, 1, 0, 0, 0], [2, 2, 0, 0, 0], [2, 2, 1, 0, 0],
+    [2, 2, 2, 0, 0], [2, 2, 2, 1, 0], [2, 2, 2, 2, 0], [2, 2, 2, 2, 1], [2, 2, 2, 2, 2],
+  ];
   for (let number = 1; number <= 10; number += 1) {
     const cells = cellsForNumber(number);
     assert.equal(cells.length, 10);
     assert.equal(cells.filter(Boolean).length, number);
-    assert.deepEqual(cells.slice(0, Math.min(number, 5)), Array(Math.min(number, 5)).fill(true));
+    const rows = [0, 2, 4, 6, 8].map((start) => cells.slice(start, start + 2).filter(Boolean).length);
+    assert.deepEqual(rows, expectedRows[number - 1], `Zahlbild ${number}`);
+    if (number % 2 === 1) {
+      assert.equal(cells[number - 1], true, 'Der einzelne Punkt steht links.');
+      assert.equal(cells[number], false, 'Rechts daneben bleibt das Feld leer.');
+    }
   }
   for (const number of [0, 11, 1.5, '7', NaN]) assert.throws(() => cellsForNumber(number), RangeError);
 });

@@ -10,7 +10,7 @@ function validateNumber(number) {
   if (!Number.isInteger(number) || number < 1 || number > 10) throw new RangeError('Die Zahl muss zwischen 1 und 10 liegen.');
 }
 
-// One column of five, then the second: the structure of five stays recognizable.
+// Row-major order: fill each pair left to right, then continue one row below.
 export function cellsForNumber(number) {
   validateNumber(number);
   return Array.from({ length: 10 }, (_, index) => index < number);
