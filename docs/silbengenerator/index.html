@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#f7f5ee">
+    <meta name="description" content="Silbe für Silbe lesen lernen. Ein ruhiges Lesespiel mit großen Buchstaben, für Android im Querformat.">
+    <meta name="application-name" content="Silbengenerator">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Silbengenerator">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./icons/icon-192.png">
+    <link rel="stylesheet" href="./styles.css">
+    <script type="module" src="./app.js"></script>
+    <title>Silbengenerator</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">mo<span class="brand-dot"></span></span>
+          <div><span class="brand-name">Silbengenerator</span><span class="brand-subtitle">Ein kleines Lesespiel</span></div>
+        </div>
+        <div class="header-actions">
+          <span id="calm-badge" class="calm-badge"><span aria-hidden="true">✦</span> In deinem Tempo</span>
+          <button id="settings-button" class="soft-button" type="button" hidden>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></svg>
+            <span id="limit-badge">Bis zu 3 Silben</span><span class="settings-label"> · Ändern</span>
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <section id="setup-screen" class="setup-screen" aria-labelledby="welcome-title">
+          <div class="welcome-copy">
+            <p class="eyebrow"><span></span> Kleine Silben. Große Schritte.</p>
+            <h1 id="welcome-title">Lesen beginnt<br> mit <span>einer Silbe.</span></h1>
+            <p class="intro">Ganz in Ruhe lesen. Einmal antippen.<br>Und schon kommt die nächste Kette.</p>
+            <div class="syllable-preview" aria-label="Verfügbare Silben" id="syllable-preview"></div>
+          </div>
+          <form id="setup-form" class="setup-card">
+            <div class="card-heading"><span class="step-mark" aria-hidden="true">1–5</span><span>Mach es so leicht, wie du magst.</span></div>
+            <fieldset>
+              <legend>Wie viele Silben<br> höchstens?</legend>
+              <p class="field-help" id="max-help">Auch ein einzelner Vokal zählt als Silbe.</p>
+              <div class="number-options" aria-describedby="max-help">
+                <label class="number-option"><input type="radio" name="max-syllables" value="1"><span class="number-face"><span>1</span><span class="option-dots" aria-hidden="true">●</span></span></label>
+                <label class="number-option"><input type="radio" name="max-syllables" value="2"><span class="number-face"><span>2</span><span class="option-dots" aria-hidden="true">●●</span></span></label>
+                <label class="number-option"><input type="radio" name="max-syllables" value="3" checked><span class="number-face"><span>3</span><span class="option-dots" aria-hidden="true">●●●</span></span></label>
+                <label class="number-option"><input type="radio" name="max-syllables" value="4"><span class="number-face"><span>4</span><span class="option-dots" aria-hidden="true">●●●●</span></span></label>
+                <label class="number-option"><input type="radio" name="max-syllables" value="5"><span class="number-face"><span>5</span><span class="option-dots" aria-hidden="true">●●●●●</span></span></label>
+              </div>
+              <p class="selection-summary" id="selection-summary">Zufällig 1 bis 3 Silben pro Kette</p>
+            </fieldset>
+            <button class="start-button" id="start-button" type="submit"><span>Lesen starten</span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+            <p class="landscape-note"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M17 10v4"/></svg> Am schönsten im Querformat</p>
+          </form>
+        </section>
+
+        <section id="game-screen" class="game-screen" aria-label="Lesespiel" hidden>
+          <p class="rotate-hint" id="rotate-hint"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="m2 8 3-3 3 3M5 5v8m17 3-3 3-3-3m3 3v-8"/></svg> Dreh dein Handy für größere Buchstaben.</p>
+          <button id="chain-button" class="reading-card" type="button" aria-describedby="tap-hint">
+            <span class="reading-label" aria-hidden="true">Du kannst dir Zeit lassen.</span>
+            <span id="chain-text" class="chain-text" aria-live="off"></span>
+            <span class="tap-hint" id="tap-hint"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 12V5a2 2 0 0 1 4 0v5l1-1a2 2 0 0 1 3 1 2 2 0 0 1 3 2v4a6 6 0 0 1-6 6h-1a5 5 0 0 1-4-2l-5-6a2 2 0 0 1 3-2l2 2"/></svg> Antippen für die nächste Kette</span>
+          </button>
+          <div class="game-footer"><p><span class="small-spark" aria-hidden="true">✦</span> Silbe für Silbe.</p><button id="fullscreen-button" type="button" class="text-button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/></svg><span>Vollbild</span></button></div>
+        </section>
+      </main>
+
+      <footer class="app-footer" id="app-footer"><span>Neugierig bleiben. Weiterlesen.</span><div class="install-area"><span id="offline-status" role="status" aria-live="polite"></span><button id="install-button" type="button" class="text-button">Aufs Handy</button></div></footer>
+      <div id="update-notice" class="update-notice" role="status" hidden><span>Eine neue Version ist bereit.</span><button id="update-button" type="button">Jetzt laden</button></div>
+      <dialog id="install-dialog" aria-labelledby="install-title">
+        <button class="dialog-close" id="close-install" aria-label="Schließen" type="button">×</button>
+        <span class="eyebrow">Dein Lesespiel für unterwegs</span>
+        <h2 id="install-title">Auf den Startbildschirm</h2>
+        <p>Öffne dieses Spiel in <strong>Chrome</strong> auf deinem Android-Handy.</p>
+        <ol><li>Tippe auf das <strong>Dreipunkt-Menü ⋮</strong>.</li><li>Wähle <strong>„Installieren und Verknüpfung erstellen“</strong> oder <strong>„Zum Startbildschirm hinzufügen“</strong>.</li><li>Tippe auf <strong>„Installieren“</strong>.</li></ol>
+        <p class="dialog-note">Sobald unten „Offline bereit“ steht, kannst du auch ohne Internet weiterlesen. Öffne das Spiel später über sein eigenes Symbol.</p>
+      </dialog>
+      <noscript><p class="noscript">Bitte aktiviere JavaScript in deinem Browser, um den Silbengenerator zu spielen.</p></noscript>
+    </div>
+  </body>
+</html>

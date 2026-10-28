@@ -3,6 +3,8 @@
 Ein kleines Lesespiel für Kinder: eine große Silbenkette lesen, antippen und weiterlesen.
 Als installierbare Web-App für Android gebaut. Der Code wird in diesem Repository gepflegt.
 
+![Silbengenerator im Handy-Querformat](screenshots/silbengenerator-20261028.jpg)
+
 ## Spielen
 
 **GitHub-Pages-Adresse nach einmaliger Aktivierung:** https://simonbl778.github.io/Games/silbengenerator/
