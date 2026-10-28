@@ -1,5 +1,5 @@
 import { DEFAULT_MAX_SYLLABLES, SYLLABLES } from './config.js';
-import { generateChain, validateMaxSyllables } from './generator.js';
+import { generateChain, getMinSyllables, validateMaxSyllables } from './generator.js';
 
 const $ = (id) => document.getElementById(id);
 const setup = $('setup-screen');
@@ -31,7 +31,7 @@ function updateSelection() {
   maximum = validateMaxSyllables(Number(new FormData(form).get('max-syllables')));
   $('selection-summary').textContent = maximum === 1
     ? 'Immer eine Silbe pro Kette'
-    : `Zufällig 1 bis ${maximum} Silben pro Kette`;
+    : `Zufällig ${getMinSyllables(maximum)} bis ${maximum} Silben pro Kette`;
 }
 updateSelection();
 form.addEventListener('change', updateSelection);

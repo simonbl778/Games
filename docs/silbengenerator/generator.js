@@ -11,6 +11,11 @@ export function validateMaxSyllables(value) {
   return value;
 }
 
+/** Ab drei Silben liegt die Untergrenze genau eine Silbe unter der Höchstzahl. */
+export function getMinSyllables(maxSyllables) {
+  return Math.max(1, validateMaxSyllables(maxSyllables) - 1);
+}
+
 function randomIndex(size, random) {
   const value = random();
   if (!Number.isFinite(value) || value < 0 || value >= 1) {
@@ -20,7 +25,8 @@ function randomIndex(size, random) {
 }
 
 function makeChain(maxSyllables, random) {
-  const count = 1 + randomIndex(maxSyllables, random);
+  const minimum = getMinSyllables(maxSyllables);
+  const count = minimum + randomIndex(maxSyllables - minimum + 1, random);
   const syllables = Array.from({ length: count }, () => (
     NORMALIZED_SYLLABLES[randomIndex(NORMALIZED_SYLLABLES.length, random)]
   ));
@@ -34,7 +40,7 @@ function makeChain(maxSyllables, random) {
 }
 
 /**
- * Neue Kette aus 1 bis maxSyllables Bausteinen.
+ * Neue Kette aus max(1, maxSyllables - 1) bis maxSyllables Bausteinen.
  * Länge und Bausteine werden jeweils gleichverteilt gezogen; Wiederholungen
  * innerhalb einer Kette sind erlaubt. Nur der erste Buchstabe der gesamten
  * Kette wird zufällig groß- oder kleingeschrieben.

@@ -17,12 +17,14 @@ test('die konfigurierbaren Bausteine entsprechen der Vorgabe', () => {
   assert.equal(validateMaxSyllables(DEFAULT_MAX_SYLLABLES), DEFAULT_MAX_SYLLABLES);
 });
 
-test('jede gewählte Höchstzahl erlaubt genau die Längen 1 bis zur Höchstzahl', () => {
-  for (let maximum = 1; maximum <= 5; maximum += 1) {
-    for (let count = 1; count <= maximum; count += 1) {
-      const random = sequence((count - 0.5) / maximum, ...Array(count).fill(0), 0.9);
-      const chain = generateChain(maximum, { random });
-      assert.equal(chain.count, count);
+test('jede Höchstzahl hält ihre erlaubte Unter- und Obergrenze ein', () => {
+  const ranges = [[1, 1, 1], [2, 1, 2], [3, 2, 3], [4, 3, 4], [5, 4, 5]];
+  for (const [maximum, minimum, upper] of ranges) {
+    for (const [draw, count] of [[0, minimum], [0.499999, minimum], [0.5, upper], [1 - Number.EPSILON, upper]]) {
+      const chain = generateChain(maximum, {
+        random: sequence(draw, ...Array(count).fill(0), 0.9),
+      });
+      assert.equal(chain.count, count, `Höchstzahl ${maximum}, Zufallswert ${draw}`);
       assert.equal(chain.syllables.length, count);
       assert.equal(chain.text, 'mo'.repeat(count));
     }

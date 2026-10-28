@@ -31,7 +31,7 @@ Die Browseransicht in einer anderen App kann Installieren, Vollbild oder Drehen 
 ## Spielregeln
 
 - Verfügbare Bausteine: **Mo, Mi, Mu, i, o, u**.
-- Die gewählte Zahl ist eine **Höchstzahl**, keine feste Kettenlänge. Bei `3` entstehen zufällig Ketten aus `1`, `2` oder `3` Bausteinen.
+- Die gewählte Zahl ist eine **Höchstzahl**, keine feste Kettenlänge. Bei `1` erscheint immer eine Silbe, bei `2` zufällig eine oder zwei. Bei `3` entstehen Ketten aus zwei oder drei, bei `4` aus drei oder vier und bei `5` aus vier oder fünf Bausteinen.
 - Jeder einzelne Vokal zählt als eine Silbe. `iou` besteht damit aus drei Bausteinen.
 - Jeder Baustein kann innerhalb derselben Kette mehrfach vorkommen.
 - Nur der **erste Buchstabe der gesamten Kette** wird zufällig groß- oder kleingeschrieben. Alle weiteren Buchstaben bleiben klein: zum Beispiel `Momiu` oder `momiu`, aber nicht `MoMiU`.
@@ -109,4 +109,4 @@ npm run check
 - [GitHub: Eine Pages-Website erstellen](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
 - [MDN: Grenzen der Orientierungssperre](https://developer.mozilla.org/en-US/docs/Web/API/ScreenOrientation/lock)
 
-Version 1.0.0 · 28. Oktober 2026
+Version 1.0.1 · 28. Oktober 2026
