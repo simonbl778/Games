@@ -1,5 +1,7 @@
 # Silbengenerator als Android-App
 
+Für das zweite Spiel: [Blitzblickzahlen als APK oder ZIP](../android/blitzblickzahlen/README.md).
+
 [**Installationsdatei herunterladen**](https://github.com/simonbl778/Games/raw/refs/heads/main/downloads/Silbengenerator-1.0.1.apk)
 
 **Alternative bei Downloadproblemen:** [ZIP-Datei mit APK und Anleitung herunterladen](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/downloads/Silbengenerator-Android-1.0.1.zip).

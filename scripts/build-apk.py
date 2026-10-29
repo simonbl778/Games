@@ -89,10 +89,16 @@ digest = hashlib.sha256(output.read_bytes()).hexdigest()
 certificate = next(line.split(': ', 1)[1] for line in verification.splitlines()
                    if line.startswith('Signer #1 certificate SHA-256 digest:'))
 output.with_suffix('.apk.sha256').write_text(f'{digest}  {output.name}\n')
+zip_output = output.parent / f'Blitzblickzahlen-Android-{version}.zip'
+with zipfile.ZipFile(zip_output, 'w', zipfile.ZIP_DEFLATED) as archive:
+    archive.write(output, output.name)
+    archive.write(output.with_suffix('.apk.sha256'), output.name + '.sha256')
+    archive.write(ROOT / 'android/blitzblickzahlen/INSTALLATION.txt', 'INSTALLATION.txt')
 record = {**config, 'apk': output.relative_to(ROOT).as_posix(), 'sha256': digest,
+          'zip': zip_output.relative_to(ROOT).as_posix(), 'zipSha256': hashlib.sha256(zip_output.read_bytes()).hexdigest(),
           'certificateSha256': certificate, 'sizeBytes': output.stat().st_size,
           'bundledGameFiles': {path.relative_to(game).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
                                for path in sorted(game.rglob('*')) if path.is_file()}}
 (ROOT / 'android/blitzblickzahlen/release.json').write_text(json.dumps(record, indent=2) + '\n')
-print(json.dumps({'apk': str(output), 'bytes': output.stat().st_size, 'sha256': digest,
+print(json.dumps({'apk': str(output), 'zip': str(zip_output), 'bytes': output.stat().st_size, 'sha256': digest,
                   'certificateSha256': certificate, 'signingDirectory': str(signing)}, indent=2))

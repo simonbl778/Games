@@ -1,0 +1,24 @@
+Blitzblickzahlen 1.1.0 für Android
+
+1. Diese ZIP-Datei auf dem Handy entpacken.
+2. Die Datei blitzblickzahlen-1.1.0.apk öffnen.
+3. Falls Android nachfragt, der verwendeten App (z. B. Chrome, Dateien oder
+   OneDrive) erlauben, Apps aus dieser Quelle zu installieren.
+4. Installieren antippen und das Symbol Blitzblickzahlen öffnen.
+
+Voraussetzung: Android 8.0 oder neuer mit aktuellem Android System WebView.
+Alle Spieldateien sind eingebaut. Die App läuft ohne Internet und ohne
+ChatGPT-Anmeldung. Neben dem Silbengenerator kann sie separat installiert werden.
+
+Zum Weitergeben die APK oder dieses ZIP teilen, beispielsweise über OneDrive,
+WhatsApp oder Bluetooth. In der installierten App gibt es auch "App teilen".
+
+Spielregeln: Einmaliger Countdown 3-2-1 beim Start. Danach folgen die Rätsel
+direkt auf die Rückmeldungen. Richtig gibt +1 Punkt, ein Fehler zieht 5 Punkte
+ab (mindestens 0). Bei 30 Punkten gibt es eine Belohnung. Verwechselte Zahlen
+kommen innerhalb derselben Partie häufiger vor.
+
+Die Datei mit der Endung .sha256 enthält die Prüfsumme der APK.
+Die APK ist signiert, ihr Inhalt und die Spiellogik wurden geprüft.
+Ein Test der Installation und der nativen Teilen-Funktion auf einem echten
+Android-Handy steht noch aus.

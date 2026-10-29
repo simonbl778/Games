@@ -1,5 +1,7 @@
 # Eigenständige Android-Version
 
+Dieser Ordner beschreibt den Silbengenerator. Die eigenständige Blitzblickzahlen-App liegt separat unter [`blitzblickzahlen/`](blitzblickzahlen/README.md).
+
 Die kleine native Hülle zeigt das bestehende Spiel in Androids System-WebView.
 Das Spiel wird über einen abgefangenen HTTPS-Ursprung vollständig aus den
 eingebetteten APK-Assets geladen. Es gibt keine Internetberechtigung, keine

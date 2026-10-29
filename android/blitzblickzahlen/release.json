@@ -5,20 +5,22 @@
   "minSdk": 26,
   "targetSdk": 35,
   "apk": "docs/downloads/blitzblickzahlen-1.1.0.apk",
-  "sha256": "f657b09aac320a755b73a606c610e6e645b51e99577627a92537e2e7f99712de",
+  "sha256": "2bc724b3cc16e9d95f4c2b450082e832f05e17c1aefabebdc4395244208f30c8",
+  "zip": "docs/downloads/Blitzblickzahlen-Android-1.1.0.zip",
+  "zipSha256": "15bbd11fbe68c00edaaff3d53242d844341d09075dfe29ac553e1063d484a283",
   "certificateSha256": "a3fdf578e7ba7409ddec7bb8078ed9902ed8003f4a0c7686ec98cead72333104",
   "sizeBytes": 112030,
   "bundledGameFiles": {
-    "app.js": "971b7c2f4f2bf5f0d18dba9a4f8cbb346c2e87ce164869a6f34c99bd7f3d2f05",
+    "app.js": "766587407d513207a5277b34187bdcb3ab58897df90c3dd9aa8cb0a75d8f6f48",
     "audio.js": "dd7cc0890d0cd0b93116223ac89e9a3b819aad96a4aa4d0916d38ae3c309f934",
     "game.js": "f133afaf7af0781d2c9e46b1ad3556f7b93b25f8a8958cebb1a713376e8533a3",
     "icons/icon-192.png": "444f68f2e8989bf7dd79ba2258db694fbdb65bef96f33239c3f401876bb34277",
     "icons/icon-512.png": "abca5ba0d2218f48026fe8951980acc824c1ae3c4ca0fad32b78049d470da272",
     "icons/icon.svg": "55c12c6d3cb7fef2ed64dd0f1de91db484a476290f9a35f5ca47d2f80da1a8ac",
     "icons/maskable-512.png": "ac66faed267de77a9b91895779da1270874b325db24a144aefc2bbf7efbf9d93",
-    "index.html": "5a95cb232a15f978cf6f190f6916b2236409bc43b363bea507ff0c6caa6ccdb1",
+    "index.html": "16c840c275e3a652df1e5866da63697ac17a64c5d2d908fa905219cde08d82b4",
     "manifest.webmanifest": "d17aa9a31d42837633a55a2e09b57eced9704101e852e96c61d8aae0658acb64",
     "service-worker.js": "34c3f56f1595f60ca2b67f9738db81aeaa5004711825bda7fe66a88c35c1d0d5",
-    "styles.css": "4de2996546a0b76d0b9ec9107757ba62d9c2e3cb8fa3d5d14e809925a8fa33ba"
+    "styles.css": "60036bf9fc2663740697f2d426d72bf883cee7cfa08a1c3d43d8c604fc5cce4f"
   }
 }

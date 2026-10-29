@@ -47,6 +47,7 @@ legend{font-size:24px;font-weight:600;letter-spacing:-.7px;padding:0}
 .start-button>span{font-size:23px;font-weight:400}
 .goal-note{font-size:10px;color:var(--muted);text-align:center;line-height:1.5;margin:16px 0 0}
 .goal-note>span{color:#b08b38;margin-right:4px}
+.learning-note a{color:var(--green);text-underline-offset:3px}
 .learning-note{text-align:center;font-size:11px;line-height:1.7;color:var(--muted);margin:18px 0 0}
 .app-footer{display:flex;align-items:center;justify-content:space-between;min-height:38px;font-size:10px;color:var(--muted);gap:10px;flex-shrink:0}
 .text-button{text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px;border:0;background:none;color:var(--green);font-size:12px;min-height:44px;padding:8px 4px}

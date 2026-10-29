@@ -4,6 +4,8 @@ Die App enthält dieselben Spieldateien wie `docs/blitzblickzahlen/`. Sie starte
 
 Die signierte Datei liegt unter [`docs/downloads/blitzblickzahlen-1.1.0.apk`](../../docs/downloads/blitzblickzahlen-1.1.0.apk). Auf dem Handy öffnen und bei der Android-Nachfrage die Installation aus der verwendeten Download- oder Dateien-App zulassen. Danach über das eigene App-Symbol starten. In der Auswahl und am Spielende lässt sich die installierte APK mit **App teilen** an andere Handys weitergeben. Das Android-Menü öffnet sich dafür mit der APK-Datei als Anhang.
 
+Als Download-Alternative gibt es `Blitzblickzahlen-Android-1.1.0.zip` mit APK, Prüfsumme und `INSTALLATION.txt`. Dieses ZIP lässt sich wie beim Silbengenerator auf OneDrive ablegen und teilen. Auf dem Empfängerhandy entpacken und die enthaltene APK öffnen.
+
 ## Bauen
 
 Benötigt werden Python 3, Java mit `keytool`, Android SDK Platform 35 und Build Tools 35.0.0 sowie `javac` (Java 8 oder neuer). Alternativ wird der Eclipse-Java-Compiler als Jar unterstützt; gebaut wurde mit ECJ 3.41.0 und Java 21.

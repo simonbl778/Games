@@ -220,6 +220,7 @@ const standalone = () => matchMedia('(display-mode: standalone)').matches || mat
 if (standalone() || nativeApp) $('install-button').hidden = true;
 if (nativeApp) {
   $('apk-download').hidden = true;
+  $('apk-zip-download').hidden = true;
   $('share-app-button').hidden = false;
   $('fullscreen-button').hidden = true;
 }
