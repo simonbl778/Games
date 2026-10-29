@@ -20,7 +20,8 @@ Eine große Silbenkette lesen, antippen und weiterlesen.
 ## Spielen
 
 **Eigenständige Silbengenerator-App ohne ChatGPT-Anmeldung:**
-[APK herunterladen](https://github.com/simonbl778/Games/raw/refs/heads/main/downloads/Silbengenerator-1.0.2.apk).
+[APK direkt über die Spielseite herunterladen](https://silbengenerator-simonbl778.groovychair.chatgpt.site/downloads/silbengenerator-1.0.2.apk) ·
+[GitHub-Download](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.0.2.apk).
 Diese Datei lässt sich auch auf OneDrive ablegen und per Link weitergeben.
 Die App funktioniert ab Android 8 und von Anfang an vollständig offline.
 [Installation und Weitergabe](downloads/README.md) · [Android-Quellcode und Build](android/README.md)

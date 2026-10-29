@@ -2,6 +2,11 @@
 
 Für das zweite Spiel: [Blitzblickzahlen als APK oder ZIP](../android/blitzblickzahlen/README.md).
 
+**Direkter Download über die Spielseite:**
+[APK herunterladen](https://silbengenerator-simonbl778.groovychair.chatgpt.site/downloads/silbengenerator-1.0.2.apk) ·
+[ZIP zum Weitergeben](https://silbengenerator-simonbl778.groovychair.chatgpt.site/downloads/Silbengenerator-Android-1.0.2.zip).
+Die gleichen Dateien liegen wie bei Blitzblickzahlen unter `docs/downloads/` und werden mit den Spielseiten veröffentlicht. Zum Spielen nach der Installation ist keine Anmeldung nötig.
+
 [**Installationsdatei herunterladen**](https://github.com/simonbl778/Games/raw/refs/heads/main/downloads/Silbengenerator-1.0.2.apk)
 
 **Alternative bei Downloadproblemen:** [ZIP-Datei mit APK und Anleitung herunterladen](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/downloads/Silbengenerator-Android-1.0.2.zip).
