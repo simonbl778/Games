@@ -20,7 +20,7 @@ Eine große Silbenkette lesen, antippen und weiterlesen.
 ## Spielen
 
 **Eigenständige Silbengenerator-App ohne ChatGPT-Anmeldung:**
-[APK herunterladen](https://github.com/simonbl778/Games/raw/refs/heads/main/downloads/Silbengenerator-1.0.1.apk).
+[APK herunterladen](https://github.com/simonbl778/Games/raw/refs/heads/main/downloads/Silbengenerator-1.0.2.apk).
 Diese Datei lässt sich auch auf OneDrive ablegen und per Link weitergeben.
 Die App funktioniert ab Android 8 und von Anfang an vollständig offline.
 [Installation und Weitergabe](downloads/README.md) · [Android-Quellcode und Build](android/README.md)
@@ -54,6 +54,8 @@ Die Browseransicht in einer anderen App kann Installieren, Vollbild oder Drehen 
 - Die gewählte Zahl ist eine **Höchstzahl**, keine feste Kettenlänge. Bei `1` erscheint immer eine Silbe, bei `2` zufällig eine oder zwei. Bei `3` entstehen Ketten aus zwei oder drei, bei `4` aus drei oder vier und bei `5` aus vier oder fünf Bausteinen.
 - Jeder einzelne Vokal zählt als eine Silbe. `iou` besteht damit aus drei Bausteinen.
 - Jeder Baustein kann innerhalb derselben Kette mehrfach vorkommen.
+- Gleiche Vokale direkt an einer Silbengrenze, etwa `oo`, `ii`, `uu`, `Moo` oder `Muu`, erscheinen nur als sehr seltene Ausnahme. 99 von 100 vorgeschlagenen gleichen Vokalgrenzen werden durch einen passenden anderen Baustein ersetzt.
+- **Silben dezent einfärben** lässt sich vor dem Start einschalten. Die tatsächlichen Silben wechseln dann ohne zusätzliche Abstände zwischen dunklem und sanftem Grün. Standardmäßig und nach erneutem Öffnen ist die Farbhilfe ausgeschaltet; innerhalb einer Partie bleibt die Auswahl beim Ändern der Einstellungen erhalten.
 - Nur der **erste Buchstabe der gesamten Kette** wird zufällig groß- oder kleingeschrieben. Alle weiteren Buchstaben bleiben klein: zum Beispiel `Momiu` oder `momiu`, aber nicht `MoMiU`.
 - Jede neue sichtbare Anzeige unterscheidet sich von der unmittelbar vorherigen.
 - Die App zeigt beim erneuten Öffnen zuerst die Auswahl. Die zuletzt verwendete Höchstzahl ist lediglich vorausgewählt.
@@ -170,4 +172,4 @@ npm run check
 - [GitHub: Eine Pages-Website erstellen](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
 - [MDN: Grenzen der Orientierungssperre](https://developer.mozilla.org/en-US/docs/Web/API/ScreenOrientation/lock)
 
-Games 1.1.0 · Silbengenerator 1.0.1 · Blitzblickzahlen 1.1.0 · 29. Oktober 2026
+Games 1.1.0 · Silbengenerator 1.0.2 · Blitzblickzahlen 1.1.0 · 29. Oktober 2026

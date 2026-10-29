@@ -2,6 +2,7 @@ import { SYLLABLES } from './config.js';
 
 const NORMALIZED_SYLLABLES = SYLLABLES.map((syllable) => syllable.toLowerCase());
 const MAX_ATTEMPTS = 8;
+const VOWELS = new Set(['a', 'e', 'i', 'o', 'u']);
 
 /** Die gewählte Höchstzahl muss eine ganze Zahl zwischen 1 und 5 sein. */
 export function validateMaxSyllables(value) {
@@ -27,9 +28,20 @@ function randomIndex(size, random) {
 function makeChain(maxSyllables, random) {
   const minimum = getMinSyllables(maxSyllables);
   const count = minimum + randomIndex(maxSyllables - minimum + 1, random);
-  const syllables = Array.from({ length: count }, () => (
-    NORMALIZED_SYLLABLES[randomIndex(NORMALIZED_SYLLABLES.length, random)]
-  ));
+  const syllables = [];
+  for (let index = 0; index < count; index += 1) {
+    let next = NORMALIZED_SYLLABLES[randomIndex(NORMALIZED_SYLLABLES.length, random)];
+    const previousVowel = syllables[syllables.length - 1]?.slice(-1);
+    if (VOWELS.has(previousVowel) && next.startsWith(previousVowel)) {
+      // Accept only one in a hundred proposed doubled vowels. Otherwise choose
+      // once from the compatible blocks; constant random sources still finish.
+      if (randomIndex(100, random) !== 0) {
+        const alternatives = NORMALIZED_SYLLABLES.filter((part) => !part.startsWith(previousVowel));
+        if (alternatives.length) next = alternatives[randomIndex(alternatives.length, random)];
+      }
+    }
+    syllables.push(next);
+  }
   const lowercaseText = syllables.join('');
   const uppercaseStart = randomIndex(2, random) === 0;
   const text = uppercaseStart
@@ -41,8 +53,9 @@ function makeChain(maxSyllables, random) {
 
 /**
  * Neue Kette aus max(1, maxSyllables - 1) bis maxSyllables Bausteinen.
- * Länge und Bausteine werden jeweils gleichverteilt gezogen; Wiederholungen
- * innerhalb einer Kette sind erlaubt. Nur der erste Buchstabe der gesamten
+ * Die Länge wird gleichverteilt gezogen. Gleiche Vokale an Silbengrenzen werden
+ * stark seltener gewählt; sonst sind alle Bausteine gleich wahrscheinlich.
+ * Wiederholungen innerhalb einer Kette sind erlaubt. Nur der erste Buchstabe der gesamten
  * Kette wird zufällig groß- oder kleingeschrieben.
  *
  * Eine unmittelbar identische Anzeige wird erneut gezogen. Nach acht gleichen

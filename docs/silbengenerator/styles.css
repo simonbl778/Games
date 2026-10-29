@@ -41,6 +41,11 @@ legend{padding:0;font-size:29px;letter-spacing:-.8px;line-height:1.22;font-weigh
 .option-dots{font-size:4px;letter-spacing:2px;line-height:1;opacity:.65;max-width:100%;padding-left:2px}
 .number-option input:checked+.number-face{background:var(--green);border-color:var(--green);color:white;box-shadow:0 4px 0 #234335;transform:translateY(-2px)}
 .selection-summary{font-size:11px;color:var(--green);text-align:center;margin:20px 0 24px}
+.color-option{display:flex;align-items:center;gap:11px;padding:11px 13px;margin:0 0 20px;border:1px solid var(--line);border-radius:12px;background:var(--paper);cursor:pointer;min-height:48px}
+.color-option input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--green);cursor:pointer}
+.color-option input:focus-visible{outline:3px solid #b18124;outline-offset:4px}
+.color-option-title{display:block;font-size:12px;color:var(--ink);line-height:1.4}
+.color-option-detail{display:block;font-size:10px;color:var(--muted);line-height:1.4;margin-top:2px}
 .start-button{display:flex;justify-content:center;align-items:center;gap:20px;min-height:56px;border:0;border-radius:16px;background:var(--green);color:white;font-weight:600;width:100%;font-size:15px;transition:background .15s,transform .15s}
 .start-button:hover{background:#254b3d}
 .start-button:active{transform:scale(.985)}
@@ -61,6 +66,7 @@ legend{padding:0;font-size:29px;letter-spacing:-.8px;line-height:1.22;font-weigh
 .reading-card:active{background:#f0f2e9}
 .reading-label{position:absolute;top:20px;left:12px;right:12px;text-align:center;color:var(--muted);font-size:11px;letter-spacing:.2px;font-weight:400}
 .chain-text{display:block;font-family:"Trebuchet MS",Arial,sans-serif;font-weight:500;white-space:nowrap;line-height:1.1;letter-spacing:.01em;font-size:100px;font-variant-ligatures:none;text-align:center;max-width:none}
+.alternating-syllables .chain-syllable:nth-child(even){color:#5b7160}
 .tap-hint{position:absolute;bottom:18px;left:10px;right:10px;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--muted);font-size:12px;line-height:1.4;font-weight:400}
 .tap-hint svg{width:18px;height:20px}
 .game-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--muted);font-size:11px;min-height:43px;flex-shrink:0}
@@ -88,4 +94,6 @@ dialog .eyebrow{font-size:9px;padding-right:18px}
 }
 @media(orientation:landscape) and (max-height:370px){.card-heading,.brand-subtitle,.landscape-note{display:none}.setup-screen{padding:10px 0;gap:32px}.setup-card{padding:14px 20px}.field-help{margin:6px 0 9px}.number-face{height:46px}.selection-summary{margin:10px 0}.start-button{min-height:39px}h1{font-size:29px}.intro{font-size:11px}.eyebrow{margin-bottom:10px}.syllable-preview span{height:30px;min-width:29px;font-size:16px}.welcome-copy .intro{margin-bottom:14px}.app-footer{font-size:8px}.game-mode .topbar{min-height:32px}.game-mode .brand-mark{height:31px;width:31px;font-size:18px}.reading-label{display:none}.reading-card{padding-top:15px}.game-footer{min-height:28px}}
 @media(max-width:700px) and (orientation:portrait) and (max-height:800px){.setup-screen{padding:22px 0 18px;gap:20px}.welcome-copy .eyebrow,.setup-card .card-heading{display:none}h1{font-size:30px;line-height:1.12}.intro{font-size:12px;margin-bottom:14px}.setup-card{padding:22px}legend{font-size:24px}.field-help{font-size:11px;margin:10px 0 16px}.number-face{height:62px}.selection-summary{margin:16px 0 20px}.landscape-note{margin-top:14px}.app-footer{font-size:9px}}
+@media(orientation:landscape) and (max-height:560px){.color-option{padding:8px 10px;margin-bottom:12px;min-height:40px}.color-option-title{font-size:11px}.color-option-detail{font-size:9px}.color-option input{width:18px;height:18px}}
+@media(orientation:landscape) and (max-height:400px){.color-option-detail{display:none}.color-option{min-height:36px;margin-bottom:10px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
