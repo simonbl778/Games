@@ -2,9 +2,9 @@
 
 Für das zweite Spiel: [Blitzblickzahlen als APK oder ZIP](../android/blitzblickzahlen/README.md).
 
-[**Installationsdatei herunterladen**](https://github.com/simonbl778/Games/raw/refs/heads/main/downloads/Silbengenerator-1.0.1.apk)
+[**Installationsdatei herunterladen**](https://github.com/simonbl778/Games/raw/refs/heads/main/downloads/Silbengenerator-1.0.2.apk)
 
-**Alternative bei Downloadproblemen:** [ZIP-Datei mit APK und Anleitung herunterladen](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/downloads/Silbengenerator-Android-1.0.1.zip).
+**Alternative bei Downloadproblemen:** [ZIP-Datei mit APK und Anleitung herunterladen](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/downloads/Silbengenerator-Android-1.0.2.zip).
 Die ZIP-Datei auf dem Handy entpacken und dann die enthaltene APK öffnen.
 Falls ein Download im eingebauten Chat-Browser nicht startet, den Link über
 **Im Browser öffnen** in Chrome öffnen und dort herunterladen.
@@ -26,6 +26,11 @@ zusätzliche Berechtigungen. Alle Spieldateien sind in der APK enthalten.
 Die Auswahl bleibt unverändert: bei maximal 1 immer eine Silbe, bei maximal 2
 eine oder zwei, bei maximal 3 zwei oder drei, bei maximal 4 drei oder vier und
 bei maximal 5 vier oder fünf Silben.
+
+Gleiche Vokale an Silbengrenzen kommen nur als sehr seltene Ausnahme vor.
+Auf der Startseite lässt sich **Silben dezent einfärben** einschalten: Die
+Silben wechseln dann zwischen dunklem und sanftem Grün. Standardmäßig ist
+diese Farbhilfe ausgeschaltet.
 
 ## Aktualisieren
 

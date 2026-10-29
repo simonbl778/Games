@@ -1,5 +1,6 @@
 import { DEFAULT_MAX_SYLLABLES, SYLLABLES } from './config.js';
 import { generateChain, getMinSyllables, validateMaxSyllables } from './generator.js';
+import { renderChain } from './presentation.js';
 
 const $ = (id) => document.getElementById(id);
 const setup = $('setup-screen');
@@ -7,6 +8,7 @@ const game = $('game-screen');
 const form = $('setup-form');
 const chainButton = $('chain-button');
 const chainText = $('chain-text');
+const colorOption = $('alternate-colors');
 let maximum = DEFAULT_MAX_SYLLABLES;
 let previousText = '';
 let deferredInstall = null;
@@ -58,7 +60,7 @@ function scheduleFit() {
 function showNextChain() {
   const chain = generateChain(maximum, { previousText });
   previousText = chain.text;
-  chainText.textContent = chain.text;
+  renderChain(chainText, chain, colorOption.checked);
   chainButton.setAttribute('aria-label', `${chain.text}. Antippen für die nächste Silbenkette.`);
   fitChain();
 }

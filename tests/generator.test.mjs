@@ -60,6 +60,55 @@ test('Bausteine dürfen innerhalb einer Kette mehrfach vorkommen', () => {
   assert.equal(chain.count, 5);
 });
 
+test('gleiche Vokale werden auch hinter Mo, Mi und Mu normalerweise vermieden', () => {
+  const normalized = SYLLABLES.map((part) => part.toLowerCase());
+  for (const first of normalized) {
+    const vowel = first.slice(-1);
+    const chain = generateChain(3, {
+      random: sequence(0, (normalized.indexOf(first) + 0.5) / 6,
+        (normalized.indexOf(vowel) + 0.5) / 6, 0.5, 0, 0.9),
+    });
+    assert.equal(chain.text, first + 'mo');
+    assert.equal(chain.count, 2);
+    assert.ok(!/(ii|oo|uu)/i.test(chain.text));
+  }
+});
+
+test('eine doppelte Vokalgrenze bleibt als seltene Ausnahme möglich', () => {
+  const chain = generateChain(3, { random: sequence(0, 0.1, 0.75, 0, 0.1) });
+  assert.equal(chain.text, 'Moo');
+  assert.deepEqual(chain.syllables, ['mo', 'o']);
+});
+
+test('über viele Ketten bleiben gleiche Vokalgrenzen weit unter einem Prozent', () => {
+  let state = 0x12345678;
+  const random = () => {
+    state = (Math.imul(state, 1664525) + 1013904223) >>> 0;
+    return state / 2 ** 32;
+  };
+  let repeated = 0;
+  let boundaries = 0;
+  for (let index = 0; index < 30000; index += 1) {
+    const chain = generateChain(5, { random });
+    for (let part = 1; part < chain.syllables.length; part += 1) {
+      boundaries += 1;
+      if (chain.syllables[part - 1].slice(-1) === chain.syllables[part][0]) repeated += 1;
+    }
+  }
+  assert.ok(repeated > 0, 'Die seltene Ausnahme darf weiterhin vorkommen.');
+  assert.ok(repeated / boundaries < 0.005, `Anteil doppelter Vokale: ${repeated / boundaries}`);
+});
+
+test('die Vermeidung gleicher Vokale endet auch mit konstantem Zufall', () => {
+  let calls = 0;
+  const chain = generateChain(3, { random: () => {
+    assert.ok(++calls < 20);
+    return 0.7;
+  } });
+  assert.equal(chain.count, 3);
+  assert.ok(!/(ii|oo|uu)/i.test(chain.text));
+});
+
 test('eine identische vorherige Anzeige wird erneut gezogen', () => {
   const chain = generateChain(1, {
     previousText: 'mo',
