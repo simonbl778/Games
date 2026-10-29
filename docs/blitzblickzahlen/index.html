@@ -42,22 +42,22 @@
               <p class="selection-summary" id="selection-summary" aria-live="polite"></p>
             </fieldset>
             <button class="start-button" type="submit">Los geht’s <span aria-hidden="true">→</span></button>
-            <p class="goal-note"><span aria-hidden="true">✦</span> Dein Ziel: 30 richtige Antworten am Stück.</p>
+            <p class="goal-note"><span aria-hidden="true">✦</span> Dein Ziel: 30 Punkte. Richtig +1 · Fehler −5.</p>
           </form>
           <p class="learning-note">Was noch knifflig ist, übst du etwas öfter.<br>Am schönsten im Hochformat.</p>
         </section>
 
         <section id="game-screen" class="game-screen" aria-label="Zahlenspiel" hidden>
           <div class="progress-area">
-            <div class="progress-copy"><span id="level-badge"></span><span><strong id="streak-count">0</strong> / 30 am Stück</span></div>
-            <div id="streak-progress" class="progress-track" role="progressbar" aria-label="Richtige Antworten am Stück" aria-valuemin="0" aria-valuemax="30" aria-valuenow="0"><span id="progress-fill"></span></div>
+            <div class="progress-copy"><span id="level-badge"></span><span><strong id="score-count">0</strong> / 30 Punkte</span></div>
+            <div id="score-progress" class="progress-track" role="progressbar" aria-label="Gesammelte Punkte" aria-valuemin="0" aria-valuemax="30" aria-valuenow="0"><span id="progress-fill"></span></div>
           </div>
           <div class="play-area">
             <div class="display-area" id="display-area">
               <div class="phase-heading"><h2 id="phase-title" tabindex="-1" aria-live="polite">Mach dich bereit!</h2><p id="phase-hint">Gleich kommen die Punkte.</p></div>
               <div class="frame-stage">
                 <div id="ten-frame" class="ten-frame" role="img" aria-label="Zehnerfeld mit schwarzen Punkten" hidden></div>
-                <div id="round-message" class="round-message"><span id="feedback-icon" aria-hidden="true">✦</span><p id="feedback-copy">Augen auf!</p></div>
+                <div id="round-message" class="round-message"><span id="feedback-icon" aria-hidden="true">3</span><p id="feedback-copy"></p></div>
               </div>
               <button id="resume-button" type="button" class="start-button" hidden>Weiter geht’s →</button>
             </div>
@@ -79,14 +79,14 @@
           <div class="trophy" aria-hidden="true">🏆<span>✦</span><span>✦</span></div>
           <p class="eyebrow">Was für ein Blitzblick!</p>
           <h1 id="win-title" tabindex="-1">Hurra,<br><span>du hast es geschafft!</span></h1>
-          <p class="win-achievement">30 richtig am Stück!</p>
+          <p class="win-achievement">30 Punkte geschafft!</p>
           <p class="intro">Du bist ein echter Punkte-Profi.</p>
           <p id="win-summary" class="win-summary"></p>
           <button id="replay-button" class="start-button" type="button">Noch einmal spielen <span aria-hidden="true">→</span></button>
           <button id="choose-level-button" class="text-button" type="button">Andere Stufe wählen</button>
         </section>
       </main>
-      <footer class="app-footer" id="app-footer"><span id="offline-status" role="status" aria-live="polite"></span><button id="install-button" type="button" class="text-button">Aufs Handy</button></footer>
+      <footer class="app-footer" id="app-footer"><span id="offline-status" role="status" aria-live="polite"></span><div class="install-actions"><button id="install-button" type="button" class="text-button">Aufs Handy</button><a id="apk-download" class="text-button" href="https://github.com/simonbl778/Games/releases/download/blitzblickzahlen-v1.1.0/blitzblickzahlen-1.1.0.apk" download="Blitzblickzahlen-1.1.0.apk">APK herunterladen</a><button id="share-app-button" type="button" class="text-button" hidden>App teilen</button></div></footer>
       <div id="update-notice" class="update-notice" role="status" hidden><span>Eine neue Version ist bereit.</span><button id="update-button" type="button">Jetzt laden</button></div>
       <dialog id="install-dialog" aria-labelledby="install-title">
         <button class="dialog-close" id="close-install" aria-label="Schließen" type="button">×</button>

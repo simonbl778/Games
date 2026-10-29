@@ -5,6 +5,8 @@
   "type": "module",
   "description": "Silbengenerator und Blitzblickzahlen: Lernspiele für Android und den Browser.",
   "scripts": {
+    "build:apk": "python3 scripts/build-apk.py",
+    "check:apk": "python3 scripts/check-apk.py",
     "build:sites": "node scripts/build-sites.mjs",
     "test": "node --test tests/*.test.mjs",
     "check": "node --check docs/silbengenerator/app.js && node --check docs/silbengenerator/service-worker.js && node --check docs/silbengenerator/generator.js && node --check docs/blitzblickzahlen/app.js && node --check docs/blitzblickzahlen/game.js && node --check docs/blitzblickzahlen/audio.js && node --check docs/blitzblickzahlen/service-worker.js"

@@ -1,5 +1,6 @@
 export const DURATIONS = Object.freeze([5000, 4000, 3000, 2500, 2000, 1500, 1000, 700, 500, 300]);
-export const TARGET_STREAK = 30;
+export const TARGET_SCORE = 30;
+export const ERROR_PENALTY = 5;
 
 export function durationForLevel(level) {
   if (!Number.isInteger(level) || level < 1 || level > 10) throw new RangeError('Die Stufe muss zwischen 1 und 10 liegen.');
@@ -19,7 +20,7 @@ export function cellsForNumber(number) {
 export class Session {
   constructor() {
     this.mistakes = Array(10).fill(0);
-    this.streak = 0;
+    this.score = 0;
     this.best = 0;
     this.attempts = 0;
     this.correct = 0;
@@ -27,7 +28,7 @@ export class Session {
     this.awaitingAnswer = false;
   }
 
-  get finished() { return this.streak >= TARGET_STREAK; }
+  get finished() { return this.score >= TARGET_SCORE; }
 
   get weights() { return this.mistakes.map((mistakes) => 1 + Math.min(mistakes, 4) * 0.5); }
 
@@ -52,16 +53,17 @@ export class Session {
     this.awaitingAnswer = false;
     this.attempts += 1;
     const correct = number === this.current;
+    const previousScore = this.score;
     if (correct) {
       this.correct += 1;
-      this.streak += 1;
+      this.score += 1;
       // Successful practice gradually lowers the extra weight again.
       this.mistakes[this.current - 1] = Math.max(0, this.mistakes[this.current - 1] - 0.5);
-      this.best = Math.max(this.best, this.streak);
+      this.best = Math.max(this.best, this.score);
     } else {
-      this.streak = 0;
+      this.score = Math.max(0, this.score - ERROR_PENALTY);
       this.mistakes[this.current - 1] += 1;
     }
-    return { correct, expected: this.current, streak: this.streak, finished: this.finished };
+    return { correct, expected: this.current, score: this.score, deducted: correct ? 0 : previousScore - this.score, finished: this.finished };
   }
 }

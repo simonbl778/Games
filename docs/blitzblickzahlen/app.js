@@ -1,4 +1,4 @@
-import { DURATIONS, TARGET_STREAK, Session, cellsForNumber, durationForLevel } from './game.js';
+import { DURATIONS, TARGET_SCORE, Session, cellsForNumber, durationForLevel } from './game.js';
 import { GameAudio } from './audio.js';
 
 const $ = (id) => document.getElementById(id);
@@ -9,6 +9,7 @@ const win = $('win-screen');
 const frame = $('ten-frame');
 const keys = [...document.querySelectorAll('[data-answer]')];
 const audio = new GameAudio();
+const nativeApp = navigator.userAgent.includes('BlitzblickzahlenAndroid/');
 const seconds = (ms) => `${(ms / 1000).toLocaleString('de-DE')} s`;
 let level = 1;
 let session = null;
@@ -69,9 +70,9 @@ function setPhase(next, title, hint, icon = '', copy = '') {
 }
 
 function updateProgress() {
-  $('streak-count').textContent = String(session.streak);
-  $('streak-progress').setAttribute('aria-valuenow', String(session.streak));
-  $('progress-fill').style.width = `${session.streak / TARGET_STREAK * 100}%`;
+  $('score-count').textContent = String(session.score);
+  $('score-progress').setAttribute('aria-valuenow', String(session.score));
+  $('progress-fill').style.width = `${session.score / TARGET_SCORE * 100}%`;
 }
 
 function showPoints() {
@@ -93,8 +94,12 @@ function askForAnswer() {
 
 function nextRound() {
   session.next();
-  setPhase('ready', 'Mach dich bereit!', 'Gleich kommen die Punkte.', '✦', 'Augen auf!');
-  later(showPoints, session.attempts === 0 ? 1000 : 650);
+  showPoints();
+}
+
+function startCountdown(remaining = 3) {
+  setPhase('countdown', 'Mach dich bereit!', 'Gleich geht’s los.', String(remaining), '');
+  later(() => remaining > 1 ? startCountdown(remaining - 1) : nextRound(), 1000);
 }
 
 async function enterPortrait() {
@@ -112,7 +117,7 @@ function startGame() {
   $('confetti').replaceChildren();
   document.body.classList.add('game-mode');
   $('level-badge').textContent = `Stufe ${level} · ${seconds(durationForLevel(level))}`;
-  updateProgress(); nextRound();
+  updateProgress(); startCountdown();
   $('phase-title').focus({ preventScroll: true });
   void enterPortrait();
 }
@@ -130,10 +135,11 @@ function answer(number) {
   const result = session.answer(number);
   updateProgress();
   if (result.correct) {
-    setPhase('correct', 'Richtig!', 'Prima gesehen.', '☺', `${result.streak} richtig am Stück!`);
+    setPhase('correct', 'Richtig!', 'Prima gesehen. +1 Punkt', '☺', `${result.score} von ${TARGET_SCORE} Punkten!`);
     audio.play('correct');
   } else {
-    setPhase('incorrect', 'Noch mal üben!', 'Beim nächsten Mal klappt’s.', '👎', `Es ${result.expected === 1 ? 'war 1 Punkt' : `waren ${result.expected} Punkte`}.`);
+    const hint = result.deducted ? `−${result.deducted} ${result.deducted === 1 ? 'Punkt' : 'Punkte'}. Weiter geht’s!` : 'Weiter geht’s!';
+    setPhase('incorrect', 'Noch mal üben!', hint, '👎', `Es ${result.expected === 1 ? 'war 1 Punkt' : `waren ${result.expected} Punkte`}.`);
     audio.play('wrong');
   }
   $('phase-title').focus({ preventScroll: true });
@@ -183,12 +189,14 @@ function pauseGame() {
   const previous = phase;
   cancelPending(); audio.stop();
   resumeAction = previous === 'answer' ? askForAnswer
+    : previous === 'countdown' ? startCountdown
     : previous === 'correct' || previous === 'incorrect' ? (session.finished ? celebrate : nextRound)
     : showPoints;
   setPhase('paused', 'Kleine Pause', 'Tippe auf Weiter, wenn du bereit bist.', '☀', 'Wir warten auf dich.');
 }
 document.addEventListener('visibilitychange', () => { if (document.hidden) pauseGame(); });
 window.addEventListener('pagehide', pauseGame);
+window.addEventListener('blitzblickpause', pauseGame);
 $('resume-button').addEventListener('click', () => { audio.unlock(); resumeAction?.(); });
 
 function updateSound() {
@@ -209,7 +217,13 @@ $('fullscreen-button').addEventListener('click', () => {
 document.addEventListener('fullscreenchange', () => { $('fullscreen-button').textContent = document.fullscreenElement ? '⛶ Vollbild beenden' : '⛶ Vollbild'; });
 
 const standalone = () => matchMedia('(display-mode: standalone)').matches || matchMedia('(display-mode: fullscreen)').matches || navigator.standalone === true;
-if (standalone()) $('install-button').hidden = true;
+if (standalone() || nativeApp) $('install-button').hidden = true;
+if (nativeApp) {
+  $('apk-download').hidden = true;
+  $('share-app-button').hidden = false;
+  $('fullscreen-button').hidden = true;
+}
+$('share-app-button').addEventListener('click', () => window.BlitzblickAndroid?.shareApk());
 window.addEventListener('beforeinstallprompt', (event) => {
   event.preventDefault();
   deferredInstall = event;
@@ -250,6 +264,7 @@ $('update-button').addEventListener('click', () => {
 });
 
 async function registerOffline() {
+  if (nativeApp) { $('offline-status').textContent = 'Offline bereit'; return; }
   if (!('serviceWorker' in navigator) || !window.isSecureContext) return;
   try {
     const registration = await navigator.serviceWorker.register('./service-worker.js', { scope: './', updateViaCache: 'none' });
@@ -265,7 +280,7 @@ async function registerOffline() {
     navigator.serviceWorker.controller?.postMessage({ type: 'OFFLINE_STATUS' });
   } catch { $('offline-status').textContent = 'Online spielbar'; }
 }
-if ('serviceWorker' in navigator) {
+if (!nativeApp && 'serviceWorker' in navigator) {
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data?.type === 'OFFLINE_READY') $('offline-status').textContent = 'Offline bereit';
   });

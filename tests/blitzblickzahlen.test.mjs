@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { DURATIONS, TARGET_STREAK, durationForLevel, cellsForNumber, Session } from '../docs/blitzblickzahlen/game.js';
+import { DURATIONS, TARGET_SCORE, durationForLevel, cellsForNumber, Session } from '../docs/blitzblickzahlen/game.js';
 
 test('zehn Stufen werden streng schneller: von 5 Sekunden bis 0,3 Sekunden', () => {
   assert.equal(DURATIONS.length, 10);
@@ -37,14 +37,14 @@ test('alle Zahlen von 1 bis 10 sind anfangs gleich wahrscheinlich, einschließli
   assert.equal(new Session().next(() => 1 - Number.EPSILON), 10);
 });
 
-test('Fehler setzen die Serie zurück und gewichten die gesuchte Zahl, nicht die angeklickte', () => {
+test('Fehler ziehen höchstens fünf Punkte ab und gewichten die gesuchte Zahl, nicht die angeklickte', () => {
   const session = new Session();
   session.next(() => 0); session.answer(1);
   session.next(() => 0); session.answer(1);
   session.next(() => .65); const expected = session.current;
   const result = session.answer(expected === 1 ? 2 : 1);
   assert.equal(result.correct, false);
-  assert.equal(result.streak, 0);
+  assert.equal(result.score, 0);
   assert.equal(session.best, 2);
   assert.equal(session.attempts, 3);
   assert.equal(session.correct, 2);
@@ -76,20 +76,48 @@ test('richtig beantwortete Übungszahlen werden allmählich wieder normal gewich
   assert.equal(session.weights[0], 1);
 });
 
-test('erst 30 richtige Antworten hintereinander beenden das Spiel', () => {
+test('ein Fehler bei 15 Punkten führt zu 10 Punkten, anschließend reichen 20 weitere Treffer', () => {
   const session = new Session();
-  for (let index = 0; index < TARGET_STREAK - 1; index += 1) { session.next(() => .99); session.answer(10); }
-  assert.equal(session.finished, false);
-  session.next(() => .99); session.answer(1);
-  assert.equal(session.streak, 0);
-  for (let index = 0; index < TARGET_STREAK; index += 1) {
+  for (let index = 0; index < 15; index += 1) { session.next(() => .99); session.answer(10); }
+  assert.equal(session.score, 15);
+  session.next(() => .99);
+  const wrong = session.answer(1);
+  assert.equal(wrong.score, 10);
+  assert.equal(wrong.deducted, 5);
+  assert.equal(wrong.finished, false);
+  for (let index = 0; index < 20; index += 1) {
     const number = session.next(() => .99);
     const result = session.answer(number);
-    assert.equal(result.finished, index === TARGET_STREAK - 1);
+    assert.equal(result.finished, index === 19);
   }
-  assert.equal(session.finished, true);
+  assert.equal(session.score, TARGET_SCORE);
+  assert.equal(session.correct, 35);
+  assert.equal(session.attempts, 36);
   assert.throws(() => session.next(), /Runde/);
   assert.throws(() => session.answer(10), /Frage/);
+});
+
+test('der Punktestand fällt auch bei mehreren Fehlern nie unter null', () => {
+  const session = new Session();
+  for (let index = 0; index < 3; index += 1) { session.next(() => 0); session.answer(1); }
+  session.next(() => 0);
+  assert.equal(session.answer(2).deducted, 3);
+  assert.equal(session.score, 0);
+  session.next(() => 0);
+  assert.equal(session.answer(2).deducted, 0);
+  assert.equal(session.score, 0);
+});
+
+test('bei 29 Punkten zieht ein Fehler fünf ab und der Sieg folgt erst bei 30', () => {
+  const session = new Session();
+  for (let index = 0; index < 29; index += 1) { session.next(() => 0); session.answer(1); }
+  assert.equal(session.finished, false);
+  session.next(() => 0); session.answer(2);
+  assert.equal(session.score, 24);
+  for (let index = 0; index < 6; index += 1) {
+    session.next(() => 0);
+    assert.equal(session.answer(1).finished, index === 5);
+  }
 });
 
 test('Doppelklicks, unvollständige Runden und ungültige Antworten verändern den Spielstand nicht', () => {
@@ -101,14 +129,14 @@ test('Doppelklicks, unvollständige Runden und ungültige Antworten verändern d
   session.answer(1);
   assert.throws(() => session.answer(1), /Frage/);
   assert.equal(session.attempts, 1);
-  assert.equal(session.streak, 1);
+  assert.equal(session.score, 1);
 });
 
-test('eine neue Session startet ohne alte Fehler oder Serien', () => {
+test('eine neue Session startet ohne alte Fehler oder Punkte', () => {
   const first = new Session(); first.next(() => 0); first.answer(2);
   const second = new Session();
   assert.deepEqual(second.weights, Array(10).fill(1));
-  assert.equal(second.streak, 0);
+  assert.equal(second.score, 0);
   assert.equal(second.attempts, 0);
   assert.equal(second.current, null);
 });

@@ -1,5 +1,5 @@
 /* Increase VERSION whenever any shipped game file changes. */
-const VERSION = '1.0.3';
+const VERSION = '1.1.0';
 const CACHE_PREFIX = `blitzblickzahlen:${self.registration.scope}:`;
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
 const ASSETS = [
