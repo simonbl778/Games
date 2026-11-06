@@ -14,6 +14,12 @@ Die Schrift bleibt in der Website, im Offlinecache und im APK enthalten.
 Es werden keine Schriftdateien von Google oder anderen externen Diensten
 zur Laufzeit geladen. Kontextabhängige Alternativen, Ligaturen und Kerning
 müssen eingeschaltet bleiben, damit die Buchstaben sauber verbunden sind.
+Zusätzlich werden die Schulvarianten ausdrücklich eingeschaltet:
+`ss05` für geschwungene Anstriche, `ss07` für kleine Schleifen am `o` und
+`ss19` für Schreibschrift-Großbuchstaben. `ss20` bleibt ausgeschaltet,
+damit dekorative Großbuchstaben nicht die Schulformen ersetzen.
+Dadurch verwendet `omo` die passenden Anfangs- und Endformen `o.mlp.ini`
+und `o.mlp.fin`; `M`, `I` und `O` erhalten die eigentlichen Schreibschriftformen.
 Die Farbhilfe malt Schreibschrift auf einem durchgehenden Textlauf an;
 sie zerlegt die Schreibschrift nicht in getrennte Silben-Spans.
 
