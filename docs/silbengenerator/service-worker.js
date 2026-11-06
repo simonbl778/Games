@@ -1,10 +1,10 @@
 /* Increase VERSION whenever any shipped game file changes. */
-const VERSION = '1.1.1';
+const VERSION = '1.2.0';
 const CACHE_PREFIX = `silbengenerator:${self.registration.scope}:`;
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
 const ASSETS = [
   './', './index.html', './styles.css', './app.js', './config.js', './generator.js', './presentation.js', './typography.js',
-  './fonts/PlaywriteDELA.ttf', './fonts/OFL.txt',
+  './fonts/GruenewaldVA.ttf', './fonts/OFL.txt',
   './manifest.webmanifest', './icons/icon.svg', './icons/icon-192.png',
   './icons/icon-512.png', './icons/maskable-512.png'
 ];

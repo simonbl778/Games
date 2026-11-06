@@ -54,7 +54,7 @@ function fitChain() {
   const style = getComputedStyle(chainButton);
   const width = chainButton.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
   const height = chainButton.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
-  let size = Math.max(16, Math.min(240, height / readingHeightFactor(readingFont)));
+  let size = Math.max(16, Math.min(readingFont === 'cursive' ? 400 : 240, height / readingHeightFactor(readingFont)));
   chainText.style.fontSize = `${size}px`;
   const measured = chainText.getBoundingClientRect().width;
   if (measured > width) {

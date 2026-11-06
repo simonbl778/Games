@@ -34,7 +34,7 @@ test('fehlende Schreibschrift wird gemeldet statt unbemerkt durch Druckschrift e
   await assert.rejects(() => ensureReadingFont({ load: async () => { throw new Error('offline'); } }, 'cursive'));
 });
 
-test('die großen Ober- und Unterlängen der Schulschrift bekommen genug Platz', () => {
+test('Ober- und Unterlängen der VA-Schrift bekommen genug Platz', () => {
   assert.equal(readingHeightFactor('print'), 1.14);
-  assert.ok(readingHeightFactor('cursive') > 1.751);
+  assert.ok(readingHeightFactor('cursive') > 1.009);
 });
