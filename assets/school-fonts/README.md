@@ -13,6 +13,8 @@ Der Build übernimmt die Buchstabenkörper und erzeugt daraus die neuen,
 umbenannten Schriften **SilbenLA** und **SilbenVA**, mit OpenType-Anschlüssen
 und Anfangs-/Endformen für den Zeichenvorrat des Silbengenerators.
 Die Dateien der Originalschriften werden nicht überschrieben.
+Der Build erzeugt außerdem `school-outlines.js` aus denselben TTF-Konturen.
+Die Spielanzeige färbt damit ganze Buchstaben einschließlich Überhängen.
 
 Mit installiertem MetaPost inklusive `mfplain.mp` und den Python-Abhängigkeiten:
 

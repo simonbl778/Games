@@ -1,14 +1,40 @@
-const connectedColorChains = new WeakMap();
+import { layoutSchoolChain } from './school-script.js';
 
-/** Keep the exact text and case while optionally showing the actual syllable boundaries. */
-export function renderChain(element, chain, alternateColors = false, connected = false) {
-  connectedColorChains.delete(element);
-  element.classList.toggle('connected-syllable-colors', false);
-  element.style?.removeProperty('background-image');
-  element.classList.toggle('alternating-syllables', alternateColors && !connected);
-  if (!alternateColors || connected) {
+const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
+
+/** Keep the exact text, case, connected forms and ownership of every colored stroke. */
+export function renderChain(element, chain, alternateColors = false, readingFont = 'print') {
+  const handwriting = readingFont === 'la' || readingFont === 'va';
+  element.classList.toggle('school-script-run', handwriting);
+  element.classList.toggle('alternating-syllables', alternateColors && !handwriting);
+  if (handwriting) {
+    const run = layoutSchoolChain(chain, readingFont, alternateColors);
+    const document = element.ownerDocument;
+    const svg = document.createElementNS(SVG_NAMESPACE, 'svg');
+    svg.setAttribute('viewBox', `${run.left} ${-run.top} ${run.width} ${run.height}`);
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+    svg.style.width = `${run.width / run.unitsPerEm}em`;
+    svg.style.height = `${run.height / run.unitsPerEm}em`;
+    const title = document.createElementNS(SVG_NAMESPACE, 'title');
+    title.textContent = chain.text;
+    const group = document.createElementNS(SVG_NAMESPACE, 'g');
+    group.setAttribute('transform', 'scale(1 -1)');
+    for (const glyph of run.glyphs) {
+      const path = document.createElementNS(SVG_NAMESPACE, 'path');
+      path.setAttribute('d', glyph.path);
+      path.setAttribute('transform', `translate(${glyph.x} 0)`);
+      path.setAttribute('fill', glyph.color);
+      path.setAttribute('data-character', glyph.character);
+      path.setAttribute('data-syllable', String(glyph.syllable));
+      group.append(path);
+    }
+    svg.append(title, group);
+    element.replaceChildren(svg);
+    return;
+  }
+  if (!alternateColors) {
     element.textContent = chain.text;
-    if (alternateColors && connected) connectedColorChains.set(element, chain);
     return;
   }
   let offset = 0;
@@ -20,35 +46,4 @@ export function renderChain(element, chain, alternateColors = false, connected =
     return span;
   });
   element.replaceChildren(...parts);
-}
-
-/** Paint continuous handwriting without splitting its shaping run into spans. */
-export function refreshSyllableColors(element) {
-  const chain = connectedColorChains.get(element);
-  const node = element.firstChild;
-  const document = element.ownerDocument;
-  if (!chain || !node || typeof document.createRange !== 'function') return;
-  const bounds = element.getBoundingClientRect();
-  if (bounds.width <= 0) return;
-  const range = document.createRange();
-  const stops = [];
-  let offset = 0;
-  let boundary = 0;
-  try {
-    range.setStart(node, 0);
-    chain.syllables.forEach((syllable, index) => {
-      offset += syllable.length;
-      range.setEnd(node, offset);
-      const end = Math.max(boundary, Math.min(bounds.width, range.getBoundingClientRect().right - bounds.left));
-      const color = index % 2 ? 'var(--syllable-alt)' : 'var(--ink)';
-      stops.push(color + ' ' + boundary + 'px', color + ' ' + end + 'px');
-      boundary = end;
-    });
-    const last = (chain.syllables.length - 1) % 2 ? 'var(--syllable-alt)' : 'var(--ink)';
-    stops.push(last + ' 100%');
-    element.style.backgroundImage = 'linear-gradient(to right, ' + stops.join(', ') + ')';
-    element.classList.toggle('connected-syllable-colors', true);
-  } finally {
-    range.detach?.();
-  }
 }
