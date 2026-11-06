@@ -24,9 +24,19 @@ Die unveränderten Zeichenprogramme sind im Repository unter
 Arbeitsblatt-PDFs extrahiert und keine dekorativen Ersatzformen verwendet.
 
 Für die App wurden daraus neue, umbenannte OpenType-Schriften erzeugt.
-Kontextabhängige Anfangs-, Verbindungs- und Endformen erhalten einen
-zusammenhängenden Textlauf. Die Anschlüsse werden innerhalb der Schrift
-gebildet, ohne zusätzliche Zeichen, Leerzeichen oder Silbenspans einzufügen.
+Kontextabhängige Anfangs-, Verbindungs- und Endformen halten die Kette verbunden.
+Die Anschlusskurven folgen den Tangenten der benachbarten Striche. Das innere
+LA-`m` übernimmt den Aufstrich des vorherigen Buchstabens an seinem ersten Bogen;
+der separate Anfangshaken entfällt dort. So entsteht kein waagerechter Absatz.
+
+Die Spielanzeige verwendet exakt diese kontextabhängigen Schriftkonturen als
+SVG-Pfade, jeweils mit einer eigenen Farbe für den vollständigen Buchstaben.
+Auch ein schräger Überhang behält die Farbe seiner tatsächlichen Silbe.
+Es gibt keine senkrechten Farbverlaufsgrenzen, Buchstaben-Clippingmasken oder
+getrennt geformten Silbentexte. Ein-/Ausschalten der Farbhilfe verändert keine
+Form, Position oder Verbindung. Der zugängliche Text und die Ansage des
+Antipp-Buttons bleiben die ursprüngliche Silbenkette.
+
 **Auf Nutzerwunsch sind auch die Anfangsgroßbuchstaben verbunden.** Bei VA
 werden dafür ausgehende Anschlüsse an `I` und `O` ergänzt, die im Grundmodell
 üblicherweise abgesetzt bleiben. Ihre Buchstabenkörper werden nicht verändert.
@@ -43,10 +53,11 @@ werden dafür ausgehende Anschlüsse an `I` und `O` ergänzt, die im Grundmodell
   und die Python-Abhängigkeiten aus `assets/school-fonts/requirements.txt`.
 - Schriftprüfung: `python3 scripts/check-school-fonts.py`.
 
-Die Prüfung formt alle verfügbaren Silbenketten bis Länge fünf. Zusätzlich
+Die Prüfung vergleicht die Glyphenauswahl und Abstände aller verfügbaren
+Silbenketten bis Länge fünf mit HarfBuzz und die SVG-Konturen mit der TTF-Datei. Zusätzlich
 prüft sie gerasterte Zwei- und Dreibuchstabenketten in zwei Größen: ein
 verbundener Buchstabenkörper und getrennte Punkte für jedes kleine `i`.
-Vergleichsproben decken insbesondere `Momi`, `Imo`, `Omi`, `Umo`, `imu` und `omo` ab.
+Vergleichsproben decken insbesondere `mimu`, `Momi`, `Imo`, `Omi`, `Umo`, `imu` und `omo` ab.
 
 Beide Schriften, die Lizenz und die Spieldateien werden lokal in Website,
 Offlinecache und APK mitgeliefert. Zur Laufzeit erfolgt kein externer Fontabruf.

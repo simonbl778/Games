@@ -3,13 +3,13 @@
 Für das zweite Spiel: [Blitzblickzahlen als APK oder ZIP](../android/blitzblickzahlen/README.md).
 
 **Direkter Download über die Spielseite:**
-[APK herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.3.0.apk) ·
-[ZIP zum Weitergeben](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/Silbengenerator-Android-1.3.0.zip).
+[APK herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.3.1.apk) ·
+[ZIP zum Weitergeben](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/Silbengenerator-Android-1.3.1.zip).
 Die gleichen Dateien liegen wie bei Blitzblickzahlen unter `docs/downloads/` und werden mit den Spielseiten veröffentlicht. Zum Spielen nach der Installation ist keine Anmeldung nötig.
 
-[**Installationsdatei herunterladen**](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.3.0.apk)
+[**Installationsdatei herunterladen**](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.3.1.apk)
 
-**Alternative bei Downloadproblemen:** [ZIP-Datei mit APK und Anleitung herunterladen](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/docs/downloads/Silbengenerator-Android-1.3.0.zip).
+**Alternative bei Downloadproblemen:** [ZIP-Datei mit APK und Anleitung herunterladen](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/docs/downloads/Silbengenerator-Android-1.3.1.zip).
 Die ZIP-Datei auf dem Handy entpacken und dann die enthaltene APK öffnen.
 Falls ein Download im eingebauten Chat-Browser nicht startet, den Link über
 **Im Browser öffnen** in Chrome öffnen und dort herunterladen.
@@ -45,7 +45,7 @@ erscheinen dezent rot, die übrigen dunkelgrün. Sie lässt sich vor dem Start a
 
 ## Aktualisieren
 
-**Version 1.3.0 lässt sich direkt über 1.1.x und 1.2.0 installieren.** Der Signierschlüssel ist unverändert. Neu sind die getrennte Wahl zwischen Druckschrift, LA und VA, verbundene Anfangsgroßbuchstaben sowie die anfangs eingeschaltete Rot-Grün-Farbhilfe. Quellen, Schriftmodelle und Lizenz stehen in [der Schriftdokumentation](../docs/silbengenerator/fonts/README.md).
+**Version 1.3.1 lässt sich direkt über 1.1.x, 1.2.x und 1.3.0 installieren.** Der Signierschlüssel ist unverändert. Korrigiert sind die Schreibschrift-Anschlüsse und die vollständige Zuordnung der Farben: Schräge Buchstaben und Überhänge werden nicht mehr an senkrechten Silbengrenzen umgefärbt. Quellen, Schriftmodelle und Lizenz stehen in [der Schriftdokumentation](../docs/silbengenerator/fonts/README.md).
 
 Die Ausgabe 1.1.0 ist neu signiert. Der frühere lokale Schlüssel wurde beim
 Neustart der Arbeitsumgebung nicht übernommen. Beim Wechsel von 1.0.x ist

@@ -1,6 +1,6 @@
 import { DEFAULT_MAX_SYLLABLES, SYLLABLES } from './config.js';
 import { generateChain, getMinSyllables, validateMaxSyllables } from './generator.js';
-import { renderChain, refreshSyllableColors } from './presentation.js';
+import { renderChain } from './presentation.js';
 import { normalizeReadingFont, readingHeightFactor, ensureReadingFont } from './typography.js';
 
 const $ = (id) => document.getElementById(id);
@@ -65,7 +65,6 @@ function fitChain() {
     size *= width / measured;
     chainText.style.fontSize = `${Math.floor(size)}px`;
   }
-  refreshSyllableColors(chainText);
 }
 
 function scheduleFit() {
@@ -76,7 +75,7 @@ function scheduleFit() {
 function showNextChain() {
   const chain = generateChain(maximum, { previousText });
   previousText = chain.text;
-  renderChain(chainText, chain, colorOption.checked, readingFont !== 'print');
+  renderChain(chainText, chain, colorOption.checked, readingFont);
   chainButton.setAttribute('aria-label', `${chain.text}. Antippen für die nächste Silbenkette.`);
   fitChain();
 }
