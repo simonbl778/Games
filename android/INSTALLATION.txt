@@ -1,0 +1,17 @@
+Silbengenerator - Druckschrift und Schreibschrift
+
+1. ZIP-Datei auf das Android-Handy herunterladen und entpacken.
+2. Falls eine fruehere Silbengenerator-APK installiert ist: diese einmal deinstallieren.
+   Die letzte Silben-Auswahl geht dabei verloren; es gibt keine gespeicherten Lernstaende.
+3. silbengenerator-1.1.0.apk oeffnen und installieren.
+4. Falls Android fragt: der verwendeten App die Installation aus dieser Quelle erlauben.
+5. Auf der Startseite Druckschrift oder Schreibschrift waehlen und Lesen starten.
+
+Die Schreibschrift ist eine echte verbundene Lateinische Ausgangsschrift.
+Die Farbhilfe ist optional; standardmaessig bleibt alles gleichfarbig.
+Alle Spieldateien und die Schrift sind enthalten. Kein Internet und kein ChatGPT-Konto zum Spielen noetig.
+Android 8 oder neuer mit aktuellem Android System WebView erforderlich.
+
+Diese Ausgabe hat einen neuen Signierschluessel, weil der fruehere private Schluessel
+in der neu gestarteten Build-Umgebung nicht mehr vorhanden war. Deshalb ist beim
+Wechsel von der alten APK eine einmalige Neuinstallation erforderlich.

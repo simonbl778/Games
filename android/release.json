@@ -1,0 +1,28 @@
+{
+  "versionName": "1.1.0",
+  "versionCode": 10100,
+  "apk": "docs/downloads/silbengenerator-1.1.0.apk",
+  "zip": "docs/downloads/Silbengenerator-Android-1.1.0.zip",
+  "sha256": "36c6fe377b9b1587fa144601fe3af88d809c7d23d41ef63d29f9045c758fa288",
+  "certificateSha256": "5bbf9cbed816b44d3a5cfe3a7ccaf74651060647352f0fd9ad885d81acc4cfcd",
+  "newSigningIdentity": true,
+  "requiresReinstallFrom": "1.0.x",
+  "bundledGameFiles": {
+    "app.js": "13716f83094d836db6c84b40123215b184f09503527619bb0dae6894de24bcf4",
+    "config.js": "017cd8987f38a79406d6cc339ea3f3dc8b48ac9e0ef2d3d704568ad1a7e2dd87",
+    "fonts/OFL.txt": "0370f5946020846b0ca65e44950d11411ea3bd3c4c0d755916470f9f96cd8cb8",
+    "fonts/PlaywriteDELA.ttf": "c45f43a5f51f385bf0a32e27a4b8e0397757893e5d41121ce962a70e6bd1b691",
+    "fonts/README.md": "1b445e0b4704fb4bde9c5339eb1d5d1016167e15906cc30c59dcbe0ba0b2ba87",
+    "generator.js": "9215dcc9e5266113274b5ddcc71579de5bc71f16b722ac71491c9efdb93b23d2",
+    "icons/icon-192.png": "c19dded199f0e67bcf47a0598c2a3a51b4ac9bbee82e0c626bf6b50aca9460eb",
+    "icons/icon-512.png": "77d3b5189dc10f438f16946ce71a2c84f917b823ef880604f11bda8d69989ef7",
+    "icons/icon.svg": "a71f3418a67623f398a7dde29560a6ba169d9c4617ee052719928459fa98ca59",
+    "icons/maskable-512.png": "db3459ff7c92dec695ca5d7a5b1a680d01644f9892ffae8fa10df323a0a71087",
+    "index.html": "53ac01eb4a5ba27d05284d7d5a7c8fd7d176bfd080f2f70066bbcdbdf2bde8a6",
+    "manifest.webmanifest": "db60908b2cb33edea58222172ba12dcd478ac35b3dc42048937f821fdd7d750d",
+    "presentation.js": "1d310ef083ad8c818946acecbae453449525856931b7204b3ff3ce5d9ad3593f",
+    "service-worker.js": "af6622c97ea0a56b498b403f0d1262e2ea0c19ff7a2ad5f676b9c730d2060f68",
+    "styles.css": "6e31b46b5d0424b66bd594e23f6ac3cc636082c43e6ca48a5695ef8301d53932",
+    "typography.js": "6516c90827fca8ddacc3b32d27d1fd307b5967b0bf6185fb89e2963bbe321ad9"
+  }
+}
