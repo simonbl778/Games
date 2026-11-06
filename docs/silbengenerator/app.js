@@ -1,6 +1,7 @@
 import { DEFAULT_MAX_SYLLABLES, SYLLABLES } from './config.js';
 import { generateChain, getMinSyllables, validateMaxSyllables } from './generator.js';
-import { renderChain } from './presentation.js';
+import { renderChain, refreshSyllableColors } from './presentation.js';
+import { normalizeReadingFont, readingHeightFactor, ensureReadingFont } from './typography.js';
 
 const $ = (id) => document.getElementById(id);
 const setup = $('setup-screen');
@@ -10,6 +11,8 @@ const chainButton = $('chain-button');
 const chainText = $('chain-text');
 const colorOption = $('alternate-colors');
 let maximum = DEFAULT_MAX_SYLLABLES;
+let readingFont = 'print';
+let starting = false;
 let previousText = '';
 let deferredInstall = null;
 let waitingWorker = null;
@@ -30,26 +33,35 @@ const initialChoice = form.querySelector(`input[value="${maximum}"]`);
 if (initialChoice) initialChoice.checked = true;
 
 function updateSelection() {
-  maximum = validateMaxSyllables(Number(new FormData(form).get('max-syllables')));
+  const values = new FormData(form);
+  maximum = validateMaxSyllables(Number(values.get('max-syllables')));
+  readingFont = normalizeReadingFont(values.get('reading-font'));
+  document.body.classList.toggle('cursive-reading', readingFont === 'cursive');
+  $('font-error').hidden = true;
   $('selection-summary').textContent = maximum === 1
     ? 'Immer eine Silbe pro Kette'
     : `Zufällig ${getMinSyllables(maximum)} bis ${maximum} Silben pro Kette`;
 }
 updateSelection();
-form.addEventListener('change', updateSelection);
+form.addEventListener('change', () => {
+  updateSelection();
+  // Warm the local font while the parent is choosing; report failures on Start.
+  void ensureReadingFont(document.fonts, readingFont).then(scheduleFit).catch(() => {});
+});
 
 function fitChain() {
   if (game.hidden || !chainText.textContent) return;
   const style = getComputedStyle(chainButton);
   const width = chainButton.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
   const height = chainButton.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
-  let size = Math.max(16, Math.min(240, height / 1.14));
+  let size = Math.max(16, Math.min(240, height / readingHeightFactor(readingFont)));
   chainText.style.fontSize = `${size}px`;
   const measured = chainText.getBoundingClientRect().width;
   if (measured > width) {
     size *= width / measured;
     chainText.style.fontSize = `${Math.floor(size)}px`;
   }
+  refreshSyllableColors(chainText);
 }
 
 function scheduleFit() {
@@ -60,7 +72,7 @@ function scheduleFit() {
 function showNextChain() {
   const chain = generateChain(maximum, { previousText });
   previousText = chain.text;
-  renderChain(chainText, chain, colorOption.checked);
+  renderChain(chainText, chain, colorOption.checked, readingFont === 'cursive');
   chainButton.setAttribute('aria-label', `${chain.text}. Antippen für die nächste Silbenkette.`);
   fitChain();
 }
@@ -78,9 +90,28 @@ async function enterLandscape() {
   scheduleFit();
 }
 
-form.addEventListener('submit', (event) => {
+form.addEventListener('submit', async (event) => {
   event.preventDefault();
+  if (starting) return;
   updateSelection();
+  starting = true;
+  const inputs = [...form.querySelectorAll('input')];
+  inputs.forEach((input) => { input.disabled = true; });
+  $('start-button').disabled = true;
+  $('start-button').setAttribute('aria-busy', 'true');
+  // Preserve the browser's direct user gesture before awaiting the local font.
+  void enterLandscape();
+  try {
+    await ensureReadingFont(document.fonts, readingFont);
+  } catch {
+    $('font-error').hidden = false;
+    return;
+  } finally {
+    starting = false;
+    inputs.forEach((input) => { input.disabled = false; });
+    $('start-button').disabled = false;
+    $('start-button').removeAttribute('aria-busy');
+  }
   try { localStorage.setItem('silbengenerator.maximum', String(maximum)); } catch { /* Optional. */ }
   setup.hidden = true;
   game.hidden = false;
@@ -91,7 +122,6 @@ form.addEventListener('submit', (event) => {
   document.body.classList.add('game-mode');
   showNextChain();
   chainButton.focus({ preventScroll: true });
-  void enterLandscape();
 });
 
 chainButton.addEventListener('click', showNextChain);
@@ -117,6 +147,7 @@ document.addEventListener('fullscreenchange', () => {
 });
 window.addEventListener('resize', scheduleFit);
 window.visualViewport?.addEventListener('resize', scheduleFit);
+document.fonts?.addEventListener?.('loadingdone', scheduleFit);
 if ('ResizeObserver' in window) new ResizeObserver(scheduleFit).observe(chainButton);
 
 const standalone = () => matchMedia('(display-mode: standalone)').matches || matchMedia('(display-mode: fullscreen)').matches || navigator.standalone === true;

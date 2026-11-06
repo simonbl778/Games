@@ -12,6 +12,7 @@
     <link rel="manifest" href="./manifest.webmanifest">
     <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="./icons/icon-192.png">
+    <link rel="preload" href="./fonts/PlaywriteDELA.ttf" as="font" type="font/ttf" crossorigin>
     <link rel="stylesheet" href="./styles.css">
     <script type="module" src="./app.js"></script>
     <title>Silbengenerator</title>
@@ -54,6 +55,20 @@
               </div>
               <p class="selection-summary" id="selection-summary">Zufällig 2 bis 3 Silben pro Kette</p>
             </fieldset>
+            <fieldset class="font-choice">
+              <legend>Schrift zum Lesen</legend>
+              <div class="font-options">
+                <label class="font-option">
+                  <input type="radio" name="reading-font" value="print" checked>
+                  <span class="font-face"><span class="font-sample" aria-hidden="true">Mo</span><span>Druckschrift</span></span>
+                </label>
+                <label class="font-option">
+                  <input type="radio" name="reading-font" value="cursive">
+                  <span class="font-face"><span class="font-sample cursive-sample" aria-hidden="true">Mo</span><span>Schreibschrift</span></span>
+                </label>
+              </div>
+            </fieldset>
+            <p id="font-error" class="font-error" role="alert" hidden>Die Schreibschrift konnte nicht geladen werden. Bitte erneut versuchen oder Druckschrift wählen.</p>
             <label class="color-option">
               <input id="alternate-colors" name="alternate-colors" type="checkbox">
               <span><span class="color-option-title">Silben dezent einfärben</span><span class="color-option-detail">Dunkles und sanftes Grün im Wechsel</span></span>

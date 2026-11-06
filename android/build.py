@@ -87,6 +87,8 @@ def main() -> None:
     key = signing / "silbengenerator-release.jks"
     if secret_file.exists() != key.exists():
         raise ValueError("Signing key or password missing: restore both from the private backup.")
+    if not key.exists() and (ANDROID / "release.json").exists():
+        raise ValueError("This app already has a signing identity. Restore its private signing backup before building an update.")
     if secret_file.exists():
         secret = json.loads(secret_file.read_text())
     else:

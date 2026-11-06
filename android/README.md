@@ -51,6 +51,17 @@ die Versionsnummer des gemeinsamen Games-Repositories ist davon unabhängig.
 Änderungen an der Web-Version erfordern zusätzlich deren
 übliche Service-Worker-Versionsänderung.
 
+Version 1.1.0 wurde neu signiert, weil der frühere lokale Signierschlüssel nach
+dem Neustart der Build-Umgebung nicht mehr verfügbar war. Bestehende APKs aus
+der Reihe 1.0.x müssen vor dieser Installation einmal entfernt werden.
+Das neue private Schlüsselbackup ist separat privat gesichert; öffentliche
+Prüfsummen, Paketversion und Zertifikatsabdruck stehen in `release.json`.
+Keine privaten Schlüssel oder Passwörter ins öffentliche Repository übernehmen.
+Das Backup heißt **Silbengenerator-privates-Schluesselbackup-1.1.0.zip** und
+liegt privat im Google Drive des Eigentümers. Bei einer neu angelegten
+Build-Umgebung zuerst dieses Backup wiederherstellen. Das Build-Skript
+erzeugt bei vorhandener Release-Datei keinen neuen Ersatzschlüssel.
+
 Zum Wiederherstellen die zwei Dateien aus dem privaten Backup in den Ordner
 `android/signing/` entpacken. Ohne diesen Schlüssel können bestehende
 Installationen nicht mit einer neuen APK derselben App aktualisiert werden.
