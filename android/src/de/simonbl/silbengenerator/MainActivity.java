@@ -111,7 +111,7 @@ public final class MainActivity extends Activity {
             Map<String, String> headers = new HashMap<>();
             headers.put("Cache-Control", "no-store");
             headers.put("X-Content-Type-Options", "nosniff");
-            String encoding = mime.startsWith("image/") && !mime.endsWith("svg+xml") ? null : "UTF-8";
+            String encoding = mime.startsWith("font/") || (mime.startsWith("image/") && !mime.endsWith("svg+xml")) ? null : "UTF-8";
             return new WebResourceResponse(mime, encoding, 200, "OK", headers, stream);
         } catch (IOException missing) {
             return errorResponse(404, "Not Found");
@@ -129,6 +129,7 @@ public final class MainActivity extends Activity {
         if (path.endsWith(".css")) return "text/css";
         if (path.endsWith(".svg")) return "image/svg+xml";
         if (path.endsWith(".png")) return "image/png";
+        if (path.endsWith(".ttf")) return "font/ttf";
         if (path.endsWith(".webmanifest")) return "application/manifest+json";
         return "application/octet-stream";
     }

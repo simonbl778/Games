@@ -24,6 +24,8 @@ Eine große Silbenkette lesen, antippen und weiterlesen.
 [GitHub-Download](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.0.2.apk).
 Diese Datei lässt sich auch auf OneDrive ablegen und per Link weitergeben.
 Die App funktioniert ab Android 8 und von Anfang an vollständig offline.
+
+Die verlinkten APK-Dateien sind noch die veröffentlichte Version 1.0.2. Die neue Schriftwahl gehört zum Quellcode-Stand 1.1.0 und benötigt eine neu gebaute und veröffentlichte APK.
 [Installation und Weitergabe](downloads/README.md) · [Android-Quellcode und Build](android/README.md)
 
 **Silbengenerator öffnen:** https://silbengenerator-simonbl778.groovychair.chatgpt.site
@@ -55,6 +57,7 @@ Die Browseransicht in einer anderen App kann Installieren, Vollbild oder Drehen 
 - Die gewählte Zahl ist eine **Höchstzahl**, keine feste Kettenlänge. Bei `1` erscheint immer eine Silbe, bei `2` zufällig eine oder zwei. Bei `3` entstehen Ketten aus zwei oder drei, bei `4` aus drei oder vier und bei `5` aus vier oder fünf Bausteinen.
 - Jeder einzelne Vokal zählt als eine Silbe. `iou` besteht damit aus drei Bausteinen.
 - Jeder Baustein kann innerhalb derselben Kette mehrfach vorkommen.
+- Vor dem Start lässt sich **Druckschrift** oder **Schreibschrift** wählen. Druckschrift ist vorausgewählt. Die echte verbundene Schreibschrift verwendet **Playwrite DE LA (Lateinische Ausgangsschrift)** und ist lokal für den Offlinebetrieb eingebunden. Die optionale Farbhilfe bleibt auch bei verbundenen Buchstaben nutzbar.
 - Gleiche Vokale direkt an einer Silbengrenze, etwa `oo`, `ii`, `uu`, `Moo` oder `Muu`, erscheinen nur als sehr seltene Ausnahme. 99 von 100 vorgeschlagenen gleichen Vokalgrenzen werden durch einen passenden anderen Baustein ersetzt.
 - **Silben dezent einfärben** lässt sich vor dem Start einschalten. Die tatsächlichen Silben wechseln dann ohne zusätzliche Abstände zwischen dunklem und sanftem Grün. Standardmäßig und nach erneutem Öffnen ist die Farbhilfe ausgeschaltet; innerhalb einer Partie bleibt die Auswahl beim Ändern der Einstellungen erhalten.
 - Nur der **erste Buchstabe der gesamten Kette** wird zufällig groß- oder kleingeschrieben. Alle weiteren Buchstaben bleiben klein: zum Beispiel `Momiu` oder `momiu`, aber nicht `MoMiU`.
@@ -135,6 +138,8 @@ Die auswählbare Höchstzahl bleibt 1–5. `DEFAULT_MAX_SYLLABLES` in derselben 
 | `docs/silbengenerator/app.js` | Bedienung, Größenanpassung, Querformat und Installation |
 | `docs/silbengenerator/config.js` | Verfügbare Bausteine und Standardauswahl |
 | `docs/silbengenerator/generator.js` | Zufällige Ketten und Groß-/Kleinschreibung |
+| `docs/silbengenerator/typography.js` | Schriftwahl und sicheres Laden der eingebetteten Schulschrift |
+| `docs/silbengenerator/fonts/` | Lokale Schulschreibschrift und vollständige Schriftlizenz |
 | `docs/silbengenerator/manifest.webmanifest` | Android-Installation, Symbol und Ausrichtung |
 | `docs/silbengenerator/service-worker.js` | Offlinebetrieb und Aktualisierung |
 | `tests/generator.test.mjs` | Zehn Tests der Spielregeln |
@@ -173,4 +178,4 @@ npm run check
 - [GitHub: Eine Pages-Website erstellen](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
 - [MDN: Grenzen der Orientierungssperre](https://developer.mozilla.org/en-US/docs/Web/API/ScreenOrientation/lock)
 
-Games 1.1.0 · Silbengenerator 1.0.2 · Blitzblickzahlen 1.1.0 · 29. Oktober 2026
+Games 1.1.0 · Silbengenerator 1.1.0 · Blitzblickzahlen 1.1.0 · 6. November 2026
