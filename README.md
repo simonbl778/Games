@@ -6,10 +6,10 @@ Der Code wird in diesem Repository gepflegt.
 
 | Spiel | Übung | Ausrichtung | Spieladresse über ChatGPT Sites |
 | --- | --- | --- | --- |
-| **Silbengenerator** | Silbenketten lesen | Querformat | https://silbengenerator-simonbl778.groovychair.chatgpt.site |
-| **Blitzblickzahlen** | Mengen von 1–10 auf einen Blick erkennen | Hochformat | https://blitzblickzahlen-simonbl778.groovychair.chatgpt.site/blitzblickzahlen/ |
+| **Silbengenerator** | Silbenketten lesen | Querformat | https://silbengenerator-simonbl778.simon-bl778.chatgpt.site |
+| **Blitzblickzahlen** | Mengen von 1–10 auf einen Blick erkennen | Hochformat | https://blitzblickzahlen-simonbl778.simon-bl778.chatgpt.site/blitzblickzahlen/ |
 
-Die gemeinsame Startseite unter https://blitzblickzahlen-simonbl778.groovychair.chatgpt.site/ bietet die Auswahl beider Spiele. Der Zugriff erfolgt wie beim bisherigen Silbengenerator über das eigene ChatGPT-Konto. Für diese Spieladressen muss GitHub Pages nicht aktiviert werden.
+Die gemeinsame Startseite unter https://blitzblickzahlen-simonbl778.simon-bl778.chatgpt.site/ bietet die Auswahl beider Spiele. Der Zugriff erfolgt wie beim bisherigen Silbengenerator über das eigene ChatGPT-Konto. Für diese Spieladressen muss GitHub Pages nicht aktiviert werden.
 
 ## Silbengenerator
 
@@ -20,7 +20,7 @@ Eine große Silbenkette lesen, antippen und weiterlesen.
 ## Spielen
 
 **Eigenständige Silbengenerator-App ohne ChatGPT-Anmeldung:**
-[APK direkt über die Spielseite herunterladen](https://silbengenerator-simonbl778.groovychair.chatgpt.site/downloads/silbengenerator-1.1.0.apk) ·
+[APK direkt über die Spielseite herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.1.0.apk) ·
 [GitHub-Download](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.1.0.apk).
 Diese Datei lässt sich auch auf OneDrive ablegen und per Link weitergeben.
 Die App funktioniert ab Android 8 und von Anfang an vollständig offline.
@@ -28,9 +28,9 @@ Die App funktioniert ab Android 8 und von Anfang an vollständig offline.
 Beim Wechsel von einer alten Silbengenerator-APK (1.0.x) muss die alte App einmal deinstalliert werden: Version 1.1.0 hat einen neuen Signierschlüssel, weil der frühere private Schlüssel nach dem Neustart der Build-Umgebung nicht mehr vorlag. Dabei geht nur die letzte Silben-Auswahl verloren; es gibt keine gespeicherten Lernstände. Den neuen privaten Schlüssel für künftige Updates getrennt vom öffentlichen Repository aufbewahren.
 [Installation und Weitergabe](downloads/README.md) · [Android-Quellcode und Build](android/README.md)
 
-**Silbengenerator öffnen:** https://silbengenerator-simonbl778.groovychair.chatgpt.site
+**Silbengenerator öffnen:** https://silbengenerator-simonbl778.simon-bl778.chatgpt.site
 
-**Blitzblickzahlen öffnen:** https://blitzblickzahlen-simonbl778.groovychair.chatgpt.site/blitzblickzahlen/
+**Blitzblickzahlen öffnen:** https://blitzblickzahlen-simonbl778.simon-bl778.chatgpt.site/blitzblickzahlen/
 
 Beide Spiele bieten auf ihrer Auswahlseite **Aufs Handy** zum Installieren. Nach dem vollständigen Laden zeigt **Offline bereit** an, dass das jeweilige Spiel ohne Internet genutzt werden kann. GitHub Pages bleibt eine optionale weitere Bereitstellung.
 
