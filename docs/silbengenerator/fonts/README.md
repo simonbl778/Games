@@ -1,28 +1,39 @@
-# Schulschreibschrift
+# Vereinfachte Ausgangsschrift (VA)
 
-Die lokal eingebundene Schrift **Playwrite DE LA** bildet die deutsche
-**Lateinische Ausgangsschrift** mit verbundenen Buchstaben ab.
-Sie stammt von TypeTogether, Veronika Burian und José Scaglione.
+Die App verwendet die **unveränderte Gruenewald VA**, Version 0.007,
+von Peter Wiegel nach dem Schriftentwurf von Dr. Heinrich Grünewald.
+Die Datei `Gruenewald VA normal.ttf` heißt hier nur `GruenewaldVA.ttf`.
+Es werden keine Buchstaben nachgezeichnet oder Zierschrift-Alternativen aktiviert.
 
-- Offizielle Quelle: https://github.com/google/fonts/tree/main/ofl/playwritedela
-- Upstream: https://github.com/TypeTogether/Playwrite
-- Unveränderte variable TTF-Datei, Gewichte 100–400; lokal nur umbenannt.
-- Lizenz: SIL Open Font License 1.1; vollständiger Text in OFL.txt.
-- Quell-Blob: 50d6842e19a59ad446d6b5e6838c78bb89064310.
+- Original: https://www.peter-wiegel.de/Gruenewald.html
+- Download: https://www.peter-wiegel.de/Fonts/GruenewaldTT.zip
+- SHA-256 der eingebundenen TTF: `58a1fe9c78829bee9580a9fd15aa58ea79047d9408b68d415c0d82a5b5847967`
+- Lizenz: SIL Open Font License 1.1, mit originalem Copyright in `OFL.txt`.
 
-Die Schrift bleibt in der Website, im Offlinecache und im APK enthalten.
-Es werden keine Schriftdateien von Google oder anderen externen Diensten
-zur Laufzeit geladen. Kontextabhängige Alternativen, Ligaturen und Kerning
-müssen eingeschaltet bleiben, damit die Buchstaben sauber verbunden sind.
-Zusätzlich werden die Schulvarianten ausdrücklich eingeschaltet:
-`ss05` für geschwungene Anstriche, `ss07` für kleine Schleifen am `o` und
-`ss19` für Schreibschrift-Großbuchstaben. `ss20` bleibt ausgeschaltet,
-damit dekorative Großbuchstaben nicht die Schulformen ersetzen.
-Dadurch verwendet `omo` die passenden Anfangs- und Endformen `o.mlp.ini`
-und `o.mlp.fin`; `M`, `I` und `O` erhalten die eigentlichen Schreibschriftformen.
-Die Farbhilfe malt Schreibschrift auf einem durchgehenden Textlauf an;
-sie zerlegt die Schreibschrift nicht in getrennte Silben-Spans.
+## Vergleichsvorlagen
 
-Diese Auswahl ist die Lateinische Ausgangsschrift. Schulen können stattdessen
-andere Modelle wie die Vereinfachte Ausgangsschrift oder Schulausgangsschrift
-verwenden.
+[Materialguru](https://www.materialguru.de/deutsch/schreibschrift/) benennt
+seine Vorlagen ausdrücklich als Vereinfachte Ausgangsschrift. Insbesondere
+die [O-Vorlage](https://www.materialguru.de/wp-content/uploads/pdf/deutsch/buchstaben/buchstabe-o/arbeitsblatt-schreibschrift-buchstabe-o-03.pdf)
+zeigt den offenen Ausstrich oben rechts am kleinen `o`, keine geschlossene
+Zierschleife. Verglichen wurden `o`, `omo`, `mo`, `om` sowie `M`, `I`, `O` und `U`
+mit den Buchstabenvorlagen. Die Materialien dienen nur zum visuellen Vergleich;
+Schriftdateien aus den PDFs werden nicht übernommen.
+
+Die offizielle [Elterninfo zum Schulanfang 2025 des Kultusministeriums Baden-Württemberg](https://km.baden-wuerttemberg.de/fileadmin/redaktion/m-km/intern/PDF/Publikationen/Grundschule/Elterninfo_2025_bf_web.pdf)
+zeigt auf den gedruckten Seiten 16–17 die Schriftmodelle. Schulen wählen dort
+zwischen Vereinfachter Ausgangsschrift, Lateinischer Ausgangsschrift und
+Grundschrift. Die VA entspricht damit einem in Baden-Württemberg vorgesehenen
+Modell; eine Zulassung dieser konkreten digitalen Schriftdatei wird nicht behauptet.
+
+## Darstellung und Offlinebetrieb
+
+Kerning und ein durchgehender Textlauf erhalten die Verbindungen. Die optionale
+Farbhilfe färbt diesen Textlauf, ohne ihn an Silbengrenzen in einzelne Elemente
+zu zerlegen. Die verwendeten Buchstaben `M`, `I`, `O`, `U`, `m`, `i`, `o`, `u`
+benötigen keine der in der Originaldokumentation beschriebenen Sonderersetzungen
+für `s` und `ß`.
+
+Die vollständige Schrift und ihre Lizenz liegen lokal, im Offlinecache und in
+der APK. Zur Laufzeit werden keine externen Schriftdateien geladen. Die frühere
+LA-Schrift und ihre Schleifen- und Großbuchstaben-Overrides sind entfernt.

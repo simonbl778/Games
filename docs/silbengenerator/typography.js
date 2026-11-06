@@ -5,8 +5,8 @@ export function normalizeReadingFont(value) {
 }
 
 export function readingHeightFactor(value) {
-  // The bundled school script has ascenders/descenders spanning 1.751 em.
-  return normalizeReadingFont(value) === 'cursive' ? 1.9 : 1.14;
+  // The bundled VA font spans 0.991 em plus 0.018 em line gap.
+  return normalizeReadingFont(value) === 'cursive' ? 1.12 : 1.14;
 }
 
 export async function ensureReadingFont(fonts, value) {

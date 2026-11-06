@@ -1,14 +1,15 @@
-Silbengenerator - Schreibschrift-Optimierung 1.1.1
+Silbengenerator - Vereinfachte Ausgangsschrift 1.2.0
 
 1. APK auf das Android-Handy herunterladen und oeffnen.
-2. Ist bereits Version 1.1.0 installiert: normal darueber installieren.
+2. Ist bereits Version 1.1.0 oder 1.1.1 installiert: normal darueber installieren.
    Deinstallieren ist dafuer nicht erforderlich; der Signierschluessel ist gleich.
 3. Nur beim Wechsel von einer alten APK aus 1.0.x: alte App einmal deinstallieren.
 4. Falls Android fragt: der verwendeten App die Installation aus dieser Quelle erlauben.
 5. Auf der Startseite Schreibschrift waehlen und Lesen starten.
 
-Neu: Das o verwendet die passenden Anfangs- und Endformen mit kleinen Schleifen.
-M, I, O und U verwenden die vorgesehenen Schreibschrift-Grossbuchstaben.
-Die Druckschrift, Silbenregeln und die optionale Farbhilfe bleiben erhalten.
-Alle Spieldateien und die Schrift sind enthalten, ohne Internet oder ChatGPT-Konto nutzbar.
+Neu: Vereinfachte Ausgangsschrift (VA) wie in den Materialguru-Vorlagen.
+Das kleine o hat einen offenen Ausstrich, keine geschlossene Zierschleife.
+M, I, O und U verwenden die Formen der Vereinfachten Ausgangsschrift.
+Die Schrift und ihre Lizenz sind lokal enthalten.
+Alle Spieldateien sind ohne Internet oder ChatGPT-Konto nutzbar.
 Android 8 oder neuer mit aktuellem Android System WebView erforderlich.
