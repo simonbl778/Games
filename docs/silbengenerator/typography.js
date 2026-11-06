@@ -1,19 +1,20 @@
-export const CURSIVE_FONT = 'SilbenSchreibschrift';
+export const SCHOOL_FONTS = { la: 'SilbenLA', va: 'SilbenVA' };
 
 export function normalizeReadingFont(value) {
-  return value === 'cursive' ? 'cursive' : 'print';
+  return value === 'la' || value === 'va' ? value : 'print';
 }
 
 export function readingHeightFactor(value) {
-  // The bundled VA font spans 0.991 em plus 0.018 em line gap.
-  return normalizeReadingFont(value) === 'cursive' ? 1.12 : 1.14;
+  // Both local school fonts reserve room for capital letters, dots and joins.
+  return normalizeReadingFont(value) === 'print' ? 1.14 : 1.2;
 }
 
 export async function ensureReadingFont(fonts, value) {
-  if (normalizeReadingFont(value) !== 'cursive') return;
+  const family = SCHOOL_FONTS[normalizeReadingFont(value)];
+  if (!family) return;
   if (!fonts || typeof fonts.load !== 'function') {
     throw new Error('School handwriting could not be loaded.');
   }
-  const faces = await fonts.load('400 48px "' + CURSIVE_FONT + '"', 'Momimuiou');
+  const faces = await fonts.load('400 48px "' + family + '"', 'MI OUmimuiou');
   if (!faces.length) throw new Error('School handwriting could not be loaded.');
 }

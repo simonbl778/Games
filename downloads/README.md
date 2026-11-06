@@ -3,13 +3,13 @@
 Für das zweite Spiel: [Blitzblickzahlen als APK oder ZIP](../android/blitzblickzahlen/README.md).
 
 **Direkter Download über die Spielseite:**
-[APK herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.2.0.apk) ·
-[ZIP zum Weitergeben](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/Silbengenerator-Android-1.2.0.zip).
+[APK herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.3.0.apk) ·
+[ZIP zum Weitergeben](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/Silbengenerator-Android-1.3.0.zip).
 Die gleichen Dateien liegen wie bei Blitzblickzahlen unter `docs/downloads/` und werden mit den Spielseiten veröffentlicht. Zum Spielen nach der Installation ist keine Anmeldung nötig.
 
-[**Installationsdatei herunterladen**](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.2.0.apk)
+[**Installationsdatei herunterladen**](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.3.0.apk)
 
-**Alternative bei Downloadproblemen:** [ZIP-Datei mit APK und Anleitung herunterladen](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/docs/downloads/Silbengenerator-Android-1.2.0.zip).
+**Alternative bei Downloadproblemen:** [ZIP-Datei mit APK und Anleitung herunterladen](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/docs/downloads/Silbengenerator-Android-1.3.0.zip).
 Die ZIP-Datei auf dem Handy entpacken und dann die enthaltene APK öffnen.
 Falls ein Download im eingebauten Chat-Browser nicht startet, den Link über
 **Im Browser öffnen** in Chrome öffnen und dort herunterladen.
@@ -33,18 +33,19 @@ Die Auswahl bleibt unverändert: bei maximal 1 immer eine Silbe, bei maximal 2
 eine oder zwei, bei maximal 3 zwei oder drei, bei maximal 4 drei oder vier und
 bei maximal 5 vier oder fünf Silben.
 
-Vor dem Start zwischen **Druckschrift** und echter verbundener **Schreibschrift**
-(Vereinfachte Ausgangsschrift) wählen. Die Schrift ist lokal in der App enthalten.
-Druckschrift ist vorausgewählt.
+Vor dem Start **Druckschrift**, **Lateinische Ausgangsschrift (LA)** oder
+**Vereinfachte Ausgangsschrift (VA)** wählen. Standard ist Druckschrift.
+Beide Schreibschriften und ihre Lizenz sind lokal enthalten; Anfangsgroßbuchstaben
+bleiben mit der Kette verbunden. Die LA hat die Anstriche am Wortanfang,
+die VA folgt der verlinkten VA-Vorlage.
 
 Gleiche Vokale an Silbengrenzen kommen nur als sehr seltene Ausnahme vor.
-Auf der Startseite lässt sich **Silben dezent einfärben** einschalten: Die
-Silben wechseln dann zwischen dunklem und sanftem Grün. Standardmäßig ist
-diese Farbhilfe ausgeschaltet.
+Die Farbhilfe ist standardmäßig eingeschaltet: Die zweite und vierte Silbe
+erscheinen dezent rot, die übrigen dunkelgrün. Sie lässt sich vor dem Start abwählen.
 
 ## Aktualisieren
 
-**Version 1.2.0 lässt sich direkt über 1.1.0 und 1.1.1 installieren.** Der Signierschlüssel ist unverändert. Neu ist die Vereinfachte Ausgangsschrift wie bei Materialguru: offener Ausstrich am `o`, keine geschlossene Zierschleife und die VA-Formen für Großbuchstaben. Quellen und Schriftlizenz stehen in [der Schriftdokumentation](../docs/silbengenerator/fonts/README.md).
+**Version 1.3.0 lässt sich direkt über 1.1.x und 1.2.0 installieren.** Der Signierschlüssel ist unverändert. Neu sind die getrennte Wahl zwischen Druckschrift, LA und VA, verbundene Anfangsgroßbuchstaben sowie die anfangs eingeschaltete Rot-Grün-Farbhilfe. Quellen, Schriftmodelle und Lizenz stehen in [der Schriftdokumentation](../docs/silbengenerator/fonts/README.md).
 
 Die Ausgabe 1.1.0 ist neu signiert. Der frühere lokale Schlüssel wurde beim
 Neustart der Arbeitsumgebung nicht übernommen. Beim Wechsel von 1.0.x ist

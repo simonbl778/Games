@@ -2,11 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { normalizeReadingFont, readingHeightFactor, ensureReadingFont } from '../docs/silbengenerator/typography.js';
 
-test('Druckschrift ist der Standard, nur die ausdrückliche Auswahl aktiviert Schreibschrift', () => {
-  for (const value of [undefined, null, '', 'print', 'italic', 'anything']) {
+test('Druckschrift ist der Standard, LA und VA sind getrennte optionale Schriftmodelle', () => {
+  for (const value of [undefined, null, '', 'print', 'italic', 'cursive', 'anything']) {
     assert.equal(normalizeReadingFont(value), 'print');
   }
-  assert.equal(normalizeReadingFont('cursive'), 'cursive');
+  assert.equal(normalizeReadingFont('la'), 'la');
+  assert.equal(normalizeReadingFont('va'), 'va');
 });
 
 test('Druckschrift braucht keine Font-Ladefunktion', async () => {
@@ -16,25 +17,28 @@ test('Druckschrift braucht keine Font-Ladefunktion', async () => {
   assert.equal(called, false);
 });
 
-test('Schreibschrift wartet auf eine tatsächlich geladene lokale Schrift', async () => {
+for (const [value, family] of [['la', 'SilbenLA'], ['va', 'SilbenVA']]) {
+test(`${value}: Schreibschrift wartet auf das jeweils richtige lokale Schriftmodell`, async () => {
   let query;
   let sample;
   await ensureReadingFont({ async load(value, text) {
     query = value;
     sample = text;
     return [{}];
-  } }, 'cursive');
-  assert.equal(query, '400 48px "SilbenSchreibschrift"');
-  assert.equal(sample, 'Momimuiou');
+  } }, value);
+  assert.equal(query, `400 48px "${family}"`);
+  assert.equal(sample, 'MI OUmimuiou');
 });
 
-test('fehlende Schreibschrift wird gemeldet statt unbemerkt durch Druckschrift ersetzt', async () => {
-  await assert.rejects(() => ensureReadingFont(undefined, 'cursive'));
-  await assert.rejects(() => ensureReadingFont({ load: async () => [] }, 'cursive'));
-  await assert.rejects(() => ensureReadingFont({ load: async () => { throw new Error('offline'); } }, 'cursive'));
+test(`${value}: fehlende Schreibschrift wird gemeldet statt unbemerkt durch Druckschrift ersetzt`, async () => {
+  await assert.rejects(() => ensureReadingFont(undefined, value));
+  await assert.rejects(() => ensureReadingFont({ load: async () => [] }, value));
+  await assert.rejects(() => ensureReadingFont({ load: async () => { throw new Error('offline'); } }, value));
 });
+}
 
-test('Ober- und Unterlängen der VA-Schrift bekommen genug Platz', () => {
+test('beide Schulschriften bekommen genug Platz', () => {
   assert.equal(readingHeightFactor('print'), 1.14);
-  assert.ok(readingHeightFactor('cursive') > 1.009);
+  assert.ok(readingHeightFactor('la') >= 1.2);
+  assert.ok(readingHeightFactor('va') >= 1.2);
 });

@@ -31,12 +31,16 @@ for (const syllable of SYLLABLES) {
 }
 const initialChoice = form.querySelector(`input[value="${maximum}"]`);
 if (initialChoice) initialChoice.checked = true;
+form.querySelector('input[name="reading-font"][value="print"]').checked = true;
+colorOption.checked = true;
 
 function updateSelection() {
   const values = new FormData(form);
   maximum = validateMaxSyllables(Number(values.get('max-syllables')));
   readingFont = normalizeReadingFont(values.get('reading-font'));
-  document.body.classList.toggle('cursive-reading', readingFont === 'cursive');
+  document.body.classList.toggle('cursive-reading', readingFont !== 'print');
+  document.body.classList.toggle('la-reading', readingFont === 'la');
+  document.body.classList.toggle('va-reading', readingFont === 'va');
   $('font-error').hidden = true;
   $('selection-summary').textContent = maximum === 1
     ? 'Immer eine Silbe pro Kette'
@@ -54,7 +58,7 @@ function fitChain() {
   const style = getComputedStyle(chainButton);
   const width = chainButton.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
   const height = chainButton.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
-  let size = Math.max(16, Math.min(readingFont === 'cursive' ? 400 : 240, height / readingHeightFactor(readingFont)));
+  let size = Math.max(16, Math.min(readingFont === 'print' ? 240 : 400, height / readingHeightFactor(readingFont)));
   chainText.style.fontSize = `${size}px`;
   const measured = chainText.getBoundingClientRect().width;
   if (measured > width) {
@@ -72,7 +76,7 @@ function scheduleFit() {
 function showNextChain() {
   const chain = generateChain(maximum, { previousText });
   previousText = chain.text;
-  renderChain(chainText, chain, colorOption.checked, readingFont === 'cursive');
+  renderChain(chainText, chain, colorOption.checked, readingFont !== 'print');
   chainButton.setAttribute('aria-label', `${chain.text}. Antippen für die nächste Silbenkette.`);
   fitChain();
 }

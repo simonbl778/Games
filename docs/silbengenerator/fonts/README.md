@@ -1,39 +1,52 @@
-# Vereinfachte Ausgangsschrift (VA)
+# Schulschriften: LA und VA
 
-Die App verwendet die **unveränderte Gruenewald VA**, Version 0.007,
-von Peter Wiegel nach dem Schriftentwurf von Dr. Heinrich Grünewald.
-Die Datei `Gruenewald VA normal.ttf` heißt hier nur `GruenewaldVA.ttf`.
-Es werden keine Buchstaben nachgezeichnet oder Zierschrift-Alternativen aktiviert.
+Die App bietet **Druckschrift** (Standard), **Lateinische Ausgangsschrift** (LA)
+und **Vereinfachte Ausgangsschrift** (VA) als getrennte Auswahlmöglichkeiten.
+Die lokalen Schriften `SilbenLA.ttf` und `SilbenVA.ttf` bilden die acht vom Spiel
+verwendeten Zeichen `M I O U m i o u` sowie Leerzeichen ab.
 
-- Original: https://www.peter-wiegel.de/Gruenewald.html
-- Download: https://www.peter-wiegel.de/Fonts/GruenewaldTT.zip
-- SHA-256 der eingebundenen TTF: `58a1fe9c78829bee9580a9fd15aa58ea79047d9408b68d415c0d82a5b5847967`
-- Lizenz: SIL Open Font License 1.1, mit originalem Copyright in `OFL.txt`.
+## Schriftmodelle und Vorlagen
 
-## Vergleichsvorlagen
+- [Lateinische Ausgangsschrift und Alphabet](https://de.wikipedia.org/wiki/Ausgangsschrift#Lateinische_Ausgangsschrift)
+- [Vereinfachte Ausgangsschrift und Alphabet](https://de.wikipedia.org/wiki/Vereinfachte_Ausgangsschrift)
+- [Elterninfo des Kultusministeriums Baden-Württemberg, Seiten 16–17](https://km.baden-wuerttemberg.de/fileadmin/redaktion/m-km/intern/PDF/Publikationen/Grundschule/Elterninfo_2025_bf_web.pdf)
 
-[Materialguru](https://www.materialguru.de/deutsch/schreibschrift/) benennt
-seine Vorlagen ausdrücklich als Vereinfachte Ausgangsschrift. Insbesondere
-die [O-Vorlage](https://www.materialguru.de/wp-content/uploads/pdf/deutsch/buchstaben/buchstabe-o/arbeitsblatt-schreibschrift-buchstabe-o-03.pdf)
-zeigt den offenen Ausstrich oben rechts am kleinen `o`, keine geschlossene
-Zierschleife. Verglichen wurden `o`, `omo`, `mo`, `om` sowie `M`, `I`, `O` und `U`
-mit den Buchstabenvorlagen. Die Materialien dienen nur zum visuellen Vergleich;
-Schriftdateien aus den PDFs werden nicht übernommen.
+Baden-Württemberg sieht mehrere Schriftmodelle vor. Das ist keine Zulassung
+einer konkreten digitalen Schriftdatei. Die LA hat unter anderem den Anstrich
+am kleinen `i`, `u` und `o` sowie andere Großbuchstaben als die VA. Die VA-Tafel
+zeigt das kleine `i` ohne zusätzlichen vorgeschalteten Anstrich; diese Form
+bleibt in der VA-Auswahl erhalten.
 
-Die offizielle [Elterninfo zum Schulanfang 2025 des Kultusministeriums Baden-Württemberg](https://km.baden-wuerttemberg.de/fileadmin/redaktion/m-km/intern/PDF/Publikationen/Grundschule/Elterninfo_2025_bf_web.pdf)
-zeigt auf den gedruckten Seiten 16–17 die Schriftmodelle. Schulen wählen dort
-zwischen Vereinfachter Ausgangsschrift, Lateinischer Ausgangsschrift und
-Grundschrift. Die VA entspricht damit einem in Baden-Württemberg vorgesehenen
-Modell; eine Zulassung dieser konkreten digitalen Schriftdatei wird nicht behauptet.
+Die Buchstabenkörper stammen aus Walter Entenmanns Paket **schulschriften**:
+`wela` (LA) und `weva` (VA), jeweils mit der vorgesehenen Schrägstellung.
+Die unveränderten Zeichenprogramme sind im Repository unter
+`assets/school-fonts/` enthalten. Es werden keine Schriften aus kommerziellen
+Arbeitsblatt-PDFs extrahiert und keine dekorativen Ersatzformen verwendet.
 
-## Darstellung und Offlinebetrieb
+Für die App wurden daraus neue, umbenannte OpenType-Schriften erzeugt.
+Kontextabhängige Anfangs-, Verbindungs- und Endformen erhalten einen
+zusammenhängenden Textlauf. Die Anschlüsse werden innerhalb der Schrift
+gebildet, ohne zusätzliche Zeichen, Leerzeichen oder Silbenspans einzufügen.
+**Auf Nutzerwunsch sind auch die Anfangsgroßbuchstaben verbunden.** Bei VA
+werden dafür ausgehende Anschlüsse an `I` und `O` ergänzt, die im Grundmodell
+üblicherweise abgesetzt bleiben. Ihre Buchstabenkörper werden nicht verändert.
 
-Kerning und ein durchgehender Textlauf erhalten die Verbindungen. Die optionale
-Farbhilfe färbt diesen Textlauf, ohne ihn an Silbengrenzen in einzelne Elemente
-zu zerlegen. Die verwendeten Buchstaben `M`, `I`, `O`, `U`, `m`, `i`, `o`, `u`
-benötigen keine der in der Originaldokumentation beschriebenen Sonderersetzungen
-für `s` und `ß`.
+## Quelle, Lizenz und Nachbau
 
-Die vollständige Schrift und ihre Lizenz liegen lokal, im Offlinecache und in
-der APK. Zur Laufzeit werden keine externen Schriftdateien geladen. Die frühere
-LA-Schrift und ihre Schleifen- und Großbuchstaben-Overrides sind entfernt.
+- Originalpaket: https://ctan.org/pkg/schulschriften
+- Download: https://ctan.math.illinois.edu/fonts/schulschriften.zip
+- Autor der ursprünglichen Zeichenprogramme: Walter Entenmann.
+- Lizenz für die Originalprogramme und die abgeleiteten Schriften:
+  LaTeX Project Public License 1.3c oder neuer, vollständig in `LPPL.txt`.
+- Anpassung: Games-Projekt, 2026; eigene Namen `SilbenLA` und `SilbenVA`.
+- Build: `scripts/build-school-fonts.py`; benötigt MetaPost mit `mfplain.mp`
+  und die Python-Abhängigkeiten aus `assets/school-fonts/requirements.txt`.
+- Schriftprüfung: `python3 scripts/check-school-fonts.py`.
+
+Die Prüfung formt alle verfügbaren Silbenketten bis Länge fünf. Zusätzlich
+prüft sie gerasterte Zwei- und Dreibuchstabenketten in zwei Größen: ein
+verbundener Buchstabenkörper und getrennte Punkte für jedes kleine `i`.
+Vergleichsproben decken insbesondere `Momi`, `Imo`, `Omi`, `Umo`, `imu` und `omo` ab.
+
+Beide Schriften, die Lizenz und die Spieldateien werden lokal in Website,
+Offlinecache und APK mitgeliefert. Zur Laufzeit erfolgt kein externer Fontabruf.
