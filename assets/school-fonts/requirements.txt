@@ -1,0 +1,7 @@
+fonttools==4.61.1
+svgpathtools==1.7.2
+Pillow==13.0.0
+numpy==2.3.5
+scipy==1.17.0
+uharfbuzz==0.57.0
+skia-pathops==0.9.2

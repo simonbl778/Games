@@ -18,9 +18,9 @@ function textElement() {
 
 const chain = { text: 'Momimuio', syllables: ['mo', 'mi', 'mu', 'i', 'o'], count: 5 };
 
-test('ohne Einstellung erscheint die gesamte Kette einfarbig', () => {
+test('mit ausgeschalteter Farbhilfe erscheint die gesamte Kette einfarbig', () => {
   const element = textElement();
-  renderChain(element, chain);
+  renderChain(element, chain, false);
   assert.equal(element.textContent, chain.text);
   assert.equal(element.children.length, 0);
   assert.equal(element.classList.contains('alternating-syllables'), false);
@@ -62,13 +62,15 @@ test('die Farbhilfe färbt Schreibschrift an Silbengrenzen ohne getrennte Glyphe
     getBoundingClientRect() { return { right: 10 + end * 10 }; },
     detach() {},
   });
-  renderChain(element, { text: 'Momiu', syllables: ['mo', 'mi', 'u'], count: 3 }, true, true);
+  renderChain(element, chain, true, true);
   element.firstChild = { textContent: element.textContent };
   refreshSyllableColors(element);
   assert.equal(element.children.length, 0);
-  assert.equal(element.textContent, 'Momiu');
+  assert.equal(element.textContent, chain.text);
   assert.ok(element.style.backgroundImage.includes('var(--ink) 0px, var(--ink) 20px'));
   assert.ok(element.style.backgroundImage.includes('var(--syllable-alt) 20px, var(--syllable-alt) 40px'));
+  assert.ok(element.style.backgroundImage.includes('var(--ink) 40px, var(--ink) 60px'));
+  assert.ok(element.style.backgroundImage.includes('var(--syllable-alt) 60px, var(--syllable-alt) 70px'));
   assert.equal(element.classList.contains('connected-syllable-colors'), true);
   renderChain(element, chain, false, true);
   assert.equal(element.style.backgroundImage, '');

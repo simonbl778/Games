@@ -12,7 +12,8 @@
     <link rel="manifest" href="./manifest.webmanifest">
     <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="./icons/icon-192.png">
-    <link rel="preload" href="./fonts/GruenewaldVA.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="./fonts/SilbenLA.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="./fonts/SilbenVA.ttf" as="font" type="font/ttf" crossorigin>
     <link rel="stylesheet" href="./styles.css">
     <script type="module" src="./app.js"></script>
     <title>Silbengenerator</title>
@@ -63,15 +64,19 @@
                   <span class="font-face"><span class="font-sample" aria-hidden="true">Mo</span><span>Druckschrift</span></span>
                 </label>
                 <label class="font-option">
-                  <input type="radio" name="reading-font" value="cursive">
-                  <span class="font-face"><span class="font-sample cursive-sample" aria-hidden="true">Mo</span><span>Schreibschrift</span></span>
+                  <input type="radio" name="reading-font" value="la">
+                  <span class="font-face"><span class="font-sample cursive-sample la-sample" aria-hidden="true">Mo</span><span>Lateinische<br>Ausgangsschrift</span></span>
+                </label>
+                <label class="font-option">
+                  <input type="radio" name="reading-font" value="va">
+                  <span class="font-face"><span class="font-sample cursive-sample va-sample" aria-hidden="true">Mo</span><span>Vereinfachte<br>Ausgangsschrift</span></span>
                 </label>
               </div>
             </fieldset>
             <p id="font-error" class="font-error" role="alert" hidden>Die Schreibschrift konnte nicht geladen werden. Bitte erneut versuchen oder Druckschrift wählen.</p>
             <label class="color-option">
-              <input id="alternate-colors" name="alternate-colors" type="checkbox">
-              <span><span class="color-option-title">Silben dezent einfärben</span><span class="color-option-detail">Dunkles und sanftes Grün im Wechsel</span></span>
+              <input id="alternate-colors" name="alternate-colors" type="checkbox" checked>
+              <span><span class="color-option-title">Silben dezent einfärben</span><span class="color-option-detail">Dunkelgrün und dezentes Rot im Wechsel</span></span>
             </label>
             <button class="start-button" id="start-button" type="submit"><span>Lesen starten</span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
             <p class="landscape-note"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M17 10v4"/></svg> Am schönsten im Querformat</p>

@@ -20,11 +20,11 @@ Eine große Silbenkette lesen, antippen und weiterlesen.
 ## Spielen
 
 **Eigenständige Silbengenerator-App ohne ChatGPT-Anmeldung:**
-[APK direkt über die Spielseite herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.2.0.apk) ·
-[GitHub-Download](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.2.0.apk).
+[APK direkt über die Spielseite herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.3.0.apk) ·
+[GitHub-Download](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.3.0.apk).
 Diese Datei lässt sich auch auf OneDrive ablegen und per Link weitergeben.
 Die App funktioniert ab Android 8 und von Anfang an vollständig offline.
-Version 1.2.0 kann mit derselben Signatur direkt über Version 1.1.0 oder 1.1.1 installiert werden. Die Schreibschrift verwendet jetzt die Vereinfachte Ausgangsschrift wie die Materialguru-Vorlagen: mit offenem Ausstrich am `o` und den VA-Großbuchstaben.
+Version 1.3.0 kann mit derselben Signatur direkt über 1.1.x und 1.2.0 installiert werden. Drei Schriftarten stehen zur Auswahl: Druckschrift, Lateinische Ausgangsschrift und Vereinfachte Ausgangsschrift. Die Farbhilfe ist anfangs eingeschaltet und färbt die zweite und vierte Silbe dezent rot.
 
 Beim Wechsel von einer alten Silbengenerator-APK (1.0.x) muss die alte App einmal deinstalliert werden: Version 1.1.0 hat einen neuen Signierschlüssel, weil der frühere private Schlüssel nach dem Neustart der Build-Umgebung nicht mehr vorlag. Dabei geht nur die letzte Silben-Auswahl verloren; es gibt keine gespeicherten Lernstände. Den neuen privaten Schlüssel für künftige Updates getrennt vom öffentlichen Repository aufbewahren.
 [Installation und Weitergabe](downloads/README.md) · [Android-Quellcode und Build](android/README.md)
@@ -58,9 +58,9 @@ Die Browseransicht in einer anderen App kann Installieren, Vollbild oder Drehen 
 - Die gewählte Zahl ist eine **Höchstzahl**, keine feste Kettenlänge. Bei `1` erscheint immer eine Silbe, bei `2` zufällig eine oder zwei. Bei `3` entstehen Ketten aus zwei oder drei, bei `4` aus drei oder vier und bei `5` aus vier oder fünf Bausteinen.
 - Jeder einzelne Vokal zählt als eine Silbe. `iou` besteht damit aus drei Bausteinen.
 - Jeder Baustein kann innerhalb derselben Kette mehrfach vorkommen.
-- Vor dem Start lässt sich **Druckschrift** oder **Schreibschrift** wählen. Druckschrift ist vorausgewählt. Die echte verbundene Schreibschrift verwendet **Gruenewald VA (Vereinfachte Ausgangsschrift)** und ist lokal für den Offlinebetrieb eingebunden. Die optionale Farbhilfe bleibt auch bei verbundenen Buchstaben nutzbar.
+- Vor dem Start lassen sich **Druckschrift**, **Lateinische Ausgangsschrift (LA)** oder **Vereinfachte Ausgangsschrift (VA)** wählen. Druckschrift ist vorausgewählt. Beide Schulschriften sind lokal und offline eingebunden; Anstriche, Großbuchstaben und Anschlüsse folgen dem jeweiligen Modell. Auch Anfangsgroßbuchstaben sind verbunden. Quellen und modellabhängige Besonderheiten stehen in [der Schriftdokumentation](docs/silbengenerator/fonts/README.md).
 - Gleiche Vokale direkt an einer Silbengrenze, etwa `oo`, `ii`, `uu`, `Moo` oder `Muu`, erscheinen nur als sehr seltene Ausnahme. 99 von 100 vorgeschlagenen gleichen Vokalgrenzen werden durch einen passenden anderen Baustein ersetzt.
-- **Silben dezent einfärben** lässt sich vor dem Start einschalten. Die tatsächlichen Silben wechseln dann ohne zusätzliche Abstände zwischen dunklem und sanftem Grün. Standardmäßig und nach erneutem Öffnen ist die Farbhilfe ausgeschaltet; innerhalb einer Partie bleibt die Auswahl beim Ändern der Einstellungen erhalten.
+- **Silben dezent einfärben** ist standardmäßig eingeschaltet und lässt sich abwählen. Die erste, dritte und fünfte Silbe erscheinen dunkelgrün, die zweite und vierte in gedämpftem, gut lesbarem Rot. Die tatsächlichen Silbengrenzen bleiben ohne zusätzliche Abstände erkennbar, auch bei verbundenen Schreibschriften. Beim erneuten Öffnen gelten wieder Druckschrift und eingeschaltete Farbhilfe; innerhalb einer Partie bleiben Änderungen erhalten.
 - Nur der **erste Buchstabe der gesamten Kette** wird zufällig groß- oder kleingeschrieben. Alle weiteren Buchstaben bleiben klein: zum Beispiel `Momiu` oder `momiu`, aber nicht `MoMiU`.
 - Jede neue sichtbare Anzeige unterscheidet sich von der unmittelbar vorherigen.
 - Die App zeigt beim erneuten Öffnen zuerst die Auswahl. Die zuletzt verwendete Höchstzahl ist lediglich vorausgewählt.
@@ -179,4 +179,4 @@ npm run check
 - [GitHub: Eine Pages-Website erstellen](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
 - [MDN: Grenzen der Orientierungssperre](https://developer.mozilla.org/en-US/docs/Web/API/ScreenOrientation/lock)
 
-Games 1.1.0 · Silbengenerator 1.2.0 · Blitzblickzahlen 1.1.0 · 6. November 2026
+Games 1.1.0 · Silbengenerator 1.3.0 · Blitzblickzahlen 1.1.0 · 6. November 2026

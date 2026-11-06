@@ -1,0 +1,4 @@
+# Preserve whitespace in the unmodified upstream school-font sources.
+assets/school-fonts/** -whitespace
+# Keep the bundled license text verbatim.
+docs/silbengenerator/fonts/LPPL.txt -whitespace
