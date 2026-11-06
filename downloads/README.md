@@ -3,13 +3,13 @@
 Für das zweite Spiel: [Blitzblickzahlen als APK oder ZIP](../android/blitzblickzahlen/README.md).
 
 **Direkter Download über die Spielseite:**
-[APK herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.1.0.apk) ·
-[ZIP zum Weitergeben](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/Silbengenerator-Android-1.1.0.zip).
+[APK herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.1.1.apk) ·
+[ZIP zum Weitergeben](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/Silbengenerator-Android-1.1.1.zip).
 Die gleichen Dateien liegen wie bei Blitzblickzahlen unter `docs/downloads/` und werden mit den Spielseiten veröffentlicht. Zum Spielen nach der Installation ist keine Anmeldung nötig.
 
-[**Installationsdatei herunterladen**](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.1.0.apk)
+[**Installationsdatei herunterladen**](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.1.1.apk)
 
-**Alternative bei Downloadproblemen:** [ZIP-Datei mit APK und Anleitung herunterladen](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/docs/downloads/Silbengenerator-Android-1.1.0.zip).
+**Alternative bei Downloadproblemen:** [ZIP-Datei mit APK und Anleitung herunterladen](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/docs/downloads/Silbengenerator-Android-1.1.1.zip).
 Die ZIP-Datei auf dem Handy entpacken und dann die enthaltene APK öffnen.
 Falls ein Download im eingebauten Chat-Browser nicht startet, den Link über
 **Im Browser öffnen** in Chrome öffnen und dort herunterladen.
@@ -43,6 +43,8 @@ Silben wechseln dann zwischen dunklem und sanftem Grün. Standardmäßig ist
 diese Farbhilfe ausgeschaltet.
 
 ## Aktualisieren
+
+**Version 1.1.1 lässt sich direkt über 1.1.0 installieren.** Der Signierschlüssel ist unverändert. Die Optimierung betrifft die Anfangs- und Endformen des `o` sowie die Schreibschrift-Großbuchstaben.
 
 Die Ausgabe 1.1.0 ist neu signiert. Der frühere lokale Schlüssel wurde beim
 Neustart der Arbeitsumgebung nicht übernommen. Beim Wechsel von 1.0.x ist
