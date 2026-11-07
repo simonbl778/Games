@@ -23,14 +23,23 @@ export function renderChain(element, chain, alternateColors = false, readingFont
     const group = document.createElementNS(SVG_NAMESPACE, 'g');
     group.setAttribute('transform', 'scale(1 -1)');
     for (const glyph of run.glyphs) {
-      const path = document.createElementNS(SVG_NAMESPACE, 'path');
-      path.setAttribute('d', glyph.path);
-      path.setAttribute('transform', `translate(${glyph.x} 0)`);
-      path.setAttribute('fill', glyph.color);
-      path.setAttribute('stroke', 'none');
-      path.setAttribute('data-character', glyph.character);
-      path.setAttribute('data-syllable', String(glyph.syllable));
-      group.append(path);
+      const addPath = (data, color, character, syllable, part) => {
+        const path = document.createElementNS(SVG_NAMESPACE, 'path');
+        path.setAttribute('d', data);
+        path.setAttribute('transform', `translate(${glyph.x} 0)`);
+        path.setAttribute('fill', color);
+        path.setAttribute('stroke', 'none');
+        path.setAttribute('data-character', character);
+        path.setAttribute('data-syllable', String(syllable));
+        path.setAttribute('data-part', part);
+        group.append(path);
+      };
+      // Preserve the complete contour, then recolor the second half of the shared swing.
+      addPath(glyph.path, glyph.color, glyph.character, glyph.syllable, 'letter');
+      if (glyph.connection) {
+        const connection = glyph.connection;
+        addPath(connection.secondPath, connection.color, connection.character, connection.syllable, 'connection-end');
+      }
     }
     svg.append(title, group);
     element.replaceChildren(svg);

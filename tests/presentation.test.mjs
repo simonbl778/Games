@@ -17,6 +17,13 @@ function textElement() {
   element.ownerDocument = { createElement: textElement, createElementNS: (namespace, tag) => Object.assign(textElement(), { tag, namespace }) };
   return element;
 }
+function withoutColors({ color, connection, ...shape }) {
+  if (connection) {
+    const { color: connectionColor, ...geometry } = connection;
+    return { ...shape, connection: geometry };
+  }
+  return { ...shape, connection };
+}
 const chain = { text: 'Momimuio', syllables: ['mo', 'mi', 'mu', 'i', 'o'], count: 5 };
 
 test('Druckschrift erhält echte Silbenfarben ohne Abstände oder neue Großbuchstaben', () => {
@@ -48,7 +55,7 @@ for (const model of ['la', 'va']) {
   test(`${model}: Farbe ändert keine Form, Position oder Verbindung`, () => {
     const plain = layoutSchoolChain(chain, model, false);
     const colored = layoutSchoolChain(chain, model, true);
-    assert.deepEqual(plain.glyphs.map(({ color, ...shape }) => shape), colored.glyphs.map(({ color, ...shape }) => shape));
+    assert.deepEqual(plain.glyphs.map(withoutColors), colored.glyphs.map(withoutColors));
     assert.ok(plain.glyphs.every((glyph) => glyph.color === 'var(--ink)'));
   });
 
@@ -61,13 +68,19 @@ for (const model of ['la', 'va']) {
     assert.equal(svg.attributes.stroke, 'none');
     const paths = svg.children[1].children;
     const run = layoutSchoolChain(chain, model, true);
-    assert.equal(paths.length, chain.text.length);
+    const expected = run.glyphs.flatMap(glyph => [
+      { ...glyph, part: 'letter' },
+      ...(glyph.connection ? [{ ...glyph.connection, path: glyph.connection.secondPath, x: glyph.x, part: 'connection-end' }] : []),
+    ]);
+    assert.equal(paths.length, expected.length);
     paths.forEach((path, index) => {
       assert.equal(path.tag, 'path');
-      assert.equal(path.attributes.d, run.glyphs[index].path);
-      assert.equal(path.attributes.fill, run.glyphs[index].color);
+      assert.equal(path.attributes.d, expected[index].path);
+      assert.equal(path.attributes.fill, expected[index].color);
       assert.equal(path.attributes.stroke, 'none');
-      assert.equal(path.attributes.transform, `translate(${run.glyphs[index].x} 0)`);
+      assert.equal(path.attributes['data-part'], expected[index].part);
+      assert.equal(path.attributes['data-syllable'], String(expected[index].syllable));
+      assert.equal(path.attributes.transform, `translate(${expected[index].x} 0)`);
       assert.equal(path.attributes['clip-path'], undefined);
       assert.equal(path.attributes.mask, undefined);
     });
@@ -90,3 +103,19 @@ test('falsche Silbengrenzen oder nicht verfügbare Buchstaben werden nicht still
   assert.throws(() => layoutSchoolChain({ text: 'mimu', syllables: ['mo', 'mu'] }, 'la'));
   assert.throws(() => layoutSchoolChain({ text: 'ma', syllables: ['ma'] }, 'va'));
 });
+
+for (const model of ['la', 'va']) {
+  test(`${model}: u|i|o wechselt in der Mitte der Verbindung zur nächsten Silbenfarbe`, () => {
+    const run = layoutSchoolChain({text:'uio',syllables:['u','i','o']},model,true);
+    assert.deepEqual(run.glyphs.map(g=>g.color),['var(--ink)','var(--syllable-alt)','var(--ink)']);
+    assert.deepEqual(run.glyphs.slice(0,2).map(g=>g.connection.color),['var(--syllable-alt)','var(--ink)']);
+    assert.deepEqual(run.glyphs.slice(0,2).map(g=>g.connection.syllable),[1,2]);
+    for(const glyph of run.glyphs.slice(0,2)) {
+      assert.equal(glyph.connection.fraction,.5);
+      assert.ok(glyph.connection.length>0);
+      assert.ok(glyph.connection.secondPath.length>0);
+    }
+    assert.equal(run.glyphs[1].connection.oHoleClear,true);
+    assert.equal(layoutSchoolChain({text:'Uomi',syllables:['U','o','mi']},model,true).glyphs[0].connection.oHoleClear,true);
+  });
+}

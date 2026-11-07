@@ -30,7 +30,7 @@ LA-`m` übernimmt den Aufstrich des vorherigen Buchstabens an seinem ersten Boge
 der separate Anfangshaken entfällt dort. So entsteht kein waagerechter Absatz.
 
 Die Spielanzeige verwendet exakt diese kontextabhängigen Schriftkonturen als
-SVG-Pfade, jeweils mit einer eigenen Farbe für den vollständigen Buchstaben.
+SVG-Pfade. Jeder Buchstabenkörper erhält die eigene Silbenfarbe.
 Auch ein schräger Überhang behält die Farbe seiner tatsächlichen Silbe.
 Es gibt keine senkrechten Farbverlaufsgrenzen, Buchstaben-Clippingmasken oder
 getrennt geformten Silbentexte. Ein-/Ausschalten der Farbhilfe verändert keine
@@ -77,3 +77,21 @@ die Stilprobleme der Ausgabe 1.3.1. Das ist eine CSS-Integrationsprüfung;
 ein Test auf einem physischen Android-Gerät wird dadurch nicht ersetzt.
 Die Startseite zeigt die jeweilige Version an; der APK-Build vergleicht diese
 Anzeige mit dem Android-Manifest.
+
+## o-Anschlüsse und mittige Farbgrenzen ab Version 1.3.3
+
+Der Eintritt in das kleine `o` liegt auf dessen äußerem oberen linken Bogen.
+Der Anschluss berücksichtigt die Tangente und hält den Innenraum frei, auch
+nach dem großen `U`. Der Abstand wird nötigenfalls dafür angepasst.
+
+Der native Ausgangsschwung und die ergänzte Anschlusskurve bilden gemeinsam
+eine Verbindung. Ihre Bogenlänge wird berechnet; die Farbgrenze liegt exakt
+auf halber Länge und quer zur dortigen Tangente. Die zweite Hälfte übernimmt
+die Farbe der folgenden Silbe. Innerhalb derselben Silbe bleibt die Farbe gleich.
+Der vollständige Originalpfad liegt darunter; nur der Verbindungsteil wird
+übermalt. So entstehen keine herausgeschnittenen Körper, fremd gefärbten
+Überhänge oder senkrechten Farbgrenzen über die gesamte Schrift.
+
+Die Schriftprüfung kontrolliert zusätzlich den freien Innenraum beim Anschluss
+`Uo` und dass die übermalte Verbindung innerhalb der tatsächlichen Kontur liegt.
+Die Vergleichsprobe enthält `u|i|o`, `U|o|mi`, `U|o` und `mi|mu` in LA und VA.
