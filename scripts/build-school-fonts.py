@@ -16,9 +16,10 @@ from fontTools.pens.transformPen import TransformPen
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.pens.cu2quPen import Cu2QuPen
 from fontTools.pens.svgPathPen import SVGPathPen
+from fontTools.pens.roundingPen import RoundingPen
 from fontTools.feaLib.builder import addOpenTypeFeaturesFromString
 import pathops
-from svgpathtools import parse_path as svg_path
+from svgpathtools import parse_path as svg_path, Path as CurvePath, CubicBezier
 
 PROJECT=Path(__file__).resolve().parent.parent
 def build(kind):
@@ -26,17 +27,17 @@ def build(kind):
     name = 'Silben' + kind.upper()
     metadata = re.search(r'\^\^J\d+ [\d.]+ [\d.]+ [\d.]+ ([\d.]+) ([\d.]+)\^\^J', Path(kind + '-output.log').read_text())
     scale = 1000 / (tfm.designsize * float(metadata[1]) * float(metadata[2]))
-    raw, strokes = {}, {}
-    def load(code, trim_m=False):
-        key = (code, trim_m and code in (109, 173))
+    raw, strokes, curves = {}, {}, {}
+    def load(code, trim_m=False, keep_exit=True):
+        key = (code, trim_m and code in (109, 173), keep_exit)
         if key in raw:
             return raw[key]
         text = Path(f'{kind}-{code}.svg').read_text()
         box = list(map(float, re.search(r'Original BoundingBox: (.*?) -->', text).group(1).split()))
-        total, centerlines = pathops.Path(), []
-        for element in ET.fromstring(text).iter():
-            if element.tag.rsplit('}', 1)[-1] != 'path':
-                continue
+        total, centerlines, font_curves = pathops.Path(), [], []
+        elements = [element for element in ET.fromstring(text).iter() if element.tag.rsplit('}', 1)[-1] == 'path']
+        last_stroke = max(i for i, element in enumerate(elements) if 'fill: none' in element.attrib.get('style', ''))
+        for element_index, element in enumerate(elements):
             style = element.attrib.get('style', '')
             path_data = element.attrib['d']
             if 'fill: none' in style:
@@ -46,9 +47,18 @@ def build(kind):
                     peak = min(range(1001), key=lambda i: curve.point(i / 1000).imag) / 1000
                     curve = curve.cropped(peak, 1)
                     path_data = curve.d()
+                if not keep_exit and element_index == last_stroke:
+                    cut = 0 if code == 111 else min(range(1001), key=lambda i: -curve.point(i / 1000).imag) / 1000
+                    if cut <= 0:
+                        continue
+                    curve = curve.cropped(0, cut)
+                    path_data = curve.d()
                 def convert(point):
                     return complex((point.real + box[0]) * scale, (box[3] - point.imag) * scale)
                 centerlines.append([convert(curve.point(i / 1000)) for i in range(1001)])
+                pen = SVGPathPen(None)
+                parse_path(curve.d(), TransformPen(pen, (scale, 0, 0, -scale, box[0] * scale, box[3] * scale)))
+                font_curves.append(svg_path(pen.getCommands()))
             path = pathops.Path()
             parse_path(path_data, path.getPen())
             if 'fill: none' in style:
@@ -58,19 +68,30 @@ def build(kind):
             transformed = pathops.Path()
             path.draw(TransformPen(transformed.getPen(), (scale, 0, 0, -scale, box[0] * scale, box[3] * scale)))
             total = pathops.op(total, transformed, pathops.PathOp.UNION)
-        raw[key], strokes[key] = total, centerlines
+        raw[key], strokes[key], curves[key] = total, centerlines, font_curves
         return total
-    def combine(parts, trim_m=False):
+    def combine(parts, trim_m=False, keep_exit=True):
         total, x, previous = pathops.Path(), 0, None
         for code in parts:
             x += tfm.kerning.get(previous, {}).get(code, 0) * 1000
             transformed = pathops.Path()
-            load(code, trim_m).draw(TransformPen(transformed.getPen(), (1, 0, 0, 1, x, 0)))
+            load(code, trim_m, keep_exit or code not in (73, 77, 79, 85, 105, 109, 111, 117)).draw(TransformPen(transformed.getPen(), (1, 0, 0, 1, x, 0)))
             total = pathops.op(total, transformed, pathops.PathOp.UNION)
             x += tfm.chars[code]['width'] * 1000
             previous = code
         return total, x
-    glyphs, metrics = {}, {}
+    glyphs, metrics, connections = {}, {}, {}
+    def stroke(curve, width=20.8, cap=pathops.LineCap.ROUND_CAP):
+        path = pathops.Path()
+        parse_path(curve.d(), path.getPen())
+        path.stroke(width, cap, pathops.LineJoin.ROUND_JOIN, 10)
+        path.convertConicsToQuads(.05)
+        return path
+    load(111)
+    oval = strokes[(111, False, True)][0]
+    oval_area = pathops.Path()
+    parse_path(curves[(111, False, True)][0].d(), oval_area.getPen())
+    o_hole = pathops.op(oval_area, raw[(111, False, True)], pathops.PathOp.DIFFERENCE)
     def add(glyphname, path, advance):
         pen = TTGlyphPen(None)
         path.draw(Cu2QuPen(pen, max_err=.25, reverse_direction=True))
@@ -101,7 +122,7 @@ def build(kind):
         for following in 'imou':
             medial_m = kind == 'la' and following == 'm'
             load(ord(following), trim_m=medial_m)
-            current_strokes = strokes[(ord(char), glyphname == 'm.med')]
+            current_strokes = strokes[(ord(char), glyphname == 'm.med', True)]
             start = current_strokes[-1][-1] + shift
             start_tangent = current_strokes[-1][-1] - current_strokes[-1][-2]
             target_advance = advance
@@ -111,9 +132,16 @@ def build(kind):
                 start = (min(current_strokes[-1], key=lambda p: p.imag) if char == 'I'
                          else max((p for p in current_strokes[0] if abs(p.imag - 333) < 2), key=lambda p: p.real))
                 start_tangent = complex(1, 0)
-            incoming = strokes[(ord(following), medial_m)][0]
+            incoming = strokes[(ord(following), medial_m, True)][0]
             if following == 'o':
-                entry_index = min(range(len(incoming)), key=lambda i: abs((incoming[i] + target_advance) - start))
+                # Attach to the outer upper-left arc; the closest point can be across the o's hole.
+                center_x = (min(p.real for p in incoming) + max(p.real for p in incoming)) / 2
+                center_y = (min(p.imag for p in incoming) + max(p.imag for p in incoming)) / 2
+                eligible = [i for i,p in enumerate(incoming)
+                    if p.real <= center_x and p.imag >= center_y
+                    and (incoming[min(i+1,len(incoming)-1)]-incoming[max(0,i-1)]).real
+                        * (incoming[min(i+1,len(incoming)-1)]-incoming[max(0,i-1)]).imag > 0]
+                entry_index = min(eligible, key=lambda i: abs((incoming[i] + target_advance) - start))
             else:
                 entry_index = 0
             end_local = incoming[entry_index]
@@ -121,24 +149,47 @@ def build(kind):
             if end_tangent.real < 0:
                 end_tangent = -end_tangent
             target_advance += max(0, start.real + 15 - (end_local.real + target_advance))
-            end = end_local + target_advance
-            # Follow both source tangents. A curved upstroke must not turn into a level bridge.
             start_direction = start_tangent / abs(start_tangent)
             end_direction = end_tangent / abs(end_tangent)
-            handle = abs(end - start) / 3
-            control1 = start + start_direction * handle
-            control2 = end - end_direction * handle
-            join = pathops.Path()
-            pen = join.getPen()
-            pen.moveTo((start.real, start.imag))
-            pen.curveTo((control1.real, control1.imag),
-                        (control2.real, control2.imag),
-                        (end.real, end.imag))
-            pen.endPath()
-            join.stroke(20.8, pathops.LineCap.ROUND_CAP, pathops.LineJoin.ROUND_JOIN, 10)
-            join.convertConicsToQuads(.05)
-            joined = pathops.op(body, join, pathops.PathOp.UNION)
-            add(glyphname + '.to.' + following, joined, target_advance)
+            for attempt in range(101):
+                end = end_local + target_advance
+                handle = abs(end - start) / 3
+                control1 = start + start_direction * handle
+                control2 = end - end_direction * handle
+                bridge = CurvePath(CubicBezier(start, control1, control2, end))
+                joined = pathops.op(body, stroke(bridge), pathops.PathOp.UNION)
+                if following != 'o':
+                    break
+                hole = pathops.Path()
+                o_hole.draw(TransformPen(hole.getPen(), (1, 0, 0, 1, target_advance, 0)))
+                intrusion = pathops.op(joined, hole, pathops.PathOp.INTERSECTION).area
+                outward = complex(-end_direction.imag, end_direction.real)
+                outside = min(((point-end).real*outward.real+(point-end).imag*outward.imag) for point in (start,control1))
+                if intrusion < 1 and outside >= 0:
+                    break
+                target_advance += 10
+            else:
+                raise ValueError('Cannot connect to the outside of o: '+glyphname)
+            joined_name = glyphname + '.to.' + following
+            add(joined_name, joined, target_advance)
+            # Keep the letter body intact; the native exit and added bridge form one shared swing.
+            special_capital = kind == 'va' and char in 'IO'
+            suffix = CurvePath()
+            if not special_capital:
+                native = curves[(ord(char), glyphname == 'm.med', True)][-1]
+                cut = 0 if char == 'o' else min(range(1001), key=lambda i: native.point(i / 1000).imag) / 1000
+                if cut < 1:
+                    suffix = native.cropped(cut, 1).translated(shift)
+            swing = CurvePath(*suffix, *bridge)
+            length = swing.length()
+            half_parameter = swing.ilength(length / 2)
+            midpoint = swing.point(half_parameter)
+            assert abs(swing.cropped(0, half_parameter).length() - length / 2) < .001
+            parts = ([128 if char == 'o' else 30] if glyphname.endswith('.init') else []) + [ord(char)]
+            core = body if special_capital else combine(parts, trim_m=glyphname == 'm.med', keep_exit=False)[0]
+            connections[joined_name] = {'secondRegion': stroke(swing.cropped(half_parameter, 1), 23, pathops.LineCap.BUTT_CAP), 'core': core,
+                'midpoint': midpoint, 'length': length,
+                'oHoleClear': following == 'o' and intrusion < 1}
     letters = ' '.join(g for g in glyphs if g not in ('.notdef', 'space'))
     features = [f'@Letters = [{letters}];']
     if kind == 'la':
@@ -159,8 +210,8 @@ def build(kind):
     builder.setupGlyf(glyphs)
     builder.setupHorizontalMetrics(metrics)
     builder.setupHorizontalHeader(ascent=800, descent=-350, lineGap=50)
-    builder.setupNameTable({'familyName': name, 'styleName': 'Regular', 'uniqueFontIdentifier': name + '1.1',
-        'fullName': name, 'psName': name, 'version': 'Version 1.100',
+    builder.setupNameTable({'familyName': name, 'styleName': 'Regular', 'uniqueFontIdentifier': name + '1.2',
+        'fullName': name, 'psName': name, 'version': 'Version 1.200',
         'copyright': 'Letterforms: Walter Entenmann, schulschriften (2011-2021), LPPL 1.3c. OpenType adaptation and joins: Games project, 2026.',
         'licenseDescription': 'LaTeX Project Public License 1.3c or later', 'licenseInfoURL': 'https://www.latex-project.org/lppl/lppl-1-3c/'})
     builder.setupOS2(sTypoAscender=800, sTypoDescender=-350, sTypoLineGap=50, usWinAscent=800, usWinDescent=350)
@@ -171,12 +222,30 @@ def build(kind):
     builder.save(name + '.ttf')
     glyph_set = builder.font.getGlyphSet()
     outlines = {}
+    def svg_outline(path):
+        path.convertConicsToQuads(.01)
+        pen = SVGPathPen(None)
+        path.draw(RoundingPen(pen, roundFunc=lambda value: round(value, 3)))
+        return pen.getCommands()
     for glyphname in glyphs:
         pen = SVGPathPen(glyph_set)
         glyph_set[glyphname].draw(pen)
         glyph = builder.font['glyf'][glyphname]
         outlines[glyphname] = {'path': pen.getCommands(), 'advance': metrics[glyphname][0],
             'bounds': [getattr(glyph, key, 0) for key in ('xMin', 'yMin', 'xMax', 'yMax')]}
+        if glyphname in connections:
+            data = connections[glyphname]
+            whole = pathops.Path()
+            glyph_set[glyphname].draw(whole.getPen())
+            # Paint the exact whole glyph first. Recolor only the latter half of its shared
+            # swing; a perpendicular butt cap puts the boundary at half arc length. The
+            # existing body is excluded, so overhangs never inherit a neighbor's color.
+            second = pathops.op(whole, data['secondRegion'], pathops.PathOp.INTERSECTION)
+            second = pathops.op(second, data['core'], pathops.PathOp.DIFFERENCE)
+            midpoint = data['midpoint']
+            outlines[glyphname]['connection'] = {'secondPath':svg_outline(second),
+                'midpoint':[round(midpoint.real,3),round(midpoint.imag,3)],
+                'length':round(data['length'],3),'fraction':.5,'oHoleClear':data['oHoleClear']}
     return {'unitsPerEm': 1000, 'height': 1200, 'top': 825, 'glyphs': outlines,
         'initial': {c: c + '.init' for c in 'iuo'} if kind == 'la' else {},
         'medial': {'m': 'm.med'} if kind == 'la' else {},

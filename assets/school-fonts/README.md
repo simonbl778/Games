@@ -14,7 +14,8 @@ umbenannten Schriften **SilbenLA** und **SilbenVA**, mit OpenType-Anschlüssen
 und Anfangs-/Endformen für den Zeichenvorrat des Silbengenerators.
 Die Dateien der Originalschriften werden nicht überschrieben.
 Der Build erzeugt außerdem `school-outlines.js` aus denselben TTF-Konturen.
-Die Spielanzeige färbt damit ganze Buchstaben einschließlich Überhängen.
+Die Spielanzeige färbt die Buchstabenkörper einschließlich Überhängen.
+Gemeinsame Verbindungsschwünge wechseln an Silbengrenzen auf halber Bogenlänge die Farbe.
 
 Mit installiertem MetaPost inklusive `mfplain.mp` und den Python-Abhängigkeiten:
 
@@ -29,4 +30,4 @@ nicht; es verwendet die fertig eingebundenen TTF-Dateien offline.
 
 Die App-Stilprüfung lässt sich auch direkt mit einer APK ausführen:
 
-    python3 scripts/check-app-styles.py --apk downloads/Silbengenerator-1.3.2.apk
+    python3 scripts/check-app-styles.py --apk downloads/Silbengenerator-1.3.3.apk
