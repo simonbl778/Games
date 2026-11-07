@@ -61,3 +61,19 @@ Vergleichsproben decken insbesondere `mimu`, `Momi`, `Imo`, `Omi`, `Umo`, `imu` 
 
 Beide Schriften, die Lizenz und die Spieldateien werden lokal in Website,
 Offlinecache und APK mitgeliefert. Zur Laufzeit erfolgt kein externer Fontabruf.
+
+## App-Darstellung ab Version 1.3.2
+
+Die verwendeten LA-/VA-Konturen wurden erneut mit den verlinkten Wiki-Tafeln
+verglichen und entsprechen der bestätigten Schriftprobe. Die Spielgrafik wird
+von den Symbol-Stilen der Schaltflächen getrennt: keine zusätzlich gezeichneten
+Konturlinien und keine Verfärbung durch geerbtes `stroke: currentColor`.
+Die Druckschrift verwendet ebenfalls die rote zweite und vierte Silbe.
+
+`scripts/check-app-styles.py` prüft dafür die echten App-Stilregeln zusammen mit
+den von `renderChain` erzeugten Elementen. Die Prüfung kann mit `--apk` direkt
+die HTML-, CSS- und Darstellungsdateien einer APK verwenden. Sie reproduziert
+die Stilprobleme der Ausgabe 1.3.1. Das ist eine CSS-Integrationsprüfung;
+ein Test auf einem physischen Android-Gerät wird dadurch nicht ersetzt.
+Die Startseite zeigt die jeweilige Version an; der APK-Build vergleicht diese
+Anzeige mit dem Android-Manifest.

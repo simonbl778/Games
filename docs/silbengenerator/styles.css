@@ -7,7 +7,7 @@ body{margin:0;background:var(--paper);color:var(--ink);-webkit-tap-highlight-col
 button,input{font:inherit}
 button{cursor:pointer;touch-action:manipulation}
 button:focus-visible,input:focus-visible+.number-face,a:focus-visible{outline:3px solid #b18124;outline-offset:5px}
-button svg,.landscape-note svg,.rotate-hint svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+button>svg,.landscape-note svg,.rotate-hint svg,.tap-hint svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 .app-shell{max-width:1400px;min-height:100vh;min-height:100svh;margin:auto;padding:24px clamp(20px,5vw,68px) 18px;padding-left:max(clamp(20px,5vw,68px),env(safe-area-inset-left));padding-right:max(clamp(20px,5vw,68px),env(safe-area-inset-right));display:flex;flex-direction:column}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:50px;flex-shrink:0}
 .brand{display:flex;align-items:center;gap:12px}
@@ -68,7 +68,7 @@ legend{padding:0;font-size:29px;letter-spacing:-.8px;line-height:1.22;font-weigh
 .reading-card:active{background:#f0f2e9}
 .reading-label{position:absolute;top:20px;left:12px;right:12px;text-align:center;color:var(--muted);font-size:11px;letter-spacing:.2px;font-weight:400}
 .chain-text{display:block;font-family:"Trebuchet MS",Arial,sans-serif;font-weight:500;white-space:nowrap;line-height:1.1;letter-spacing:.01em;font-size:100px;font-variant-ligatures:none;text-align:center;max-width:none}
-.alternating-syllables .chain-syllable:nth-child(even){color:#5b7160}
+.alternating-syllables .chain-syllable:nth-child(even){color:var(--syllable-alt)}
 .tap-hint{position:absolute;bottom:18px;left:10px;right:10px;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--muted);font-size:12px;line-height:1.4;font-weight:400}
 .tap-hint svg{width:18px;height:20px}
 .game-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--muted);font-size:11px;min-height:43px;flex-shrink:0}
@@ -119,6 +119,7 @@ dialog .eyebrow{font-size:9px;padding-right:18px}
 .cursive-reading .chain-text{line-height:1.2;padding-inline:.1em}
 .cursive-reading .syllable-preview span{line-height:1.8}
 .cursive-reading .chain-text.school-script-run{line-height:0}
-.school-script-run>svg{display:block;max-width:none}
+.school-script-run>svg{display:block;max-width:none;fill:none;stroke:none;stroke-width:0}
+.school-script-run path{stroke:none}
 @media(orientation:landscape) and (max-height:560px){.font-choice{margin-bottom:12px}.font-choice legend{font-size:10px;margin-bottom:5px}.font-face{min-height:64px;font-size:9px;gap:0;padding:2px 6px}.font-sample{font-size:21px}.cursive-sample{font-size:28px}}
 @media(orientation:landscape) and (max-height:370px){.font-face{min-height:58px}.font-sample{font-size:18px}.cursive-sample{font-size:24px}.font-choice{margin-bottom:9px}}
