@@ -21,7 +21,12 @@ Mit installiertem MetaPost inklusive `mfplain.mp` und den Python-Abhängigkeiten
     python3 -m pip install -r assets/school-fonts/requirements.txt
     python3 scripts/build-school-fonts.py
     python3 scripts/check-school-fonts.py
+    python3 scripts/check-app-styles.py
 
 Falls `mfplain.mp` nicht im normalen MetaPost-Suchpfad liegt, kann sein Ordner
 über `--metapost-base` angegeben werden. Das Spiel benötigt diese Werkzeuge
 nicht; es verwendet die fertig eingebundenen TTF-Dateien offline.
+
+Die App-Stilprüfung lässt sich auch direkt mit einer APK ausführen:
+
+    python3 scripts/check-app-styles.py --apk downloads/Silbengenerator-1.3.2.apk

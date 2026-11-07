@@ -11,6 +11,8 @@ export function renderChain(element, chain, alternateColors = false, readingFont
     const run = layoutSchoolChain(chain, readingFont, alternateColors);
     const document = element.ownerDocument;
     const svg = document.createElementNS(SVG_NAMESPACE, 'svg');
+    svg.setAttribute('class', 'school-script-svg');
+    svg.setAttribute('stroke', 'none');
     svg.setAttribute('viewBox', `${run.left} ${-run.top} ${run.width} ${run.height}`);
     svg.setAttribute('aria-hidden', 'true');
     svg.setAttribute('focusable', 'false');
@@ -25,6 +27,7 @@ export function renderChain(element, chain, alternateColors = false, readingFont
       path.setAttribute('d', glyph.path);
       path.setAttribute('transform', `translate(${glyph.x} 0)`);
       path.setAttribute('fill', glyph.color);
+      path.setAttribute('stroke', 'none');
       path.setAttribute('data-character', glyph.character);
       path.setAttribute('data-syllable', String(glyph.syllable));
       group.append(path);

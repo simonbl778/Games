@@ -20,11 +20,11 @@ Eine große Silbenkette lesen, antippen und weiterlesen.
 ## Spielen
 
 **Eigenständige Silbengenerator-App ohne ChatGPT-Anmeldung:**
-[APK direkt über die Spielseite herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.3.1.apk) ·
-[GitHub-Download](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.3.1.apk).
+[APK direkt über die Spielseite herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.3.2.apk) ·
+[GitHub-Download](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.3.2.apk).
 Diese Datei lässt sich auch auf OneDrive ablegen und per Link weitergeben.
 Die App funktioniert ab Android 8 und von Anfang an vollständig offline.
-Version 1.3.1 lässt sich mit derselben Signatur über 1.1.x, 1.2.x und 1.3.0 installieren. Die Buchstabenanschlüsse schwingen ohne waagerechte Absätze ineinander. Die Farbhilfe färbt jeden vollständigen Buchstaben einschließlich schräger Überhänge in der Farbe seiner tatsächlichen Silbe.
+Version 1.3.2 lässt sich mit derselben Signatur über 1.1.x, 1.2.x und 1.3.x installieren. Die App-Darstellung verwendet die bestätigten Schreibschriftkonturen ohne zusätzliche Symbol-Konturlinien. Silbe zwei und vier sind auch bei Druckschrift dezent rot. Unten auf der Startseite steht zur Kontrolle **Version 1.3.2**.
 
 Beim Wechsel von einer alten Silbengenerator-APK (1.0.x) muss die alte App einmal deinstalliert werden: Version 1.1.0 hat einen neuen Signierschlüssel, weil der frühere private Schlüssel nach dem Neustart der Build-Umgebung nicht mehr vorlag. Dabei geht nur die letzte Silben-Auswahl verloren; es gibt keine gespeicherten Lernstände. Den neuen privaten Schlüssel für künftige Updates getrennt vom öffentlichen Repository aufbewahren.
 [Installation und Weitergabe](downloads/README.md) · [Android-Quellcode und Build](android/README.md)
@@ -179,4 +179,4 @@ npm run check
 - [GitHub: Eine Pages-Website erstellen](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
 - [MDN: Grenzen der Orientierungssperre](https://developer.mozilla.org/en-US/docs/Web/API/ScreenOrientation/lock)
 
-Games 1.1.0 · Silbengenerator 1.3.1 · Blitzblickzahlen 1.1.0 · 6. November 2026
+Games 1.1.0 · Silbengenerator 1.3.2 · Blitzblickzahlen 1.1.0 · 6. November 2026

@@ -55,6 +55,9 @@ def main() -> None:
     shutil.copy2(ROOT / "docs/silbengenerator/icons/icon-192.png", build / "res/drawable/app_icon.png")
     assets = build / "assets" / "silbengenerator"
     shutil.copytree(ROOT / "docs/silbengenerator", assets)
+    visible_version = f'<span id="app-version">Version {version}</span>'
+    if visible_version not in (assets / "index.html").read_text():
+        raise ValueError("The visible app version must match the Android manifest.")
 
     # The APK already contains every file. Keep the web game unchanged and
     # replace only PWA registration/install UI in the packaged copy.

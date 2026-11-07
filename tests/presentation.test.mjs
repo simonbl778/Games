@@ -58,6 +58,7 @@ for (const model of ['la', 'va']) {
     assert.equal(element.textContent, chain.text);
     const svg = element.children[0];
     assert.equal(svg.tag, 'svg');
+    assert.equal(svg.attributes.stroke, 'none');
     const paths = svg.children[1].children;
     const run = layoutSchoolChain(chain, model, true);
     assert.equal(paths.length, chain.text.length);
@@ -65,6 +66,7 @@ for (const model of ['la', 'va']) {
       assert.equal(path.tag, 'path');
       assert.equal(path.attributes.d, run.glyphs[index].path);
       assert.equal(path.attributes.fill, run.glyphs[index].color);
+      assert.equal(path.attributes.stroke, 'none');
       assert.equal(path.attributes.transform, `translate(${run.glyphs[index].x} 0)`);
       assert.equal(path.attributes['clip-path'], undefined);
       assert.equal(path.attributes.mask, undefined);
