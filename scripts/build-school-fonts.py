@@ -4,7 +4,7 @@
 Requires MetaPost (including mfplain.mp), fonttools, skia-pathops and svgpathtools.
 The original drawing programs supply the letterforms and join components;
 OpenType contextual forms and joins replace the original TeX ligature rules for the
-eight letters used by the game. VA I/O receive the requested outgoing joins.
+ten letters used by the game. VA I/O receive the requested outgoing joins.
 """
 from pathlib import Path
 import argparse, json, os, shutil, subprocess, tempfile
@@ -75,7 +75,7 @@ def build(kind):
         for code in parts:
             x += tfm.kerning.get(previous, {}).get(code, 0) * 1000
             transformed = pathops.Path()
-            load(code, trim_m, keep_exit or code not in (73, 77, 79, 85, 105, 109, 111, 117)).draw(TransformPen(transformed.getPen(), (1, 0, 0, 1, x, 0)))
+            load(code, trim_m, keep_exit or code not in (65, 73, 77, 79, 85, 97, 105, 109, 111, 117)).draw(TransformPen(transformed.getPen(), (1, 0, 0, 1, x, 0)))
             total = pathops.op(total, transformed, pathops.PathOp.UNION)
             x += tfm.chars[code]['width'] * 1000
             previous = code
@@ -87,11 +87,13 @@ def build(kind):
         path.stroke(width, cap, pathops.LineJoin.ROUND_JOIN, 10)
         path.convertConicsToQuads(.05)
         return path
-    load(111)
-    oval = strokes[(111, False, True)][0]
-    oval_area = pathops.Path()
-    parse_path(curves[(111, False, True)][0].d(), oval_area.getPen())
-    o_hole = pathops.op(oval_area, raw[(111, False, True)], pathops.PathOp.DIFFERENCE)
+    oval_holes = {}
+    for char in 'ao':
+        code = ord(char)
+        load(code)
+        oval_area = pathops.Path()
+        parse_path(curves[(code, False, True)][0].d(), oval_area.getPen())
+        oval_holes[char] = pathops.op(oval_area, raw[(code, False, True)], pathops.PathOp.DIFFERENCE)
     def add(glyphname, path, advance):
         pen = TTGlyphPen(None)
         path.draw(Cu2QuPen(pen, max_err=.25, reverse_direction=True))
@@ -100,12 +102,12 @@ def build(kind):
     for glyphname in ('.notdef', 'space'):
         add(glyphname, pathops.Path(), 300)
     variants = {}
-    for char in 'IMOUimou':
+    for char in 'AIMOUaimou':
         code = ord(char)
         body, advance = combine([code])
         variants[char] = (body, advance, 0, char)
-        if kind == 'la' and char in 'iuo':
-            prefix = 128 if char == 'o' else 30
+        if kind == 'la' and char in 'aiuo':
+            prefix = 128 if char in 'ao' else 30
             path, width = combine([prefix, code])
             shift = tfm.chars[prefix]['width'] * 1000
             variants[char + '.init'] = (path, width, shift, char)
@@ -116,10 +118,10 @@ def build(kind):
         add(glyphname, body, advance)
         # The original LA word-end forms avoid carrying a full joining stroke past the last letter.
         if kind == 'la' and char != 'o':
-            parts = ([128 if char == 'o' else 30] if glyphname.endswith('.init') else []) + [ord(char) + 64]
+            parts = ([128 if char in 'ao' else 30] if glyphname.endswith('.init') else []) + [ord(char) + 64]
             final, width = combine(parts, trim_m=glyphname == 'm.med')
             add(glyphname + '.fin', final, width)
-        for following in 'imou':
+        for following in 'aimou':
             medial_m = kind == 'la' and following == 'm'
             load(ord(following), trim_m=medial_m)
             current_strokes = strokes[(ord(char), glyphname == 'm.med', True)]
@@ -133,8 +135,8 @@ def build(kind):
                          else max((p for p in current_strokes[0] if abs(p.imag - 333) < 2), key=lambda p: p.real))
                 start_tangent = complex(1, 0)
             incoming = strokes[(ord(following), medial_m, True)][0]
-            if following == 'o':
-                # Attach to the outer upper-left arc; the closest point can be across the o's hole.
+            if following in 'ao':
+                # Attach to the outer upper-left oval arc; the closest point may be across its hole.
                 center_x = (min(p.real for p in incoming) + max(p.real for p in incoming)) / 2
                 center_y = (min(p.imag for p in incoming) + max(p.imag for p in incoming)) / 2
                 eligible = [i for i,p in enumerate(incoming)
@@ -158,10 +160,10 @@ def build(kind):
                 control2 = end - end_direction * handle
                 bridge = CurvePath(CubicBezier(start, control1, control2, end))
                 joined = pathops.op(body, stroke(bridge), pathops.PathOp.UNION)
-                if following != 'o':
+                if following not in 'ao':
                     break
                 hole = pathops.Path()
-                o_hole.draw(TransformPen(hole.getPen(), (1, 0, 0, 1, target_advance, 0)))
+                oval_holes[following].draw(TransformPen(hole.getPen(), (1, 0, 0, 1, target_advance, 0)))
                 intrusion = pathops.op(joined, hole, pathops.PathOp.INTERSECTION).area
                 outward = complex(-end_direction.imag, end_direction.real)
                 outside = min(((point-end).real*outward.real+(point-end).imag*outward.imag) for point in (start,control1))
@@ -169,11 +171,11 @@ def build(kind):
                     break
                 target_advance += 10
             else:
-                raise ValueError('Cannot connect to the outside of o: '+glyphname)
+                raise ValueError('Cannot connect to the outside of the following oval: '+glyphname)
             joined_name = glyphname + '.to.' + following
             add(joined_name, joined, target_advance)
             # Keep the letter body intact; the native exit and added bridge form one shared swing.
-            special_capital = kind == 'va' and char in 'IO'
+            special_capital = kind == 'va' and char in 'AIO'
             suffix = CurvePath()
             if not special_capital:
                 native = curves[(ord(char), glyphname == 'm.med', True)][-1]
@@ -185,19 +187,20 @@ def build(kind):
             half_parameter = swing.ilength(length / 2)
             midpoint = swing.point(half_parameter)
             assert abs(swing.cropped(0, half_parameter).length() - length / 2) < .001
-            parts = ([128 if char == 'o' else 30] if glyphname.endswith('.init') else []) + [ord(char)]
+            parts = ([128 if char in 'ao' else 30] if glyphname.endswith('.init') else []) + [ord(char)]
             core = body if special_capital else combine(parts, trim_m=glyphname == 'm.med', keep_exit=False)[0]
             connections[joined_name] = {'secondRegion': stroke(swing.cropped(half_parameter, 1), 23, pathops.LineCap.BUTT_CAP), 'core': core,
                 'midpoint': midpoint, 'length': length,
-                'oHoleClear': following == 'o' and intrusion < 1}
+                'oHoleClear': following == 'o' and intrusion < 1,
+                'ovalHoleClear': following in 'ao' and intrusion < 1}
     letters = ' '.join(g for g in glyphs if g not in ('.notdef', 'space'))
     features = [f'@Letters = [{letters}];']
     if kind == 'la':
-        features += ["lookup Initial { ignore sub @Letters [i u o]';"]
-        features += [f"sub {c}' by {c}.init;" for c in 'iuo'] + ['} Initial;']
+        features += ["lookup Initial { ignore sub @Letters [a i u o]';"]
+        features += [f"sub {c}' by {c}.init;" for c in 'aiuo'] + ['} Initial;']
         features += ["lookup Medial { sub @Letters m' by m.med; } Medial;"]
     features += ['lookup Join {']
-    features += [f"sub {g}' {'[m m.med]' if kind == 'la' and b == 'm' else b} by {g}.to.{b};" for g in variants for b in 'imou']
+    features += [f"sub {g}' {'[m m.med]' if kind == 'la' and b == 'm' else b} by {g}.to.{b};" for g in variants for b in 'aimou']
     features += ['} Join;']
     if kind == 'la':
         features += ["lookup Final { ignore sub @Letters' @Letters;"]
@@ -206,12 +209,12 @@ def build(kind):
     features += ['feature calt { ' + ('lookup Initial; lookup Medial; ' if kind == 'la' else '') + 'lookup Join; ' + ('lookup Final;' if kind == 'la' else '') + ' } calt;']
     builder = FontBuilder(1000, isTTF=True)
     builder.setupGlyphOrder(list(glyphs))
-    builder.setupCharacterMap({ord(c): c for c in 'IMOUimou'} | {32: 'space'})
+    builder.setupCharacterMap({ord(c): c for c in 'AIMOUaimou'} | {32: 'space'})
     builder.setupGlyf(glyphs)
     builder.setupHorizontalMetrics(metrics)
     builder.setupHorizontalHeader(ascent=800, descent=-350, lineGap=50)
-    builder.setupNameTable({'familyName': name, 'styleName': 'Regular', 'uniqueFontIdentifier': name + '1.2',
-        'fullName': name, 'psName': name, 'version': 'Version 1.200',
+    builder.setupNameTable({'familyName': name, 'styleName': 'Regular', 'uniqueFontIdentifier': name + '1.3',
+        'fullName': name, 'psName': name, 'version': 'Version 1.300',
         'copyright': 'Letterforms: Walter Entenmann, schulschriften (2011-2021), LPPL 1.3c. OpenType adaptation and joins: Games project, 2026.',
         'licenseDescription': 'LaTeX Project Public License 1.3c or later', 'licenseInfoURL': 'https://www.latex-project.org/lppl/lppl-1-3c/'})
     builder.setupOS2(sTypoAscender=800, sTypoDescender=-350, sTypoLineGap=50, usWinAscent=800, usWinDescent=350)
@@ -245,12 +248,13 @@ def build(kind):
             midpoint = data['midpoint']
             outlines[glyphname]['connection'] = {'secondPath':svg_outline(second),
                 'midpoint':[round(midpoint.real,3),round(midpoint.imag,3)],
-                'length':round(data['length'],3),'fraction':.5,'oHoleClear':data['oHoleClear']}
+                'length':round(data['length'],3),'fraction':.5,'oHoleClear':data['oHoleClear'],'ovalHoleClear':data['ovalHoleClear']}
     return {'unitsPerEm': 1000, 'height': 1200, 'top': 825, 'glyphs': outlines,
-        'initial': {c: c + '.init' for c in 'iuo'} if kind == 'la' else {},
+        'guides': [0, round(tfm.chars[97]['height'] * 1000, 3), round(tfm.chars[65]['height'] * 1000, 3)],
+        'initial': {c: c + '.init' for c in 'aiuo'} if kind == 'la' else {},
         'medial': {'m': 'm.med'} if kind == 'la' else {},
         'final': {g: g + '.fin' for g in variants if g + '.fin' in glyphs},
-        'joining': {g: {b: g + '.to.' + b for b in 'imou'} for g in variants}}
+        'joining': {g: {b: g + '.to.' + b for b in 'aimou'} for g in variants}}
 
 def main():
  parser=argparse.ArgumentParser(description=__doc__)

@@ -20,6 +20,20 @@ export function renderChain(element, chain, alternateColors = false, readingFont
     svg.style.height = `${run.height / run.unitsPerEm}em`;
     const title = document.createElementNS(SVG_NAMESPACE, 'title');
     title.textContent = chain.text;
+    const guides = document.createElementNS(SVG_NAMESPACE, 'g');
+    guides.setAttribute('class', 'school-script-guides');
+    for (const height of run.guides) {
+      const line = document.createElementNS(SVG_NAMESPACE, 'line');
+      line.setAttribute('x1', String(run.left));
+      line.setAttribute('x2', String(run.left + run.width));
+      line.setAttribute('y1', String(-height));
+      line.setAttribute('y2', String(-height));
+      line.setAttribute('stroke', 'var(--ink)');
+      line.setAttribute('stroke-width', '1');
+      line.setAttribute('stroke-opacity', '0.16');
+      line.setAttribute('vector-effect', 'non-scaling-stroke');
+      guides.append(line);
+    }
     const group = document.createElementNS(SVG_NAMESPACE, 'g');
     group.setAttribute('transform', 'scale(1 -1)');
     for (const glyph of run.glyphs) {
@@ -41,7 +55,7 @@ export function renderChain(element, chain, alternateColors = false, readingFont
         addPath(connection.secondPath, connection.color, connection.character, connection.syllable, 'connection-end');
       }
     }
-    svg.append(title, group);
+    svg.append(title, guides, group);
     element.replaceChildren(svg);
     return;
   }

@@ -48,7 +48,7 @@ function node(tag='span') {
 }
 const outputs=[];
 for(const model of ['print','la','va']) for(const colors of [false,true]) {
- const n=node(); renderChain(n,{text:'Momimuio',syllables:['mo','mi','mu','i','o']},colors,model);
+ const n=node(); renderChain(n,{text:'Amuaio',syllables:['a','mu','a','i','o']},colors,model);
  outputs.push({model,colors,node:n});
 }
 process.stdout.write(JSON.stringify(outputs));
@@ -95,7 +95,7 @@ process.stdout.write(JSON.stringify(outputs));
                 if node['style']:element.set('style',';'.join(k+':'+v for k,v in node['style'].items()))
                 element.text=node['value']
                 for child in node['children']:
-                    tag=('{http://www.w3.org/2000/svg}'+child['tag']) if child['tag'] in ('svg','g','path','title') else child['tag']
+                    tag=('{http://www.w3.org/2000/svg}'+child['tag']) if child['tag'] in ('svg','g','path','title','line') else child['tag']
                     populate(etree.SubElement(element,tag),child)
             populate(target,case['node'])
             computed={}
@@ -126,7 +126,12 @@ process.stdout.write(JSON.stringify(outputs));
             if case['model']!='print':
                 svg=target[0];assert computed[svg].get('stroke','none')=='none',(prefix,'icon outline leaked into word SVG',computed[svg].get('stroke'))
                 assert computed[svg]['width'].endswith('em') and computed[svg]['height']=='1.2em',prefix
-                for path in svg[1]:
+                assert len(svg[1])==3,(prefix,'three handwriting guide lines required')
+                for line in svg[1]:
+                    assert computed[line]['stroke']=='#253e38',(prefix,'missing guide stroke')
+                    assert computed[line]['stroke-width']=='1',(prefix,'guide stroke width')
+                    assert line.get('stroke-opacity')=='0.16' and line.get('vector-effect')=='non-scaling-stroke',prefix
+                for path in svg[2]:
                     index=int(path.get('data-syllable'))
                     color='#9b4b46' if case['colors'] and index%2 else '#253e38'
                     assert computed[path]['fill']==color,(prefix,index,computed[path]['fill'])

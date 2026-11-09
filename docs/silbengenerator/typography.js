@@ -15,6 +15,6 @@ export async function ensureReadingFont(fonts, value) {
   if (!fonts || typeof fonts.load !== 'function') {
     throw new Error('School handwriting could not be loaded.');
   }
-  const faces = await fonts.load('400 48px "' + family + '"', 'MI OUmimuiou');
+  const faces = await fonts.load('400 48px "' + family + '"', 'AMI OUmimuioua');
   if (!faces.length) throw new Error('School handwriting could not be loaded.');
 }

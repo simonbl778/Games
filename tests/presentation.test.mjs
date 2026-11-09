@@ -66,7 +66,7 @@ for (const model of ['la', 'va']) {
     const svg = element.children[0];
     assert.equal(svg.tag, 'svg');
     assert.equal(svg.attributes.stroke, 'none');
-    const paths = svg.children[1].children;
+    const paths = svg.children[2].children;
     const run = layoutSchoolChain(chain, model, true);
     const expected = run.glyphs.flatMap(glyph => [
       { ...glyph, part: 'letter' },
@@ -85,7 +85,7 @@ for (const model of ['la', 'va']) {
       assert.equal(path.attributes.mask, undefined);
     });
     renderChain(element, chain, false, model);
-    assert.ok(element.children[0].children[1].children.every((path) => path.attributes.fill === 'var(--ink)'));
+    assert.ok(element.children[0].children[2].children.every((path) => path.attributes.fill === 'var(--ink)'));
     renderChain(element, chain, false, 'print');
     assert.equal(element.classList.contains('school-script-run'), false);
     assert.equal(element.children.length, 0);
@@ -101,7 +101,7 @@ test('das innere LA-m verwendet den anschließenden Bogen statt des einzelnen An
 
 test('falsche Silbengrenzen oder nicht verfügbare Buchstaben werden nicht stillschweigend eingefärbt', () => {
   assert.throws(() => layoutSchoolChain({ text: 'mimu', syllables: ['mo', 'mu'] }, 'la'));
-  assert.throws(() => layoutSchoolChain({ text: 'ma', syllables: ['ma'] }, 'va'));
+  assert.throws(() => layoutSchoolChain({ text: 'me', syllables: ['me'] }, 'va'));
 });
 
 for (const model of ['la', 'va']) {
@@ -117,5 +117,32 @@ for (const model of ['la', 'va']) {
     }
     assert.equal(run.glyphs[1].connection.oHoleClear,true);
     assert.equal(layoutSchoolChain({text:'Uomi',syllables:['U','o','mi']},model,true).glyphs[0].connection.oHoleClear,true);
+  });
+}
+
+for (const model of ['la','va']) {
+  test(`${model}: drei dezente Hilfslinien liegen hinter den Buchstaben auf den Schrifthöhen`, () => {
+    const element=textElement();
+    const chain={text:'Amuio',syllables:['a','mu','i','o']};
+    const run=layoutSchoolChain(chain,model,true);
+    renderChain(element,chain,true,model);
+    const svg=element.children[0];const lines=svg.children[1].children;
+    assert.equal(lines.length,3);
+    assert.equal(run.guides[0],0);
+    assert.ok(run.guides[1]>330 && run.guides[1]<335);
+    assert.ok(Math.abs(run.guides[2]-2*run.guides[1])<.01);
+    assert.deepEqual(lines.map(line=>Number(line.attributes.y1)),run.guides.map(y=>0-y));
+    for(const line of lines) {
+      assert.equal(line.tag,'line');
+      assert.equal(line.attributes.y1,line.attributes.y2);
+      assert.equal(Number(line.attributes.x1),run.left);
+      assert.equal(Number(line.attributes.x2),run.left+run.width);
+      assert.equal(line.attributes['stroke-opacity'],'0.16');
+      assert.equal(line.attributes['stroke-width'],'1');
+      assert.equal(line.attributes['vector-effect'],'non-scaling-stroke');
+    }
+    renderChain(element,chain,true,'print');
+    assert.ok(element.children.every(child=>child.tag!=='svg'));
+    assert.equal(element.textContent,chain.text);
   });
 }

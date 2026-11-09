@@ -24,11 +24,8 @@ outlines = json.loads(source.split('export const SCHOOL_OUTLINES = ', 1)[1].stri
 for model in ('LA', 'VA'):
     path = ROOT / 'docs/silbengenerator/fonts' / f'Silben{model}.ttf'
     font = TTFont(path)
-    assert all(ord(char) in font.getBestCmap() for char in 'IMOUimou ')
+    assert all(ord(char) in font.getBestCmap() for char in 'AIMOUaimou ')
     glyph_set = font.getGlyphSet()
-    oval = pathops.Path()
-    parse_path(outlines[model.lower()]['glyphs']['o']['path'], oval.getPen())
-    hole = next(contour for contour in oval.contours if not contour.clockwise)
     for name, outline in outlines[model.lower()]['glyphs'].items():
         pen = SVGPathPen(glyph_set)
         glyph_set[name].draw(pen)
@@ -42,16 +39,19 @@ for model in ('LA', 'VA'):
             parse_path(connection['secondPath'], recolor.getPen())
             # Export rounding may differ by much less than a pixel; no foreign ink is added.
             assert pathops.op(recolor, whole, pathops.PathOp.DIFFERENCE).area < .02, (model, name, 'color extends outside glyph')
-            if name.endswith('.to.o'):
+            if name.endswith(('.to.o','.to.a')):
                 positioned_hole = pathops.Path()
-                hole.draw(TransformPen(positioned_hole.getPen(), (1, 0, 0, 1, outline['advance'], 0)))
+                target_oval = pathops.Path()
+                parse_path(outlines[model.lower()]['glyphs'][name[-1]]['path'], target_oval.getPen())
+                target_hole = next(contour for contour in target_oval.contours if not contour.clockwise)
+                target_hole.draw(TransformPen(positioned_hole.getPen(), (1, 0, 0, 1, outline['advance'], 0)))
                 intrusion = pathops.op(whole, positioned_hole, pathops.PathOp.INTERSECTION).area
                 # Allow tiny edge differences from integer TTF coordinates; reject an oval-crossing slash.
-                assert intrusion < (5 if name == 'U.to.o' else 150), (model, name, 'stroke crosses o interior', intrusion)
+                assert intrusion < (5 if name == 'U.to.o' else 150), (model, name, 'stroke crosses following oval interior', intrusion)
     expected = []
     shaper = hb.Font(hb.Face(path.read_bytes()))
     for length in range(1, 6):
-        for parts in itertools.product(('mo', 'mi', 'mu', 'i', 'o', 'u'), repeat=length):
+        for parts in itertools.product(('mo', 'mi', 'mu', 'i', 'o', 'u', 'a'), repeat=length):
             lower = ''.join(parts)
             for text in (lower, lower.capitalize()):
                 buffer = hb.Buffer()
@@ -77,7 +77,7 @@ process.stdout.write(JSON.stringify(texts.map(text => {
     for size in (180, 400):
         face = ImageFont.truetype(str(path), size)
         for length in (2, 3):
-            for chars in itertools.product('imou', repeat=length):
+            for chars in itertools.product('aimou', repeat=length):
                 lower = ''.join(chars)
                 for text in (lower, lower.capitalize()):
                     mask = Image.new('L', (int(face.getlength(text)) + 80, size + 100))
@@ -85,4 +85,4 @@ process.stdout.write(JSON.stringify(texts.map(text => {
                     _, components = label(np.array(mask) > 100, structure=np.ones((3, 3)))
                     # One joined body; every lowercase i contributes a separate dot.
                     assert components == 1 + text.count('i'), (model, size, text, components)
-    print(model + ': exact font contours and HarfBuzz forms; connected joins; clear U/o oval; half-swing recoloring stays inside glyphs.')
+    print(model + ': exact font contours and HarfBuzz forms; connected joins; clear a/o ovals; half-swing recoloring stays inside glyphs.')

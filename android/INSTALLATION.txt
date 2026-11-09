@@ -1,7 +1,7 @@
-Silbengenerator - verbesserte o-Anschluesse und Silbenfarben 1.3.3
+Silbengenerator - a/A und dezente Schreiblinien 1.4.0
 
 1. APK auf das Android-Handy herunterladen und oeffnen.
-2. Ist Version 1.1.x, 1.2.x oder 1.3.x installiert: normal darueber installieren.
+2. Ist Version 1.1.x, 1.2.x, 1.3.x oder 1.4.x installiert: normal darueber installieren.
    Deinstallieren ist nicht erforderlich; der Signierschluessel ist gleich.
 3. Nur beim Wechsel von einer alten APK aus 1.0.x: alte App einmal deinstallieren.
 4. Falls Android fragt: der verwendeten App die Installation aus dieser Quelle erlauben.
@@ -16,8 +16,9 @@ Alle Schriften, Lizenzen und Spieldateien sind lokal enthalten.
 Ohne Internet oder ChatGPT-Konto nutzbar.
 Android 8 oder neuer mit aktuellem Android System WebView erforderlich.
 
-Korrigiert: U schliesst aussen am kleinen o an, ohne Strich durch das Oval.
-An Silbengrenzen wechselt die Farbe in der Mitte des Verbindungsschwungs.
-Die Buchstabenkoerper und ihre schraegen Ueberhaenge behalten ihre Silbenfarbe.
+Neu: a ist als einzelner Baustein enthalten; am Kettenanfang auch als A.
+LA und VA haben drei dezente Hilfslinien: Grundlinie, Kleinbuchstabenhoehe,
+Grossbuchstabenhoehe. Druckschrift hat keine Hilfslinien.
+Die vertrauten Buchstabenformen, Anschluesse und mittigen Farbgrenzen bleiben.
 
-Nach der Installation steht unten auf der Startseite: Version 1.3.3.
+Nach der Installation steht unten auf der Startseite: Version 1.4.0.
