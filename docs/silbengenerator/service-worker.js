@@ -1,5 +1,5 @@
 /* Increase VERSION whenever any shipped game file changes. */
-const VERSION = '1.3.3';
+const VERSION = '1.4.0';
 const CACHE_PREFIX = `silbengenerator:${self.registration.scope}:`;
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
 const ASSETS = [

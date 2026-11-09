@@ -2,8 +2,8 @@
 
 Die App bietet **Druckschrift** (Standard), **Lateinische Ausgangsschrift** (LA)
 und **Vereinfachte Ausgangsschrift** (VA) als getrennte Auswahlmöglichkeiten.
-Die lokalen Schriften `SilbenLA.ttf` und `SilbenVA.ttf` bilden die acht vom Spiel
-verwendeten Zeichen `M I O U m i o u` sowie Leerzeichen ab.
+Die lokalen Schriften `SilbenLA.ttf` und `SilbenVA.ttf` bilden die zehn vom Spiel
+verwendeten Zeichen `A M I O U a m i o u` sowie Leerzeichen ab.
 
 ## Schriftmodelle und Vorlagen
 
@@ -13,7 +13,7 @@ verwendeten Zeichen `M I O U m i o u` sowie Leerzeichen ab.
 
 Baden-Württemberg sieht mehrere Schriftmodelle vor. Das ist keine Zulassung
 einer konkreten digitalen Schriftdatei. Die LA hat unter anderem den Anstrich
-am kleinen `i`, `u` und `o` sowie andere Großbuchstaben als die VA. Die VA-Tafel
+am kleinen `a`, `i`, `u` und `o` sowie andere Großbuchstaben als die VA. Die VA-Tafel
 zeigt das kleine `i` ohne zusätzlichen vorgeschalteten Anstrich; diese Form
 bleibt in der VA-Auswahl erhalten.
 
@@ -95,3 +95,17 @@ Der vollständige Originalpfad liegt darunter; nur der Verbindungsteil wird
 Die Schriftprüfung kontrolliert zusätzlich den freien Innenraum beim Anschluss
 `Uo` und dass die übermalte Verbindung innerhalb der tatsächlichen Kontur liegt.
 Die Vergleichsprobe enthält `u|i|o`, `U|o|mi`, `U|o` und `mi|mu` in LA und VA.
+
+## a/A und Hilfslinien ab Version 1.4.0
+
+Beide lokalen Schriften enthalten jetzt auch `a` und `A` aus denselben
+unveränderten Originalquellen. Der LA-Anstrich vor `a` folgt der ursprünglichen
+Ligaturtabelle. Anschlüsse an `a` verlaufen außen am Oval wie bei `o`.
+Alle bisherigen Buchstabenkonturen und Abstände bleiben unverändert.
+
+Nur in den beiden Schreibschriftarten liegen drei feine Linien hinter der
+Silbenkette: Grundlinie, Kleinbuchstabenhöhe und Großbuchstabenhöhe. Ihre Lage
+stammt aus den Schriftmetriken; sie skalieren gemeinsam mit den Buchstaben.
+Die Strichdicke bleibt ein Bildpunkt, mit 16 Prozent Deckkraft. Druckschrift
+hat keine Hilfslinien. Die Linien verändern weder die Farbzuordnung noch die
+Verbindungen und werden in der Offline-APK ebenfalls lokal gezeichnet.

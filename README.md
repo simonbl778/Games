@@ -20,11 +20,11 @@ Eine große Silbenkette lesen, antippen und weiterlesen.
 ## Spielen
 
 **Eigenständige Silbengenerator-App ohne ChatGPT-Anmeldung:**
-[APK direkt über die Spielseite herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.3.3.apk) ·
-[GitHub-Download](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.3.3.apk).
+[APK direkt über die Spielseite herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.4.0.apk) ·
+[GitHub-Download](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.4.0.apk).
 Diese Datei lässt sich auch auf OneDrive ablegen und per Link weitergeben.
 Die App funktioniert ab Android 8 und von Anfang an vollständig offline.
-Version 1.3.3 lässt sich mit derselben Signatur über 1.1.x, 1.2.x und 1.3.x installieren. Der Anschluss von großem U an kleines o bleibt außerhalb des Ovals. An Silbengrenzen wechselt die Farbe in der Mitte des gemeinsamen Verbindungsschwungs; Buchstabenkörper und schräge Überhänge behalten ihre Silbenfarbe. Unten auf der Startseite steht zur Kontrolle **Version 1.3.3**.
+Version 1.4.0 lässt sich mit derselben Signatur über 1.1.x, 1.2.x, 1.3.x und 1.4.x installieren. Neu ist der einzelne Baustein **a**, am Kettenanfang auch als **A**. LA und VA zeigen drei dezente Hilfslinien auf Grundlinie, Kleinbuchstabenhöhe und Großbuchstabenhöhe. Druckschrift bleibt ohne Linien. Die Verbindungen und mittigen Silbenfarbwechsel bleiben erhalten. Unten auf der Startseite steht zur Kontrolle **Version 1.4.0**.
 
 Beim Wechsel von einer alten Silbengenerator-APK (1.0.x) muss die alte App einmal deinstalliert werden: Version 1.1.0 hat einen neuen Signierschlüssel, weil der frühere private Schlüssel nach dem Neustart der Build-Umgebung nicht mehr vorlag. Dabei geht nur die letzte Silben-Auswahl verloren; es gibt keine gespeicherten Lernstände. Den neuen privaten Schlüssel für künftige Updates getrennt vom öffentlichen Repository aufbewahren.
 [Installation und Weitergabe](downloads/README.md) · [Android-Quellcode und Build](android/README.md)
@@ -54,7 +54,7 @@ Die Browseransicht in einer anderen App kann Installieren, Vollbild oder Drehen 
 
 ## Spielregeln
 
-- Verfügbare Bausteine: **Mo, Mi, Mu, i, o, u**.
+- Verfügbare Bausteine: **Mo, Mi, Mu, i, o, u, a**.
 - Die gewählte Zahl ist eine **Höchstzahl**, keine feste Kettenlänge. Bei `1` erscheint immer eine Silbe, bei `2` zufällig eine oder zwei. Bei `3` entstehen Ketten aus zwei oder drei, bei `4` aus drei oder vier und bei `5` aus vier oder fünf Bausteinen.
 - Jeder einzelne Vokal zählt als eine Silbe. `iou` besteht damit aus drei Bausteinen.
 - Jeder Baustein kann innerhalb derselben Kette mehrfach vorkommen.
@@ -123,7 +123,7 @@ Diese Veröffentlichung macht das Spiel öffentlich erreichbar. Das Repository i
 Die Bausteine stehen an genau einer Stelle: [`docs/silbengenerator/config.js`](docs/silbengenerator/config.js).
 
 ```js
-export const SYLLABLES = Object.freeze(['Mo', 'Mi', 'Mu', 'i', 'o', 'u']);
+export const SYLLABLES = Object.freeze(['Mo', 'Mi', 'Mu', 'i', 'o', 'u', 'a']);
 ```
 
 Neue Bausteine dort ergänzen. Die Logik normalisiert alle Bausteine zunächst auf Kleinschreibung und behandelt jeden Listeneintrag als eine Silbe. Die erwartete Bausteinliste im entsprechenden Test bei einer absichtlichen Änderung mit anpassen.
@@ -179,4 +179,4 @@ npm run check
 - [GitHub: Eine Pages-Website erstellen](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
 - [MDN: Grenzen der Orientierungssperre](https://developer.mozilla.org/en-US/docs/Web/API/ScreenOrientation/lock)
 
-Games 1.1.0 · Silbengenerator 1.3.3 · Blitzblickzahlen 1.1.0 · 7. November 2026
+Games 1.1.0 · Silbengenerator 1.4.0 · Blitzblickzahlen 1.1.0 · 9. November 2026

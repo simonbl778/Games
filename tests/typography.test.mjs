@@ -27,7 +27,7 @@ test(`${value}: Schreibschrift wartet auf das jeweils richtige lokale Schriftmod
     return [{}];
   } }, value);
   assert.equal(query, `400 48px "${family}"`);
-  assert.equal(sample, 'MI OUmimuiou');
+  assert.equal(sample, 'AMI OUmimuioua');
 });
 
 test(`${value}: fehlende Schreibschrift wird gemeldet statt unbemerkt durch Druckschrift ersetzt`, async () => {

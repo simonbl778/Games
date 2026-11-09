@@ -32,5 +32,6 @@ export function layoutSchoolChain(chain, model, alternateColors = false) {
   // Include italic overhangs. Only the shared swing changes color, never a band across letters.
   left -= 20;
   right = Math.max(right, advance) + 20;
-  return { glyphs, left, width: right - left, height: font.height, top: font.top, unitsPerEm: font.unitsPerEm };
+  return { glyphs, left, width: right - left, height: font.height, top: font.top,
+    unitsPerEm: font.unitsPerEm, guides: font.guides };
 }

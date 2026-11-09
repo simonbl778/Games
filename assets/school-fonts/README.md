@@ -30,4 +30,4 @@ nicht; es verwendet die fertig eingebundenen TTF-Dateien offline.
 
 Die App-Stilprüfung lässt sich auch direkt mit einer APK ausführen:
 
-    python3 scripts/check-app-styles.py --apk downloads/Silbengenerator-1.3.3.apk
+    python3 scripts/check-app-styles.py --apk downloads/Silbengenerator-1.4.0.apk

@@ -12,7 +12,7 @@ function sequence(...values) {
 }
 
 test('die konfigurierbaren Bausteine entsprechen der Vorgabe', () => {
-  assert.deepEqual(SYLLABLES, ['Mo', 'Mi', 'Mu', 'i', 'o', 'u']);
+  assert.deepEqual(SYLLABLES, ['Mo', 'Mi', 'Mu', 'i', 'o', 'u', 'a']);
   assert.ok(Object.isFrozen(SYLLABLES));
   assert.equal(validateMaxSyllables(DEFAULT_MAX_SYLLABLES), DEFAULT_MAX_SYLLABLES);
 });
@@ -32,13 +32,13 @@ test('jede Höchstzahl hält ihre erlaubte Unter- und Obergrenze ein', () => {
 });
 
 test('einzelne Vokale zählen jeweils als eine Silbe', () => {
-  const chain = generateChain(3, { random: sequence(0.99, 0.5, 0.7, 0.99, 0.99) });
+  const chain = generateChain(3, { random: sequence(0.99, 0.5, 0.7, 5.5 / SYLLABLES.length, 0.99) });
   assert.deepEqual(chain, { text: 'iou', syllables: ['i', 'o', 'u'], count: 3 });
 });
 
-test('alle sechs verfügbaren Bausteine können ausgewählt werden', () => {
+test('alle sieben verfügbaren Bausteine können ausgewählt werden', () => {
   for (let index = 0; index < SYLLABLES.length; index += 1) {
-    const chain = generateChain(1, { random: sequence(0.5, (index + 0.5) / 6, 0.99) });
+    const chain = generateChain(1, { random: sequence(0.5, (index + 0.5) / SYLLABLES.length, 0.99) });
     assert.equal(chain.text, SYLLABLES[index].toLowerCase());
     assert.equal(chain.count, 1);
   }
@@ -65,17 +65,17 @@ test('gleiche Vokale werden auch hinter Mo, Mi und Mu normalerweise vermieden', 
   for (const first of normalized) {
     const vowel = first.slice(-1);
     const chain = generateChain(3, {
-      random: sequence(0, (normalized.indexOf(first) + 0.5) / 6,
-        (normalized.indexOf(vowel) + 0.5) / 6, 0.5, 0, 0.9),
+      random: sequence(0, (normalized.indexOf(first) + 0.5) / SYLLABLES.length,
+        (normalized.indexOf(vowel) + 0.5) / SYLLABLES.length, 0.5, 0, 0.9),
     });
     assert.equal(chain.text, first + 'mo');
     assert.equal(chain.count, 2);
-    assert.ok(!/(ii|oo|uu)/i.test(chain.text));
+    assert.ok(!/(aa|ii|oo|uu)/i.test(chain.text));
   }
 });
 
 test('eine doppelte Vokalgrenze bleibt als seltene Ausnahme möglich', () => {
-  const chain = generateChain(3, { random: sequence(0, 0.1, 0.75, 0, 0.1) });
+  const chain = generateChain(3, { random: sequence(0, 0.1, 4.5 / SYLLABLES.length, 0, 0.1) });
   assert.equal(chain.text, 'Moo');
   assert.deepEqual(chain.syllables, ['mo', 'o']);
 });
@@ -106,7 +106,7 @@ test('die Vermeidung gleicher Vokale endet auch mit konstantem Zufall', () => {
     return 0.7;
   } });
   assert.equal(chain.count, 3);
-  assert.ok(!/(ii|oo|uu)/i.test(chain.text));
+  assert.ok(!/(aa|ii|oo|uu)/i.test(chain.text));
 });
 
 test('eine identische vorherige Anzeige wird erneut gezogen', () => {
@@ -141,5 +141,12 @@ test('ungültige Zufallsquellen werden zurückgewiesen', () => {
   assert.throws(() => generateChain(1, { random: 0.5 }), TypeError);
   for (const value of [-0.01, 1, Infinity, NaN, '0.5']) {
     assert.throws(() => generateChain(1, { random: () => value }), RangeError);
+  }
+});
+
+test('a zählt als eigene Silbe und kann am Kettenanfang auch groß erscheinen', () => {
+  for (const [letter, caseDraw] of [['a', .9], ['A', .1]]) {
+    const chain = generateChain(1, {random: sequence(0, 6.5 / SYLLABLES.length, caseDraw)});
+    assert.deepEqual(chain,{text:letter,syllables:['a'],count:1});
   }
 });
