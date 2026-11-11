@@ -7,6 +7,11 @@ import zipfile
 
 root = Path(__file__).resolve().parents[1]
 release = json.loads((root / 'android/blitzblickzahlen/release.json').read_text())
+config = json.loads((root / 'android/blitzblickzahlen/app.json').read_text())
+backup = json.loads((root / 'android/blitzblickzahlen/signing-backup.json').read_text())
+for field in ['applicationId', 'versionName', 'versionCode', 'minSdk', 'targetSdk']:
+    assert release[field] == config[field], f'Release configuration differs: {field}'
+assert release['certificateSha256'] == backup['certificateSha256'], 'APK identity differs from its private backup'
 apk_path = root / release['apk']
 assert hashlib.sha256(apk_path.read_bytes()).hexdigest() == release['sha256'], 'APK checksum differs'
 assert apk_path.stat().st_size == release['sizeBytes'], 'APK size differs'
@@ -20,6 +25,7 @@ with zipfile.ZipFile(apk_path) as apk:
     names = set(apk.namelist())
     assert {'AndroidManifest.xml', 'classes.dex', 'resources.arsc'} <= names
     assert not any(name.endswith(('.p12', '.jks', '.keystore')) for name in names)
+    assert not any(name.endswith('password.txt') or 'signaturschluessel' in name.lower() or 'schluessel-privat' in name.lower() for name in names)
     game = root / 'docs/blitzblickzahlen'
     for path in game.rglob('*'):
         if not path.is_file(): continue

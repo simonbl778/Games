@@ -32,7 +32,7 @@ public final class MainActivity extends Activity {
         settings.setAllowFileAccess(false);
         settings.setAllowContentAccess(false);
         settings.setBlockNetworkLoads(true);
-        settings.setUserAgentString(settings.getUserAgentString() + " BlitzblickzahlenAndroid/1.1.0");
+        settings.setUserAgentString(settings.getUserAgentString() + " BlitzblickzahlenAndroid/1.2.1");
         game.setWebChromeClient(new WebChromeClient());
         game.setWebViewClient(new BundledFiles());
         game.addJavascriptInterface(new ShareBridge(), "BlitzblickAndroid");

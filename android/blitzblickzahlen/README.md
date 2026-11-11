@@ -2,9 +2,11 @@
 
 Die App enthält dieselben Spieldateien wie `docs/blitzblickzahlen/`. Sie startet ab Android 8.0 (API 26) mit aktuellem Android System WebView im Hochformat und funktioniert ab der Installation vollständig offline, ohne Browserinstallation oder ChatGPT-Anmeldung.
 
-Die signierte Datei liegt unter [`docs/downloads/blitzblickzahlen-1.1.0.apk`](../../docs/downloads/blitzblickzahlen-1.1.0.apk). Auf dem Handy öffnen und bei der Android-Nachfrage die Installation aus der verwendeten Download- oder Dateien-App zulassen. Danach über das eigene App-Symbol starten. In der Auswahl und am Spielende lässt sich die installierte APK mit **App teilen** an andere Handys weitergeben. Das Android-Menü öffnet sich dafür mit der APK-Datei als Anhang.
+Die signierte Datei liegt unter [`docs/downloads/blitzblickzahlen-1.2.1.apk`](../../docs/downloads/blitzblickzahlen-1.2.1.apk). Sie enthält Zeitgewichtung, 40 Punkte als Ziel und verhindert gleiche Karten direkt hintereinander. Auf dem Handy öffnen und bei der Android-Nachfrage die Installation aus der verwendeten Download- oder Dateien-App zulassen. Danach über das eigene App-Symbol starten. In der Auswahl und am Spielende lässt sich die installierte APK mit **App teilen** an andere Handys weitergeben. Das Android-Menü öffnet sich dafür mit der APK-Datei als Anhang.
 
-Als Download-Alternative gibt es `Blitzblickzahlen-Android-1.1.0.zip` mit APK, Prüfsumme und `INSTALLATION.txt`. Dieses ZIP lässt sich wie beim Silbengenerator auf OneDrive ablegen und teilen. Auf dem Empfängerhandy entpacken und die enthaltene APK öffnen.
+Als Download-Alternative gibt es `Blitzblickzahlen-Android-1.2.1.zip` mit APK, Prüfsumme und `INSTALLATION.txt`. Dieses ZIP lässt sich wie beim Silbengenerator auf OneDrive ablegen und teilen. Auf dem Empfängerhandy entpacken und die enthaltene APK öffnen.
+
+**Beim Wechsel von 1.1.0 auf 1.2.1 die alte APK-App einmal deinstallieren.** Der Benutzer hat einen neuen Signaturschlüssel genehmigt, weil der frühere nicht mehr vorhanden war. Dabei gehen die letzte Schwierigkeit und Toneinstellung verloren. Spätere Updates ab 1.2.1 verwenden denselben neuen Schlüssel.
 
 ## Bauen
 
@@ -24,9 +26,20 @@ npm run build:apk -- --sdk /pfad/zum/android-sdk --ecj /pfad/zu/ecj-3.41.0.jar
 
 ## Signaturschlüssel für Updates
 
-Der erste Build erzeugt einen privaten Schlüssel und ein Passwort außerhalb des Repositorys, standardmäßig unter `~/.local/share/blitzblickzahlen-signing/`. `--signing-dir` wählt ein anderes privates Verzeichnis. Für die hier veröffentlichte Version wurde `/workspace/shared/blitzblickzahlen-signing/` verwendet.
+Der neue Schlüssel ist **dauerhaft und nur für den Eigentümer in Google Drive gesichert**. [`signing-backup.json`](signing-backup.json) enthält Datei-ID, Speicherort, Backup-Prüfsumme und öffentlichen Zertifikat-Fingerabdruck. Die privaten Schlüssel- und Passwortdateien stehen nicht im Repository. `AGENTS.md` weist zukünftige Bearbeiter auf die Wiederherstellung hin.
 
-**Dieses Verzeichnis privat sichern und für spätere APK-Updates wiederverwenden.** Es enthält `release.p12` und `password.txt`; beide gehören weder ins Git-Repository noch in eine geteilte APK. Ohne denselben Schlüssel kann Android eine bestehende Installation nicht als Update ersetzen. Der öffentliche Zertifikat-Fingerabdruck steht in `release.json`.
+In einer frischen Umgebung zuerst die Metadaten dieser Drive-Datei lesen und das dort referenzierte private ZIP mit dem Google-Drive-Connector als Datei herunterladen. Dann wiederherstellen:
+
+```sh
+python3 scripts/restore-apk-signing.py \
+  --backup-file /privater/pfad/Blitzblickzahlen-Schluessel-PRIVAT-ab-1.2.1.zip \
+  --signing-dir /privater/pfad/blitzblickzahlen-signing
+npm run build:apk -- --sdk /pfad/zum/android-sdk --signing-dir /privater/pfad/blitzblickzahlen-signing
+```
+
+Das Wiederherstellungsskript prüft die ZIP-Prüfsumme und exportiert nur das öffentliche Zertifikat zum Identitätsvergleich, bevor es die Dateien übernimmt. Lokale Signierverzeichnisse müssen außerhalb des Git-Repositorys liegen. Der Build lehnt fehlende oder abweichende Signierschlüssel bei normalen Updates ab; er ersetzt sie nicht stillschweigend. `--allow-new-signing-key` ist ausschließlich für ausdrücklich genehmigte Schlüsselwechsel vorgesehen.
+
+Der erste genehmigte Build erzeugt `release.p12`, `password.txt` und ein separates privates Backup-ZIP. Dieses Backup darf niemals in die öffentlichen Downloads oder eine geteilte App-ZIP kopiert werden. Die Kopie in Drive übersteht die Erneuerung des Arbeitsbereichs. Für Version 1.2.1 wurde die Wiederherstellung aus Drive samt erneutem APK-Build mit identischem Zertifikat geprüft.
 
 ## Aufbau und Prüfung
 

@@ -108,9 +108,9 @@ Die neuen Dateien stehen in [`docs/blitzblickzahlen/`](docs/blitzblickzahlen/): 
 
 ### APK herunterladen und teilen
 
-Die Web-App ist auf Version **1.2.0** mit Zeitgewichtung und 40 Punkten aktualisiert. Die angebotene APK bleibt vorerst **1.1.0** mit 30 Punkten und der bisherigen Auswahlregel. Für ein darüber installierbares APK-Update wird der private Signaturschlüssel aus dem früheren Arbeitsbereich benötigt; er ist im aktuellen Arbeitsbereich nicht vorhanden. Die Browserinstallation über **Aufs Handy** verwendet bereits die neue Web-Version.
+Web-App und APK **1.2.1** enthalten Zeitgewichtung, 40 Punkte als Ziel und verhindern gleiche Karten direkt hintereinander. Beim Wechsel von APK 1.1.0 auf 1.2.1 die alte APK-App einmal deinstallieren: Diese Version verwendet einen ausdrücklich genehmigten neuen Signaturschlüssel. Nur Schwierigkeit und Toneinstellung gehen dabei verloren; Lernzeiten werden ohnehin nur während der Partie gehalten. Der neue Schlüssel ist privat in Google Drive gesichert und über `android/blitzblickzahlen/signing-backup.json` wiederauffindbar. Damit benötigen spätere APK-Updates keinen erneuten Schlüsselwechsel.
 
-Im Spiel **APK 1.1.0** wählen oder die [APK direkt von GitHub](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/blitzblickzahlen-1.1.0.apk) herunterladen. Wie beim Silbengenerator gibt es auch eine [ZIP-Datei mit APK und Installationsanleitung](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/docs/downloads/Blitzblickzahlen-Android-1.1.0.zip). ZIP auf dem Handy entpacken und die enthaltene APK öffnen und installieren. Die Dateien liegen unter [`docs/downloads/`](docs/downloads/). Die App bringt alle Spieldateien mit und braucht weder Internet noch eine ChatGPT-Anmeldung. Über **App teilen** in der installierten App lässt sich genau diese APK an andere Handys weitergeben. Voraussetzung ist Android 8.0 oder neuer mit aktuellem Android System WebView.
+Im Spiel **APK herunterladen** wählen oder die [APK direkt von GitHub](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/blitzblickzahlen-1.2.1.apk) herunterladen. Wie beim Silbengenerator gibt es auch eine [ZIP-Datei mit APK und Installationsanleitung](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/docs/downloads/Blitzblickzahlen-Android-1.2.1.zip). ZIP auf dem Handy entpacken und die enthaltene APK öffnen und installieren. Die Dateien liegen unter [`docs/downloads/`](docs/downloads/). Die App bringt alle Spieldateien mit und braucht weder Internet noch eine ChatGPT-Anmeldung. Über **App teilen** in der installierten App lässt sich genau diese APK an andere Handys weitergeben. Voraussetzung ist Android 8.0 oder neuer mit aktuellem Android System WebView.
 
 Quellcode, Build-Befehl und Hinweise für zukünftige signierte Updates stehen in [`android/blitzblickzahlen/README.md`](android/blitzblickzahlen/README.md). Die APK wird zusammen mit einer SHA-256-Prüfsumme unter `docs/downloads/` ausgeliefert und enthält die Spiellogik ihres jeweiligen Versionsstands. Eine installierte APK wird ausschließlich durch eine neue APK aktualisiert.
 
@@ -185,7 +185,7 @@ npm run check
 - [GitHub: Eine Pages-Website erstellen](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
 - [MDN: Grenzen der Orientierungssperre](https://developer.mozilla.org/en-US/docs/Web/API/ScreenOrientation/lock)
 
-Games 1.1.0 · Silbengenerator 1.5.1 · Blitzblickzahlen-Web-App 1.2.0 · 11. November 2026
+Games 1.1.0 · Silbengenerator 1.5.1 · Blitzblickzahlen 1.2.1 · 11. November 2026
 
 ## Lernstufen und Motivation ab Version 1.5.0
 

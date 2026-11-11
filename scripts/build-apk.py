@@ -15,6 +15,7 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--sdk', default=os.environ.get('ANDROID_SDK_ROOT'))
 parser.add_argument('--ecj', default=os.environ.get('ECJ_JAR'), help='Optional Eclipse compiler jar when javac is not installed')
 parser.add_argument('--signing-dir', default=str(Path.home() / '.local/share/blitzblickzahlen-signing'))
+parser.add_argument('--allow-new-signing-key', action='store_true', help='Explicitly allow a new signing identity; old installations must then be removed')
 args = parser.parse_args()
 if not args.sdk:
     parser.error('Set ANDROID_SDK_ROOT or pass --sdk (platforms/android-35 and build-tools/35.0.0).')
@@ -23,6 +24,19 @@ tools = sdk / 'build-tools/35.0.0'
 android = sdk / 'platforms/android-35/android.jar'
 config = json.loads((ROOT / 'android/blitzblickzahlen/app.json').read_text())
 version = config['versionName']
+release_path = ROOT / 'android/blitzblickzahlen/release.json'
+previous_release = json.loads(release_path.read_text()) if release_path.exists() else None
+signing = Path(args.signing_dir).expanduser().resolve()
+if signing == ROOT or ROOT in signing.parents:
+    raise RuntimeError('Private signing files must be stored outside the Git repository.')
+keystore = signing / 'release.p12'
+password_file = signing / 'password.txt'
+if keystore.exists() != password_file.exists():
+    raise RuntimeError('The signing key and password must both exist; restore the private backup.')
+if previous_release and not keystore.exists() and not args.allow_new_signing_key:
+    raise RuntimeError('Existing release: restore the Google Drive backup described in android/blitzblickzahlen/signing-backup.json. Do not create a replacement key for an ordinary update.')
+if previous_release and config['versionCode'] < previous_release['versionCode']:
+    raise RuntimeError('Android versionCode must not decrease.')
 build = ROOT / '.android-build/blitzblickzahlen'
 if build.exists():
     shutil.rmtree(build)
@@ -60,13 +74,8 @@ with zipfile.ZipFile(build / 'unsigned.apk', 'a', zipfile.ZIP_DEFLATED) as archi
 run([tools / 'zipalign', '-P', '16', '-f', '4', build / 'unsigned.apk', build / 'aligned.apk'])
 
 # Keep the release identity outside the repository. Reuse these files for updates.
-signing = Path(args.signing_dir).expanduser().resolve()
 signing.mkdir(parents=True, exist_ok=True, mode=0o700)
 signing.chmod(0o700)
-keystore = signing / 'release.p12'
-password_file = signing / 'password.txt'
-if keystore.exists() != password_file.exists():
-    raise RuntimeError('The signing key and password must both exist; restore the signing backup.')
 if not password_file.exists():
     password_file.write_text(secrets.token_urlsafe(32))
     password_file.chmod(0o600)
@@ -79,15 +88,35 @@ if not keystore.exists():
          '-dname', 'CN=Blitzblickzahlen, O=Games, C=DE'], env=env)
     keystore.chmod(0o600)
 output = ROOT / 'docs/downloads' / f'blitzblickzahlen-{version}.apk'
-output.parent.mkdir(parents=True, exist_ok=True)
+signed_apk = build / 'signed.apk'
 run([tools / 'apksigner', 'sign', '--ks', keystore, '--ks-key-alias', 'blitzblickzahlen',
      '--ks-pass', 'env:BLITZ_KEYSTORE_PASSWORD', '--key-pass', 'env:BLITZ_KEYSTORE_PASSWORD',
-     '--v4-signing-enabled', 'false', '--out', output, build / 'aligned.apk'], env=env)
-verification = run([tools / 'apksigner', 'verify', '--verbose', '--print-certs', output]).stdout
-run([tools / 'zipalign', '-c', '-P', '16', '4', output])
-digest = hashlib.sha256(output.read_bytes()).hexdigest()
+     '--v4-signing-enabled', 'false', '--out', signed_apk, build / 'aligned.apk'], env=env)
+verification = run([tools / 'apksigner', 'verify', '--verbose', '--print-certs', signed_apk]).stdout
+run([tools / 'zipalign', '-c', '-P', '16', '4', signed_apk])
 certificate = next(line.split(': ', 1)[1] for line in verification.splitlines()
                    if line.startswith('Signer #1 certificate SHA-256 digest:'))
+changed_key = bool(previous_release and certificate != previous_release['certificateSha256'])
+if changed_key and not args.allow_new_signing_key:
+    raise RuntimeError('The signing certificate differs from the published APK. Restore the original backup; no download has been replaced.')
+
+# This private archive is never copied to docs/, dist/, Git, or the public ZIP.
+private_backup = signing / 'Blitzblickzahlen-Signaturschluessel-PRIVAT.zip'
+if private_backup.exists():
+    with zipfile.ZipFile(private_backup) as archive:
+        if archive.read('release.p12') != keystore.read_bytes() or archive.read('password.txt') != password_file.read_bytes():
+            raise RuntimeError('Private backup does not match this signing identity.')
+else:
+    with zipfile.ZipFile(private_backup, 'w', zipfile.ZIP_DEFLATED) as archive:
+        archive.write(keystore, 'release.p12')
+        archive.write(password_file, 'password.txt')
+        archive.writestr('README-PRIVATE.txt', 'PRIVATE SIGNING BACKUP - do not share or publish.\n'
+                         'Restore release.p12 and password.txt together with scripts/restore-apk-signing.py.\n'
+                         f'Application: {config["applicationId"]}\nCertificate SHA-256: {certificate}\n')
+    private_backup.chmod(0o600)
+output.parent.mkdir(parents=True, exist_ok=True)
+shutil.copyfile(signed_apk, output)
+digest = hashlib.sha256(output.read_bytes()).hexdigest()
 output.with_suffix('.apk.sha256').write_text(f'{digest}  {output.name}\n')
 zip_output = output.parent / f'Blitzblickzahlen-Android-{version}.zip'
 with zipfile.ZipFile(zip_output, 'w', zipfile.ZIP_DEFLATED) as archive:
@@ -95,10 +124,12 @@ with zipfile.ZipFile(zip_output, 'w', zipfile.ZIP_DEFLATED) as archive:
     archive.write(output.with_suffix('.apk.sha256'), output.name + '.sha256')
     archive.write(ROOT / 'android/blitzblickzahlen/INSTALLATION.txt', 'INSTALLATION.txt')
 record = {**config, 'apk': output.relative_to(ROOT).as_posix(), 'sha256': digest,
+          'signingKeyChanged': changed_key or bool(previous_release and previous_release.get('versionName') == version and previous_release.get('signingKeyChanged')),
+          'compatibleSigningSince': version if changed_key else (previous_release or {}).get('compatibleSigningSince', version),
           'zip': zip_output.relative_to(ROOT).as_posix(), 'zipSha256': hashlib.sha256(zip_output.read_bytes()).hexdigest(),
           'certificateSha256': certificate, 'sizeBytes': output.stat().st_size,
           'bundledGameFiles': {path.relative_to(game).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
                                for path in sorted(game.rglob('*')) if path.is_file()}}
-(ROOT / 'android/blitzblickzahlen/release.json').write_text(json.dumps(record, indent=2) + '\n')
+release_path.write_text(json.dumps(record, indent=2) + '\n')
 print(json.dumps({'apk': str(output), 'zip': str(zip_output), 'bytes': output.stat().st_size, 'sha256': digest,
-                  'certificateSha256': certificate, 'signingDirectory': str(signing)}, indent=2))
+                  'certificateSha256': certificate, 'signingDirectory': str(signing), 'privateBackup': str(private_backup)}, indent=2))

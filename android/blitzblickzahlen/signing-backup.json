@@ -1,0 +1,19 @@
+{
+  "applicationId": "de.simonbl778.blitzblickzahlen",
+  "keyAlias": "blitzblickzahlen",
+  "certificateSha256": "abba97b67832daf60701850878ec22521c817ab14fdcd72f80be5a701f9bef5c",
+  "compatibleSigningSince": "1.2.1",
+  "backup": {
+    "provider": "google_drive",
+    "fileId": "1zCETopE-3X-Ch-Qwta1BAHuF_ilkIVUe",
+    "folderId": "1XO92C62MMD8Y8tW9kCL48oZqaUWjEbtq",
+    "fileName": "Blitzblickzahlen-Schluessel-PRIVAT-ab-1.2.1.zip",
+    "url": "https://drive.google.com/file/d/1zCETopE-3X-Ch-Qwta1BAHuF_ilkIVUe/view?usp=drivesdk",
+    "sha256": "a7655e78f14dcc122b864bf91ebf39d3ec56f55d1ccb35448d14014f955c422b",
+    "visibility": "owner-only",
+    "verifiedAt": "2026-11-11"
+  },
+  "restoreScript": "scripts/restore-apk-signing.py",
+  "restoredFiles": ["release.p12", "password.txt"],
+  "note": "This file contains only non-secret backup references and public certificate metadata. Never store the private archive, key or password in Git or the public app ZIP."
+}

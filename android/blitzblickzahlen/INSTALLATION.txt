@@ -1,10 +1,16 @@
-Blitzblickzahlen 1.1.0 für Android
+Blitzblickzahlen 1.2.1 für Android
 
 1. Diese ZIP-Datei auf dem Handy entpacken.
-2. Die Datei blitzblickzahlen-1.1.0.apk öffnen.
+2. Die Datei blitzblickzahlen-1.2.1.apk öffnen.
 3. Falls Android nachfragt, der verwendeten App (z. B. Chrome, Dateien oder
    OneDrive) erlauben, Apps aus dieser Quelle zu installieren.
 4. Installieren antippen und das Symbol Blitzblickzahlen öffnen.
+
+Wichtig beim Wechsel von Version 1.1.0:
+Die alte Blitzblickzahlen-APK-App zuerst deinstallieren. Diese Version hat einen
+neuen Signaturschlüssel. Spätere Updates ab 1.2.1 verwenden denselben neuen
+Schlüssel und können darüber installiert werden. Die zuletzt gewählte Stufe
+und Toneinstellung gehen bei dieser einmaligen Deinstallation verloren.
 
 Voraussetzung: Android 8.0 oder neuer mit aktuellem Android System WebView.
 Alle Spieldateien sind eingebaut. Die App läuft ohne Internet und ohne
@@ -15,8 +21,9 @@ WhatsApp oder Bluetooth. In der installierten App gibt es auch "App teilen".
 
 Spielregeln: Einmaliger Countdown 3-2-1 beim Start. Danach folgen die Rätsel
 direkt auf die Rückmeldungen. Richtig gibt +1 Punkt, ein Fehler zieht 5 Punkte
-ab (mindestens 0). Bei 30 Punkten gibt es eine Belohnung. Verwechselte Zahlen
-kommen innerhalb derselben Partie häufiger vor.
+ab (mindestens 0). Bei 40 Punkten gibt es eine Belohnung. Verwechselte Zahlen
+und langsamer gelöste Karten kommen innerhalb derselben Partie häufiger vor.
+Zwischen gleichen Karten liegt immer mindestens eine andere Karte.
 
 Die Datei mit der Endung .sha256 enthält die Prüfsumme der APK.
 Die APK ist signiert, ihr Inhalt und die Spiellogik wurden geprüft.
