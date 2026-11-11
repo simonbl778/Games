@@ -25,6 +25,7 @@
           <span class="brand-mark" aria-hidden="true">mo<span class="brand-dot"></span></span>
           <div><span class="brand-name">Silbengenerator</span><span class="brand-subtitle">Ein kleines Lesespiel</span></div>
         </div>
+        <span id="practice-count" class="practice-stat practice-count" role="status" aria-live="polite" aria-atomic="true" hidden><strong id="completed-count">0</strong><span id="completed-label">Ketten gelesen</span></span>
         <div class="header-actions">
           <span id="calm-badge" class="calm-badge"><span aria-hidden="true">✦</span> In deinem Tempo</span>
           <button id="settings-button" class="soft-button" type="button" hidden>
@@ -32,6 +33,7 @@
             <span id="limit-badge">Bis zu 3 Silben</span><span class="settings-label"> · Ändern</span>
           </button>
         </div>
+        <span id="practice-clock" class="practice-stat practice-clock" hidden><span>Übungszeit</span><strong id="elapsed-time" role="timer" aria-live="off">00:00</strong></span>
       </header>
 
       <main>
@@ -44,6 +46,17 @@
           </div>
           <form id="setup-form" class="setup-card">
             <div class="card-heading"><span class="step-mark" aria-hidden="true">1–5</span><span>Mach es so leicht, wie du magst.</span></div>
+            <fieldset class="level-choice">
+              <legend>Was kannst du schon lesen?</legend>
+              <label for="level-select" class="level-label">Lernstufe aus dem Heft</label>
+              <select id="level-select" name="level" aria-describedby="level-help"></select>
+              <p id="level-help" class="level-help"></p>
+              <details class="syllable-picker"><summary>Silben selbst auswählen <span id="selected-count"></span></summary>
+                <div class="syllable-actions"><button id="select-all-syllables" type="button">Alle auswählen</button><button id="select-no-syllables" type="button">Auswahl leeren</button></div>
+                <div id="syllable-options" class="syllable-options"></div>
+              </details>
+              <p id="selection-error" class="font-error" role="alert" hidden>Bitte mindestens eine Silbe auswählen.</p>
+            </fieldset>
             <fieldset>
               <legend>Wie viele Silben<br> höchstens?</legend>
               <p class="field-help" id="max-help">Auch ein einzelner Vokal zählt als Silbe.</p>
@@ -78,6 +91,7 @@
               <input id="alternate-colors" name="alternate-colors" type="checkbox" checked>
               <span><span class="color-option-title">Silben dezent einfärben</span><span class="color-option-detail">Dunkelgrün und dezentes Rot im Wechsel</span></span>
             </label>
+            <label class="color-option reward-option"><input id="reward-sound" type="checkbox" checked><span><span class="color-option-title">Kleiner Belohnungsklang</span><span class="color-option-detail">Ein fröhlicher Ton nach jeder gelesenen Kette</span></span></label>
             <button class="start-button" id="start-button" type="submit"><span>Lesen starten</span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
             <p class="landscape-note"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M17 10v4"/></svg> Am schönsten im Querformat</p>
           </form>
@@ -94,7 +108,7 @@
         </section>
       </main>
 
-      <footer class="app-footer" id="app-footer"><span>Neugierig bleiben. Weiterlesen.</span><div class="install-area"><span id="app-version">Version 1.4.0</span><span id="offline-status" role="status" aria-live="polite"></span><button id="install-button" type="button" class="text-button">Aufs Handy</button></div></footer>
+      <footer class="app-footer" id="app-footer"><span>Neugierig bleiben. Weiterlesen.</span><div class="install-area"><span id="app-version">Version 1.5.0</span><span id="offline-status" role="status" aria-live="polite"></span><button id="install-button" type="button" class="text-button">Aufs Handy</button></div></footer>
       <div id="update-notice" class="update-notice" role="status" hidden><span>Eine neue Version ist bereit.</span><button id="update-button" type="button">Jetzt laden</button></div>
       <dialog id="install-dialog" aria-labelledby="install-title">
         <button class="dialog-close" id="close-install" aria-label="Schließen" type="button">×</button>

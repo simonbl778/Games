@@ -1,3 +1,4 @@
+import { layoutNativeChain } from './native-script.js';
 import { SCHOOL_OUTLINES } from './fonts/school-outlines.js';
 
 /** Shape the exact local school-font forms while retaining each character's syllable. */
@@ -7,6 +8,7 @@ export function layoutSchoolChain(chain, model, alternateColors = false) {
   if (chain.syllables.join('').toLowerCase() !== chain.text.toLowerCase()) {
     throw new Error('Syllables do not match the displayed chain.');
   }
+  if ([...chain.text].some(character => !'AIMOUaimou'.includes(character))) return layoutNativeChain(chain, font, alternateColors);
   const syllables = chain.syllables.flatMap((part, index) => [...part].map(() => index));
   let advance = 0;
   let left = 0;

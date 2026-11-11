@@ -1,7 +1,11 @@
-import { DEFAULT_MAX_SYLLABLES, SYLLABLES } from './config.js';
+import { DEFAULT_MAX_SYLLABLES } from './config.js';
 import { generateChain, getMinSyllables, validateMaxSyllables } from './generator.js';
 import { renderChain } from './presentation.js';
 import { normalizeReadingFont, readingHeightFactor, ensureReadingFont } from './typography.js';
+
+import { LEVELS, getLevel, readSelection, saveSelection } from './curriculum.js';
+import { PracticeSession, formatPracticeTime } from './practice.js';
+import { RewardAudio } from './audio.js';
 
 const $ = (id) => document.getElementById(id);
 const setup = $('setup-screen');
@@ -18,17 +22,71 @@ let deferredInstall = null;
 let waitingWorker = null;
 let updateRequested = false;
 let resizeFrame;
+let storage;
+try { storage = window.localStorage; } catch { /* Optional. */ }
+let selection = readSelection(storage);
+const session = new PracticeSession();
+const reward = new RewardAudio();
+const levelSelect = $('level-select');
+let clockInterval = null;
+let lastAdvance = -Infinity;
+
 
 try {
   const saved = localStorage.getItem('silbengenerator.maximum');
   if (saved !== null) maximum = validateMaxSyllables(Number(saved));
 } catch { /* Reading works when browser storage is unavailable. */ }
 
-for (const syllable of SYLLABLES) {
-  const tile = document.createElement('span');
-  tile.textContent = syllable;
-  $('syllable-preview').append(tile);
+for (const part of ['', 'A', 'B']) {
+  const group = part ? document.createElement('optgroup') : levelSelect;
+  if (part) group.label = `Arbeitsheft Teil ${part}`;
+  for (const level of LEVELS.filter(level => level.part === part)) {
+    const option = document.createElement('option');
+    option.value = level.id;
+    option.textContent = level.number ? `${level.number}. ${level.title}` : level.title;
+    group.append(option);
+  }
+  if (part) levelSelect.append(group);
 }
+levelSelect.value = selection.levelId;
+function renderSyllableChoices() {
+  const level = getLevel(selection.levelId);
+  const chosen = new Set(selection.syllables);
+  $('syllable-options').replaceChildren(...level.syllables.map(syllable => {
+    const label = document.createElement('label');
+    const input = document.createElement('input');
+    input.type = 'checkbox'; input.name = 'known-syllable'; input.value = syllable; input.checked = chosen.has(syllable);
+    const text = document.createElement('span'); text.textContent = syllable;
+    label.append(input, text); return label;
+  }));
+  $('level-help').textContent = level.number ? `Neu: ${level.introduction} · Vorherige Stufen sind enthalten.` : 'Deine vertrauten Silben aus der bisherigen Version.';
+  refreshSelectedSyllables();
+}
+function refreshSelectedSyllables() {
+  selection.syllables = [...form.querySelectorAll('input[name="known-syllable"]:checked')].map(input => input.value);
+  $('selected-count').textContent = `(${selection.syllables.length})`;
+  $('selection-error').hidden = selection.syllables.length > 0;
+  $('start-button').disabled = selection.syllables.length === 0;
+  $('syllable-preview').replaceChildren(...selection.syllables.slice(0, 8).map(syllable => {
+    const tile = document.createElement('span'); tile.textContent = syllable; return tile;
+  }));
+  if (selection.syllables.length > 8) {
+    const more = document.createElement('span'); more.textContent = `+${selection.syllables.length - 8}`; $('syllable-preview').append(more);
+  }
+  saveSelection(storage, selection);
+}
+levelSelect.addEventListener('change', () => {
+  selection = { levelId: levelSelect.value, syllables: [...getLevel(levelSelect.value).syllables] };
+  renderSyllableChoices();
+});
+$('syllable-options').addEventListener('change', refreshSelectedSyllables);
+for (const [id, checked] of [['select-all-syllables', true], ['select-no-syllables', false]]) {
+  $(id).addEventListener('click', () => {
+    for (const input of form.querySelectorAll('input[name="known-syllable"]')) input.checked = checked;
+    refreshSelectedSyllables();
+  });
+}
+renderSyllableChoices();
 const initialChoice = form.querySelector(`input[value="${maximum}"]`);
 if (initialChoice) initialChoice.checked = true;
 form.querySelector('input[name="reading-font"][value="print"]').checked = true;
@@ -60,9 +118,10 @@ function fitChain() {
   const height = chainButton.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
   let size = Math.max(16, Math.min(readingFont === 'print' ? 240 : 400, height / readingHeightFactor(readingFont)));
   chainText.style.fontSize = `${size}px`;
-  const measured = chainText.getBoundingClientRect().width;
-  if (measured > width) {
-    size *= width / measured;
+  const measured = chainText.getBoundingClientRect();
+  const scale = Math.min(1, width / measured.width, height / measured.height);
+  if (scale < 1) {
+    size *= scale;
     chainText.style.fontSize = `${Math.floor(size)}px`;
   }
 }
@@ -73,7 +132,7 @@ function scheduleFit() {
 }
 
 function showNextChain() {
-  const chain = generateChain(maximum, { previousText });
+  const chain = generateChain(maximum, { previousText, syllables: selection.syllables });
   previousText = chain.text;
   renderChain(chainText, chain, colorOption.checked, readingFont);
   chainButton.setAttribute('aria-label', `${chain.text}. Antippen für die nächste Silbenkette.`);
@@ -95,10 +154,13 @@ async function enterLandscape() {
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
-  if (starting) return;
+  if (starting || !game.hidden) return;
   updateSelection();
+  if (!selection.syllables.length) return;
+  reward.enabled = $('reward-sound').checked;
+  reward.unlock();
   starting = true;
-  const inputs = [...form.querySelectorAll('input')];
+  const inputs = [...form.querySelectorAll('input, select, button')];
   inputs.forEach((input) => { input.disabled = true; });
   $('start-button').disabled = true;
   $('start-button').setAttribute('aria-busy', 'true');
@@ -116,6 +178,13 @@ form.addEventListener('submit', async (event) => {
     $('start-button').removeAttribute('aria-busy');
   }
   try { localStorage.setItem('silbengenerator.maximum', String(maximum)); } catch { /* Optional. */ }
+  saveSelection(storage, selection);
+  session.start();
+  if (document.hidden) session.pause();
+  previousText = ''; lastAdvance = -Infinity;
+  clockInterval = setInterval(updatePracticeHud, 250);
+  $('practice-count').hidden = false; $('practice-clock').hidden = false;
+  updatePracticeHud();
   setup.hidden = true;
   game.hidden = false;
   $('settings-button').hidden = false;
@@ -127,15 +196,32 @@ form.addEventListener('submit', async (event) => {
   chainButton.focus({ preventScroll: true });
 });
 
-chainButton.addEventListener('click', showNextChain);
+function updatePracticeHud() {
+  const state = session.snapshot();
+  const values = { 'completed-count': String(state.count), 'completed-label': state.count === 1 ? 'Kette gelesen' : 'Ketten gelesen', 'elapsed-time': formatPracticeTime(state.elapsedMs) };
+  for (const [id, value] of Object.entries(values)) if ($(id).textContent !== value) $(id).textContent = value;
+}
+chainButton.addEventListener('click', () => {
+  if (game.hidden || document.hidden || performance.now() - lastAdvance < 220) return;
+  lastAdvance = performance.now();
+  session.complete(); reward.play(); showNextChain(); updatePracticeHud();
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { session.pause(); reward.stop(); } else if (!game.hidden) session.resume();
+  updatePracticeHud();
+});
+window.addEventListener('pagehide', () => { session.pause(); reward.stop(); });
+window.addEventListener('pageshow', () => { if (!game.hidden && !document.hidden) session.resume(); });
 $('settings-button').addEventListener('click', () => {
+  session.stop(); reward.stop(); clearInterval(clockInterval); clockInterval = null;
+  $('practice-count').hidden = true; $('practice-clock').hidden = true;
   game.hidden = true;
   setup.hidden = false;
   $('settings-button').hidden = true;
   $('calm-badge').hidden = false;
   $('app-footer').hidden = false;
   document.body.classList.remove('game-mode');
-  form.querySelector('input:checked').focus({ preventScroll: true });
+  levelSelect.focus({ preventScroll: true });
 });
 $('fullscreen-button').addEventListener('click', () => {
   if (document.fullscreenElement) {
