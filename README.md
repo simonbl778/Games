@@ -20,11 +20,11 @@ Eine große Silbenkette lesen, antippen und weiterlesen.
 ## Spielen
 
 **Eigenständige Silbengenerator-App ohne ChatGPT-Anmeldung:**
-[APK direkt über die Spielseite herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.5.0.apk) ·
-[GitHub-Download](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.5.0.apk).
+[APK direkt über die Spielseite herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.5.1.apk) ·
+[GitHub-Download](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.5.1.apk).
 Diese Datei lässt sich auch auf OneDrive ablegen und per Link weitergeben.
 Die App funktioniert ab Android 8 und von Anfang an vollständig offline.
-Version 1.5.0 lässt sich mit derselben Signatur über 1.1.x, 1.2.x, 1.3.x und 1.4.x installieren. Neu sind die Lernstufen nach der bereitgestellten Kapitelübersicht und eine eigene Silbenauswahl. Beide bleiben beim Wiederöffnen gespeichert. Beim Weiterklicken zählt die App eine gelesene Kette und spielt einen kurzen Belohnungsklang. Oben stehen die gelesenen Ketten und die aktive Übungszeit in Minuten:Sekunden. Die Zeit pausiert im Hintergrund; eine neue Runde beginnt bei null. Unten auf der Startseite steht zur Kontrolle **Version 1.5.0**.
+Version 1.5.1 lässt sich mit derselben Signatur über 1.1.x, 1.2.x, 1.3.x und 1.4.x installieren. Die Druckschrift verwendet jetzt die lokal eingebundene Schulschrift **Fibel Nord** von Peter Wiegel. Das kleine **a** hat den runden Bauch und geraden rechten Strich aus den Fotovorlagen; auch die übrigen Druckbuchstaben verwenden dieselbe Schrift. Silbenvorschau, Auswahl und Schriftprobe sind entsprechend angepasst. Unten auf der Startseite steht zur Kontrolle **Version 1.5.1**.
 
 Beim Wechsel von einer alten Silbengenerator-APK (1.0.x) muss die alte App einmal deinstalliert werden: Version 1.1.0 hat einen neuen Signierschlüssel, weil der frühere private Schlüssel nach dem Neustart der Build-Umgebung nicht mehr vorlag. Dabei geht nur die letzte Silben-Auswahl verloren; es gibt keine gespeicherten Lernstände. Den neuen privaten Schlüssel für künftige Updates getrennt vom öffentlichen Repository aufbewahren.
 [Installation und Weitergabe](downloads/README.md) · [Android-Quellcode und Build](android/README.md)
@@ -179,7 +179,7 @@ npm run check
 - [GitHub: Eine Pages-Website erstellen](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
 - [MDN: Grenzen der Orientierungssperre](https://developer.mozilla.org/en-US/docs/Web/API/ScreenOrientation/lock)
 
-Games 1.1.0 · Silbengenerator 1.5.0 · Blitzblickzahlen 1.1.0 · 11. November 2026
+Games 1.1.0 · Silbengenerator 1.5.1 · Blitzblickzahlen 1.1.0 · 11. November 2026
 
 ## Lernstufen und Motivation ab Version 1.5.0
 
@@ -205,3 +205,20 @@ Zusätzliche Integrationsprüfung (DOM, kein Browser-/Gerätetest):
     npm install --prefix /tmp/silben-dom-qa jsdom@26.1.0
     node scripts/check-practice-dom.mjs /tmp/silben-dom-qa/node_modules/jsdom/lib/api.js
     python3 scripts/check-native-fonts.py
+
+## Schul-Druckschrift ab Version 1.5.1
+
+Die Fotovorlagen zeigen ein rundes, einstöckiges kleines a. Nach Vergleich von
+Fibel Nord, Fibel Süd, ABeeZee und Andika wird die unveränderte **Fibel Nord Regular**
+von Peter Wiegel verwendet. Auch m, M, u und die übrigen Lesezeichen kommen aus dieser
+Schrift. Die Druckschrift-Auswahl zeigt Ma als Probe. Ein größerer maximaler Schriftgrad
+berücksichtigt die Proportionen dieser Schrift; die Anzeige passt sich weiterhin an.
+
+Font und SIL-OFL-Lizenz liegen in `docs/silbengenerator/fonts/` und werden in Website,
+Offlinecache und APK mitgeliefert. Vor dem Lesen wird auf die gewählte Schrift gewartet,
+damit keine andere a-Form aus einer Geräteschrift erscheint. Timer, gespeicherte
+Lernstufen und die beiden Schreibschriftmodelle bleiben erhalten.
+
+Quelle: [Fibel-Schriften von Peter Wiegel](https://www.peter-wiegel.de/Fibel.html).
+Prüfung: `python3 scripts/check-print-font.py`; ergänzend prüft die CSS-Integration,
+dass das echte Druckschrift-Lesefeld Fibel Nord ohne künstliche Fettung verwendet.

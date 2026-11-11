@@ -1,3 +1,4 @@
+export const PRINT_FONT = 'FibelNord';
 export const SCHOOL_FONTS = { la: 'SilbenLA', va: 'SilbenVA' };
 
 export function normalizeReadingFont(value) {
@@ -10,11 +11,11 @@ export function readingHeightFactor(value) {
 }
 
 export async function ensureReadingFont(fonts, value) {
-  const family = SCHOOL_FONTS[normalizeReadingFont(value)];
-  if (!family) return;
+  const model = normalizeReadingFont(value);
+  const family = model === 'print' ? PRINT_FONT : SCHOOL_FONTS[model];
   if (!fonts || typeof fonts.load !== 'function') {
-    throw new Error('School handwriting could not be loaded.');
+    throw new Error('Reading font could not be loaded.');
   }
-  const faces = await fonts.load('400 48px "' + family + '"', 'AMI OUmimuioua');
-  if (!faces.length) throw new Error('School handwriting could not be loaded.');
+  const faces = await fonts.load('400 48px "' + family + '"', model === 'print' ? 'ma Ma a A mo Mi Mu ÄÖÜäöüß' : 'AMI OUmimuioua');
+  if (!faces.length) throw new Error('Reading font could not be loaded.');
 }

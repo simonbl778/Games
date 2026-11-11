@@ -2,3 +2,4 @@
 assets/school-fonts/** -whitespace
 # Keep the bundled license text verbatim.
 docs/silbengenerator/fonts/LPPL.txt -whitespace
+docs/silbengenerator/fonts/FibelNord-OFL.txt -whitespace

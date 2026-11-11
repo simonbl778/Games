@@ -1,4 +1,4 @@
-# Schulschriften: LA und VA
+# Schulschriften: Druckschrift, LA und VA
 
 Die App bietet **Druckschrift** (Standard), **Lateinische Ausgangsschrift** (LA)
 und **Vereinfachte Ausgangsschrift** (VA) als getrennte Auswahlmöglichkeiten.
@@ -129,3 +129,24 @@ dem echten Darstellungsmodul. Es kontrolliert verbundene Körper, getrennte Punk
 freie Innenräume der folgenden Ovale. Getrennt angesetzte Querstriche der Original-
 Großbuchstaben sind zulässig. Die DOM-Prüfung kontrolliert zusätzlich Zähler, Timer,
 Klang-Auslösung, Auswahl-Speicherung, App-Neustart und Hintergrundpausen.
+
+## Schul-Druckschrift ab Version 1.5.1
+
+**Fibel Nord Regular** von Peter Wiegel ersetzt die geräteabhängige Druckschrift
+im Lesefeld, in der Silbenvorschau, der individuellen Auswahl und der Druckschrift-Probe.
+Die runde einstöckige a-Form und die Formen von m/M passen zu den bereitgestellten
+Fotovorlagen. Auch g, l/I und die übrigen Buchstaben werden aus derselben Schrift gesetzt.
+Die Fontdatei bleibt unverändert; es werden keine Buchstaben aus Arbeitsheften extrahiert.
+
+- Autorenseite: https://www.peter-wiegel.de/Fibel.html
+- Originalpaket: https://www.peter-wiegel.de/Fonts/FibelNordTT.zip
+- Datei: `FibelNord.ttf`, Originaldatei im Paket `Fibel Nord.ttf`.
+- Lizenz: SIL Open Font License 1.1, Originaltext in `FibelNord-OFL.txt`.
+- `font-synthesis:none` und Gewicht 400 vermeiden künstlich gefettete Formen.
+- Die Ladeprüfung umfasst jetzt auch Druckschrift; bei einem Ladefehler startet das Lesen
+  nicht mit einer abweichenden Systemschrift. Druckschrift bleibt ohne Hilfslinien.
+
+`scripts/check-print-font.py` kontrolliert die deutschen Buchstaben und die Abdeckung
+aller Lernstufen, das runde a im Vergleich zum o sowie ausreichenden Raum für Umlaute
+und Unterlängen. Die CSS-Prüfung verwendet die tatsächlichen App-Stilregeln und kann
+auch die ausgelieferten Dateien direkt aus einer APK prüfen.
