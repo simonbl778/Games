@@ -116,7 +116,7 @@ function fitChain() {
   const style = getComputedStyle(chainButton);
   const width = chainButton.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
   const height = chainButton.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
-  let size = Math.max(16, Math.min(readingFont === 'print' ? 240 : 400, height / readingHeightFactor(readingFont)));
+  let size = Math.max(16, Math.min(readingFont === 'print' ? 320 : 400, height / readingHeightFactor(readingFont)));
   chainText.style.fontSize = `${size}px`;
   const measured = chainText.getBoundingClientRect();
   const scale = Math.min(1, width / measured.width, height / measured.height);

@@ -53,7 +53,11 @@ try{
  const persisted=window.localStorage.getItem('silbengenerator.selection');
  view=await open(persisted);assert.equal(view.$('level-select').value,'a06');assert.deepEqual([...view.document.querySelectorAll('[name="known-syllable"]:checked')].map(n=>n.value),['me']);
  assert.equal(view.$('practice-count').hidden,true);
- view.$('setup-form').dispatchEvent(new view.window.Event('submit',{bubbles:true,cancelable:true}));await flush();
+ let readyFont,query;
+ view.document.fonts.load=value=>{query=value;return new Promise(resolve=>{readyFont=resolve;});};
+ view.$('setup-form').dispatchEvent(new view.window.Event('submit',{bubbles:true,cancelable:true}));
+ assert.equal(query,'400 48px "FibelNord"');assert.equal(view.$('game-screen').hidden,true);assert.equal(view.$('start-button').disabled,true);
+ readyFont([{}]);await flush();
  assert.equal(view.$('completed-count').textContent,'0');assert.equal(view.$('elapsed-time').textContent,'00:00');assert.equal(view.$('chain-text').querySelector('svg'),null);
  view.$('settings-button').click();
  console.log('Actual app DOM passed: chapter/custom persistence, restart, handwriting guides, print, completed count, reward trigger, debounce, active timer and settings pause.');

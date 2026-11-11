@@ -136,9 +136,14 @@ process.stdout.write(JSON.stringify(outputs));
                     color='#9b4b46' if case['colors'] and index%2 else '#253e38'
                     assert computed[path]['fill']==color,(prefix,index,computed[path]['fill'])
                     assert computed[path].get('stroke','none')=='none',(prefix,'extra letter outline')
-            elif case['colors']:
+            else:
+                assert computed[target]['font-family'].startswith('"FibelNord"'), (prefix, 'wrong print family', computed[target].get('font-family'))
+                assert computed[target]['font-weight']=='400', (prefix, 'synthetic print weight')
+            if case['model']=='print' and case['colors']:
                 for index,span in enumerate(target):
                     assert computed[span]['color']==('#9b4b46' if index%2 else '#253e38'),(prefix,'print syllable',index,computed[span]['color'])
+            print_sample=root.xpath('//*[@class="font-sample"]')[0]
+            assert print_sample.text=='Ma' and computed[print_sample]['font-family'].startswith('"FibelNord"'), (prefix,'print sample must show the school a')
             icon=root.xpath('//*[@id="tap-hint"]')[0][0]
             assert computed[icon].get('stroke') not in (None,'none'),(prefix,'tap icon lost its outline')
     print('Actual app CSS passed: complete glyph fills, no icon outlines on handwriting, red syllables in all three modes, phone/tablet sizes.')

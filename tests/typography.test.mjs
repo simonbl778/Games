@@ -10,15 +10,8 @@ test('Druckschrift ist der Standard, LA und VA sind getrennte optionale Schriftm
   assert.equal(normalizeReadingFont('va'), 'va');
 });
 
-test('Druckschrift braucht keine Font-Ladefunktion', async () => {
-  await ensureReadingFont(undefined, 'print');
-  let called = false;
-  await ensureReadingFont({ load() { called = true; } }, 'print');
-  assert.equal(called, false);
-});
-
-for (const [value, family] of [['la', 'SilbenLA'], ['va', 'SilbenVA']]) {
-test(`${value}: Schreibschrift wartet auf das jeweils richtige lokale Schriftmodell`, async () => {
+for (const [value, family] of [['print', 'FibelNord'], ['la', 'SilbenLA'], ['va', 'SilbenVA']]) {
+test(`${value}: Lesen wartet auf das jeweils richtige lokale Schriftmodell`, async () => {
   let query;
   let sample;
   await ensureReadingFont({ async load(value, text) {
@@ -27,10 +20,10 @@ test(`${value}: Schreibschrift wartet auf das jeweils richtige lokale Schriftmod
     return [{}];
   } }, value);
   assert.equal(query, `400 48px "${family}"`);
-  assert.equal(sample, 'AMI OUmimuioua');
+  assert.equal(sample, value === 'print' ? 'ma Ma a A mo Mi Mu ÄÖÜäöüß' : 'AMI OUmimuioua');
 });
 
-test(`${value}: fehlende Schreibschrift wird gemeldet statt unbemerkt durch Druckschrift ersetzt`, async () => {
+test(`${value}: fehlende Schrift wird gemeldet statt durch eine Systemschrift ersetzt`, async () => {
   await assert.rejects(() => ensureReadingFont(undefined, value));
   await assert.rejects(() => ensureReadingFont({ load: async () => [] }, value));
   await assert.rejects(() => ensureReadingFont({ load: async () => { throw new Error('offline'); } }, value));
