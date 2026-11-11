@@ -2,7 +2,7 @@ import { SYLLABLES } from './config.js';
 
 const NORMALIZED_SYLLABLES = SYLLABLES.map((syllable) => syllable.toLowerCase());
 const MAX_ATTEMPTS = 8;
-const VOWELS = new Set(['a', 'e', 'i', 'o', 'u']);
+const VOWELS = new Set(['a', 'e', 'i', 'o', 'u', 'ä', 'ö', 'ü', 'y']);
 
 /** Die gewählte Höchstzahl muss eine ganze Zahl zwischen 1 und 5 sein. */
 export function validateMaxSyllables(value) {
@@ -25,18 +25,18 @@ function randomIndex(size, random) {
   return Math.floor(value * size);
 }
 
-function makeChain(maxSyllables, random) {
+function makeChain(maxSyllables, random, pool) {
   const minimum = getMinSyllables(maxSyllables);
   const count = minimum + randomIndex(maxSyllables - minimum + 1, random);
   const syllables = [];
   for (let index = 0; index < count; index += 1) {
-    let next = NORMALIZED_SYLLABLES[randomIndex(NORMALIZED_SYLLABLES.length, random)];
+    let next = pool[randomIndex(pool.length, random)];
     const previousVowel = syllables[syllables.length - 1]?.slice(-1);
     if (VOWELS.has(previousVowel) && next.startsWith(previousVowel)) {
       // Accept only one in a hundred proposed doubled vowels. Otherwise choose
       // once from the compatible blocks; constant random sources still finish.
       if (randomIndex(100, random) !== 0) {
-        const alternatives = NORMALIZED_SYLLABLES.filter((part) => !part.startsWith(previousVowel));
+        const alternatives = pool.filter((part) => !part.startsWith(previousVowel));
         if (alternatives.length) next = alternatives[randomIndex(alternatives.length, random)];
       }
     }
@@ -62,15 +62,19 @@ function makeChain(maxSyllables, random) {
  * Versuchen wechseln wir lediglich die Anfangsschreibung. So endet die Funktion
  * auch mit einer konstanten Zufallsquelle sicher und die Anzeige ändert sich.
  */
-export function generateChain(maxSyllables, { random = Math.random, previousText = '' } = {}) {
+export function generateChain(maxSyllables, { random = Math.random, previousText = '', syllables = NORMALIZED_SYLLABLES } = {}) {
   validateMaxSyllables(maxSyllables);
   if (typeof random !== 'function') {
     throw new TypeError('Die Zufallsquelle muss eine Funktion sein.');
   }
 
+  if (!Array.isArray(syllables) || !syllables.length || syllables.some(s => typeof s !== 'string' || !/^[a-zäöüß]+$/i.test(s))) {
+    throw new RangeError('Mindestens eine verfügbare Silbe auswählen.');
+  }
+  const pool = [...new Set(syllables.map(s => s.toLowerCase()))];
   let chain;
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
-    chain = makeChain(maxSyllables, random);
+    chain = makeChain(maxSyllables, random, pool);
     if (chain.text !== previousText) return chain;
   }
 

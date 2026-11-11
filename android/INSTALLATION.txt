@@ -1,7 +1,7 @@
-Silbengenerator - a/A und dezente Schreiblinien 1.4.0
+Silbengenerator - Lernstufen und motivierende Uebungsrunden 1.5.0
 
 1. APK auf das Android-Handy herunterladen und oeffnen.
-2. Ist Version 1.1.x, 1.2.x, 1.3.x oder 1.4.x installiert: normal darueber installieren.
+2. Ist Version 1.1.x, 1.2.x, 1.3.x 1.4.x oder 1.5.x installiert: normal darueber installieren.
    Deinstallieren ist nicht erforderlich; der Signierschluessel ist gleich.
 3. Nur beim Wechsel von einer alten APK aus 1.0.x: alte App einmal deinstallieren.
 4. Falls Android fragt: der verwendeten App die Installation aus dieser Quelle erlauben.
@@ -16,9 +16,14 @@ Alle Schriften, Lizenzen und Spieldateien sind lokal enthalten.
 Ohne Internet oder ChatGPT-Konto nutzbar.
 Android 8 oder neuer mit aktuellem Android System WebView erforderlich.
 
-Neu: a ist als einzelner Baustein enthalten; am Kettenanfang auch als A.
-LA und VA haben drei dezente Hilfslinien: Grundlinie, Kleinbuchstabenhoehe,
-Grossbuchstabenhoehe. Druckschrift hat keine Hilfslinien.
-Die vertrauten Buchstabenformen, Anschluesse und mittigen Farbgrenzen bleiben.
+Neu: Lernstufe aus den Kapiteln oder einzelne bekannte Silben waehlen.
+Stufe und angepasste Auswahl bleiben nach dem Schliessen erhalten.
+In der Stufe Mama lassen sich zum Beispiel nur ma und a aktivieren.
+Jedes Weiterklicken zaehlt eine gelesene Kette und spielt einen kurzen Klang.
+Links steht die Anzahl, rechts die aktive Uebungszeit in Minuten:Sekunden.
+Im Hintergrund wird die Zeit pausiert. Lesen starten beginnt eine neue Runde.
+Der Klang kann vor dem Start abgeschaltet werden.
+Druckschrift bleibt Standard. LA und VA haben drei dezente Hilfslinien und
+enthalten auch die Buchstaben und Lautverbindungen der spaeteren Kapitel.
 
-Nach der Installation steht unten auf der Startseite: Version 1.4.0.
+Nach der Installation steht unten auf der Startseite: Version 1.5.0.

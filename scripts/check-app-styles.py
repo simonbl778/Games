@@ -47,8 +47,8 @@ function node(tag='span') {
  return n;
 }
 const outputs=[];
-for(const model of ['print','la','va']) for(const colors of [false,true]) {
- const n=node(); renderChain(n,{text:'Amuaio',syllables:['a','mu','a','i','o']},colors,model);
+for(const chain of [{text:'Amuaio',syllables:['a','mu','a','i','o']},{text:'Schüle',syllables:['schü','le']}]) for(const model of ['print','la','va']) for(const colors of [false,true]) {
+ const n=node(); renderChain(n,chain,colors,model);
  outputs.push({model,colors,node:n});
 }
 process.stdout.write(JSON.stringify(outputs));
@@ -95,7 +95,7 @@ process.stdout.write(JSON.stringify(outputs));
                 if node['style']:element.set('style',';'.join(k+':'+v for k,v in node['style'].items()))
                 element.text=node['value']
                 for child in node['children']:
-                    tag=('{http://www.w3.org/2000/svg}'+child['tag']) if child['tag'] in ('svg','g','path','title','line') else child['tag']
+                    tag=('{http://www.w3.org/2000/svg}'+child['tag']) if child['tag'] in ('svg','g','path','title','line','defs','clipPath') else child['tag']
                     populate(etree.SubElement(element,tag),child)
             populate(target,case['node'])
             computed={}

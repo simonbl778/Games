@@ -1,5 +1,6 @@
 import { layoutSchoolChain } from './school-script.js';
 
+let drawingId = 0;
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 
 /** Keep the exact text, case, connected forms and ownership of every colored stroke. */
@@ -34,10 +35,13 @@ export function renderChain(element, chain, alternateColors = false, readingFont
       line.setAttribute('vector-effect', 'non-scaling-stroke');
       guides.append(line);
     }
+    const definitions = document.createElementNS(SVG_NAMESPACE, 'defs');
+    const runId = ++drawingId;
+    let glyphIndex = 0;
     const group = document.createElementNS(SVG_NAMESPACE, 'g');
     group.setAttribute('transform', 'scale(1 -1)');
     for (const glyph of run.glyphs) {
-      const addPath = (data, color, character, syllable, part) => {
+      const addPath = (data, color, character, syllable, part, clip = null) => {
         const path = document.createElementNS(SVG_NAMESPACE, 'path');
         path.setAttribute('d', data);
         path.setAttribute('transform', `translate(${glyph.x} 0)`);
@@ -46,16 +50,26 @@ export function renderChain(element, chain, alternateColors = false, readingFont
         path.setAttribute('data-character', character);
         path.setAttribute('data-syllable', String(syllable));
         path.setAttribute('data-part', part);
+        if (clip) path.setAttribute('clip-path', `url(#${clip})`);
         group.append(path);
       };
       // Preserve the complete contour, then recolor the second half of the shared swing.
       addPath(glyph.path, glyph.color, glyph.character, glyph.syllable, 'letter');
       if (glyph.connection) {
         const connection = glyph.connection;
-        addPath(connection.secondPath, connection.color, connection.character, connection.syllable, 'connection-end');
+        let clipId = null;
+        if (connection.clipToOwnContour) {
+          clipId = `school-join-${runId}-${glyphIndex}`;
+          const clip = document.createElementNS(SVG_NAMESPACE, 'clipPath'); clip.setAttribute('id', clipId);
+          const contour = document.createElementNS(SVG_NAMESPACE, 'path'); contour.setAttribute('d', glyph.path); contour.setAttribute('fill', '#000');
+          clip.append(contour); definitions.append(clip);
+        }
+        addPath(connection.secondPath, connection.color, connection.character, connection.syllable, 'connection-end', clipId);
       }
+      glyphIndex++;
     }
     svg.append(title, guides, group);
+    if (run.native) svg.append(definitions);
     element.replaceChildren(svg);
     return;
   }

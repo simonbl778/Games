@@ -20,11 +20,11 @@ Eine große Silbenkette lesen, antippen und weiterlesen.
 ## Spielen
 
 **Eigenständige Silbengenerator-App ohne ChatGPT-Anmeldung:**
-[APK direkt über die Spielseite herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.4.0.apk) ·
-[GitHub-Download](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.4.0.apk).
+[APK direkt über die Spielseite herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.5.0.apk) ·
+[GitHub-Download](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.5.0.apk).
 Diese Datei lässt sich auch auf OneDrive ablegen und per Link weitergeben.
 Die App funktioniert ab Android 8 und von Anfang an vollständig offline.
-Version 1.4.0 lässt sich mit derselben Signatur über 1.1.x, 1.2.x, 1.3.x und 1.4.x installieren. Neu ist der einzelne Baustein **a**, am Kettenanfang auch als **A**. LA und VA zeigen drei dezente Hilfslinien auf Grundlinie, Kleinbuchstabenhöhe und Großbuchstabenhöhe. Druckschrift bleibt ohne Linien. Die Verbindungen und mittigen Silbenfarbwechsel bleiben erhalten. Unten auf der Startseite steht zur Kontrolle **Version 1.4.0**.
+Version 1.5.0 lässt sich mit derselben Signatur über 1.1.x, 1.2.x, 1.3.x und 1.4.x installieren. Neu sind die Lernstufen nach der bereitgestellten Kapitelübersicht und eine eigene Silbenauswahl. Beide bleiben beim Wiederöffnen gespeichert. Beim Weiterklicken zählt die App eine gelesene Kette und spielt einen kurzen Belohnungsklang. Oben stehen die gelesenen Ketten und die aktive Übungszeit in Minuten:Sekunden. Die Zeit pausiert im Hintergrund; eine neue Runde beginnt bei null. Unten auf der Startseite steht zur Kontrolle **Version 1.5.0**.
 
 Beim Wechsel von einer alten Silbengenerator-APK (1.0.x) muss die alte App einmal deinstalliert werden: Version 1.1.0 hat einen neuen Signierschlüssel, weil der frühere private Schlüssel nach dem Neustart der Build-Umgebung nicht mehr vorlag. Dabei geht nur die letzte Silben-Auswahl verloren; es gibt keine gespeicherten Lernstände. Den neuen privaten Schlüssel für künftige Updates getrennt vom öffentlichen Repository aufbewahren.
 [Installation und Weitergabe](downloads/README.md) · [Android-Quellcode und Build](android/README.md)
@@ -66,7 +66,7 @@ Die Browseransicht in einer anderen App kann Installieren, Vollbild oder Drehen 
 - Die App zeigt beim erneuten Öffnen zuerst die Auswahl. Die zuletzt verwendete Höchstzahl ist lediglich vorausgewählt.
 - Die Schriftgröße passt sich an die Kettenlänge und den verfügbaren Platz an. Die Kette bleibt in einer Zeile.
 
-Im Silbengenerator gibt es keinen Zeitdruck, keine Punkte, keine Werbung, keine Tonwiedergabe und keine Spielerkonten. Das Spiel selbst sendet keine Lern- oder Nutzungsdaten. Es speichert lokal nur die letzte Auswahl und die Dateien für den Offlinebetrieb; das Hosting hat seine üblichen technischen Zugriffs- und ggf. Anmeldedaten.
+Im Silbengenerator gibt es keinen Zeitdruck, keine Punkte, keine Werbung und keine Spielerkonten. Ein leiser, abschaltbarer Klang begleitet bestätigte Ketten. Das Spiel selbst sendet keine Lern- oder Nutzungsdaten. Es speichert lokal nur die letzte Auswahl und Lernstufe und die Dateien für den Offlinebetrieb; das Hosting hat seine üblichen technischen Zugriffs- und ggf. Anmeldedaten.
 
 ## Blitzblickzahlen
 
@@ -179,4 +179,29 @@ npm run check
 - [GitHub: Eine Pages-Website erstellen](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
 - [MDN: Grenzen der Orientierungssperre](https://developer.mozilla.org/en-US/docs/Web/API/ScreenOrientation/lock)
 
-Games 1.1.0 · Silbengenerator 1.4.0 · Blitzblickzahlen 1.1.0 · 9. November 2026
+Games 1.1.0 · Silbengenerator 1.5.0 · Blitzblickzahlen 1.1.0 · 11. November 2026
+
+## Lernstufen und Motivation ab Version 1.5.0
+
+Die Kapitel aus der bereitgestellten Inhaltsübersicht stehen in Arbeitsheft Teil A
+und Teil B zur Auswahl. Jede Stufe enthält die bisher eingeführten Laute und
+Silben. Einzelne Silben lassen sich vor dem Start abwählen; für die Fotoauswahl
+beispielsweise in „Mama“ nur **ma** und **a** aktiviert lassen. Neue Kombinationen
+werden aus bekannten Lauten gebildet, keine Buchaufgaben oder Kapiteltexte kopiert.
+„Bisherige Auswahl“ erhält die vertrauten Bausteine der älteren Version.
+
+Stufe und eigene Auswahl werden sofort auf dem Gerät gespeichert. Links steht
+die Zahl bereits bestätigter Silbenketten, rechts die aktive Übungszeit. Die erste
+angezeigte Aufgabe zählt erst beim Weiterklicken als gelesen. Einstellungen und
+Hintergrundzeit werden nicht mitgezählt; „Lesen starten“ beginnt eine neue Runde.
+Der kurze Klang wird ohne Netzabruf erzeugt und lässt sich vor dem Start abschalten.
+
+Die erweiterten LA-/VA-Schriften enthalten auch die späteren Buchstaben, Umlaute,
+ß und Lautverbindungen. Die Originalformen kommen weiterhin aus `schulschriften`.
+Die schon bestätigten Zehn-Buchstaben-Ketten behalten ihre bisherigen Konturen.
+
+Zusätzliche Integrationsprüfung (DOM, kein Browser-/Gerätetest):
+
+    npm install --prefix /tmp/silben-dom-qa jsdom@26.1.0
+    node scripts/check-practice-dom.mjs /tmp/silben-dom-qa/node_modules/jsdom/lib/api.js
+    python3 scripts/check-native-fonts.py

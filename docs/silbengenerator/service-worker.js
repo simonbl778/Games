@@ -1,9 +1,9 @@
 /* Increase VERSION whenever any shipped game file changes. */
-const VERSION = '1.4.0';
+const VERSION = '1.5.0';
 const CACHE_PREFIX = `silbengenerator:${self.registration.scope}:`;
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
 const ASSETS = [
-  './', './index.html', './styles.css', './app.js', './config.js', './generator.js', './presentation.js', './school-script.js', './typography.js',
+  './', './index.html', './styles.css', './app.js', './config.js', './curriculum.js', './practice.js', './audio.js', './native-script.js', './generator.js', './presentation.js', './school-script.js', './typography.js',
   './fonts/school-outlines.js', './fonts/SilbenLA.ttf', './fonts/SilbenVA.ttf', './fonts/LPPL.txt',
   './manifest.webmanifest', './icons/icon.svg', './icons/icon-192.png',
   './icons/icon-512.png', './icons/maskable-512.png'

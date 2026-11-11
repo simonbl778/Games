@@ -101,7 +101,7 @@ test('das innere LA-m verwendet den anschließenden Bogen statt des einzelnen An
 
 test('falsche Silbengrenzen oder nicht verfügbare Buchstaben werden nicht stillschweigend eingefärbt', () => {
   assert.throws(() => layoutSchoolChain({ text: 'mimu', syllables: ['mo', 'mu'] }, 'la'));
-  assert.throws(() => layoutSchoolChain({ text: 'me', syllables: ['me'] }, 'va'));
+  assert.throws(() => layoutSchoolChain({ text: 'm1', syllables: ['m1'] }, 'va'));
 });
 
 for (const model of ['la', 'va']) {

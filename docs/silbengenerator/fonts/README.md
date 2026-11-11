@@ -2,8 +2,7 @@
 
 Die App bietet **Druckschrift** (Standard), **Lateinische Ausgangsschrift** (LA)
 und **Vereinfachte Ausgangsschrift** (VA) als getrennte Auswahlmöglichkeiten.
-Die lokalen Schriften `SilbenLA.ttf` und `SilbenVA.ttf` bilden die zehn vom Spiel
-verwendeten Zeichen `A M I O U a m i o u` sowie Leerzeichen ab.
+Die lokalen Schriften `SilbenLA.ttf` und `SilbenVA.ttf` bilden das deutsche Alphabet einschließlich `Ä Ö Ü ä ö ü ß` sowie Leerzeichen ab.
 
 ## Schriftmodelle und Vorlagen
 
@@ -109,3 +108,24 @@ stammt aus den Schriftmetriken; sie skalieren gemeinsam mit den Buchstaben.
 Die Strichdicke bleibt ein Bildpunkt, mit 16 Prozent Deckkraft. Druckschrift
 hat keine Hilfslinien. Die Linien verändern weder die Farbzuordnung noch die
 Verbindungen und werden in der Offline-APK ebenfalls lokal gezeichnet.
+
+## Spätere Kapitel ab Version 1.5.0
+
+Für die weiteren Buchstaben werden die unveränderten Zeichenprogramme, ursprünglichen
+Kontextregeln und Formen am Wortende des jeweiligen Modells mitgeliefert. Die TFM-Regeln
+bestimmen unter anderem die passende e-Form und eingefügte Anschlussteile. Native
+Buchstabenkörper bleiben erhalten. Das innere m/n/r/v/w verwendet bei LA den anschließenden
+Bogen statt eines isolierten Anfangshakens. Tangententreue Kurven schließen verbleibende
+Zwischenräume; Ovale werden von außen betreten. Punkte über i/j und Umlautzeichen bleiben
+auch neben schrägen Großbuchstaben frei.
+
+Der Farbwechsel folgt der halben Bogenlänge des gemeinsamen Verbindungsschwungs.
+Übermalte Teile werden ausschließlich auf die eigene Glyphenkontur begrenzt, nie mit
+senkrechten Farbflächen über das Wort. Die bereits bestätigten Ketten aus A/I/M/O/U und
+a/i/m/o/u benutzen weiterhin die vorherige Darstellung unverändert.
+
+`scripts/check-native-fonts.py` rastert alle verfügbaren Silben und ausgewählte Ketten mit
+dem echten Darstellungsmodul. Es kontrolliert verbundene Körper, getrennte Punkte sowie
+freie Innenräume der folgenden Ovale. Getrennt angesetzte Querstriche der Original-
+Großbuchstaben sind zulässig. Die DOM-Prüfung kontrolliert zusätzlich Zähler, Timer,
+Klang-Auslösung, Auswahl-Speicherung, App-Neustart und Hintergrundpausen.

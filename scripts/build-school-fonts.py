@@ -29,14 +29,14 @@ def build(kind):
     scale = 1000 / (tfm.designsize * float(metadata[1]) * float(metadata[2]))
     raw, strokes, curves = {}, {}, {}
     def load(code, trim_m=False, keep_exit=True):
-        key = (code, trim_m and code in (109, 173), keep_exit)
+        key = (code, trim_m and code in (109, 110, 114, 118, 119, 173, 174, 178, 182, 183), keep_exit)
         if key in raw:
             return raw[key]
         text = Path(f'{kind}-{code}.svg').read_text()
         box = list(map(float, re.search(r'Original BoundingBox: (.*?) -->', text).group(1).split()))
         total, centerlines, font_curves = pathops.Path(), [], []
         elements = [element for element in ET.fromstring(text).iter() if element.tag.rsplit('}', 1)[-1] == 'path']
-        last_stroke = max(i for i, element in enumerate(elements) if 'fill: none' in element.attrib.get('style', ''))
+        last_stroke = max((i for i, element in enumerate(elements) if 'fill: none' in element.attrib.get('style', '')), default=-1)
         for element_index, element in enumerate(elements):
             style = element.attrib.get('style', '')
             path_data = element.attrib['d']
@@ -193,6 +193,20 @@ def build(kind):
                 'midpoint': midpoint, 'length': length,
                 'oHoleClear': following == 'o' and intrusion < 1,
                 'ovalHoleClear': following in 'ao' and intrusion < 1}
+    # Full original school alphabet for the later workbook chapters. Preserve the
+    # approved ten-letter forms above; native contextual forms follow the original TFM.
+    alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÄÖÜäöüß'
+    native_codes = {}
+    for code in sorted(tfm.chars):
+        if not Path(f'{kind}-{code}.svg').exists():
+            continue
+        glyphname = 'native' + str(code)
+        add(glyphname, load(code), tfm.chars[code]['width'] * 1000)
+        native_codes[code] = glyphname
+        if kind == 'la' and code in (109, 110, 114, 118, 119, 173, 174, 178, 182, 183):
+            add(glyphname + '.medial', load(code, trim_m=True), tfm.chars[code]['width'] * 1000)
+    native_cmap = {ord(char): native_codes[255 if kind == 'va' and char == 'ß' else ord(char)]
+        for char in alphabet if char not in 'AIMOUaimou'}
     letters = ' '.join(g for g in glyphs if g not in ('.notdef', 'space'))
     features = [f'@Letters = [{letters}];']
     if kind == 'la':
@@ -209,7 +223,7 @@ def build(kind):
     features += ['feature calt { ' + ('lookup Initial; lookup Medial; ' if kind == 'la' else '') + 'lookup Join; ' + ('lookup Final;' if kind == 'la' else '') + ' } calt;']
     builder = FontBuilder(1000, isTTF=True)
     builder.setupGlyphOrder(list(glyphs))
-    builder.setupCharacterMap({ord(c): c for c in 'AIMOUaimou'} | {32: 'space'})
+    builder.setupCharacterMap(native_cmap | {ord(c): c for c in 'AIMOUaimou'} | {32: 'space'})
     builder.setupGlyf(glyphs)
     builder.setupHorizontalMetrics(metrics)
     builder.setupHorizontalHeader(ascent=800, descent=-350, lineGap=50)
@@ -249,8 +263,71 @@ def build(kind):
             outlines[glyphname]['connection'] = {'secondPath':svg_outline(second),
                 'midpoint':[round(midpoint.real,3),round(midpoint.imag,3)],
                 'length':round(data['length'],3),'fraction':.5,'oHoleClear':data['oHoleClear'],'ovalHoleClear':data['ovalHoleClear']}
+    native_paths = {}
+    for code, glyphname in native_codes.items():
+        points = curves[(code, False, True)]
+        exit_points = []
+        if points:
+            curve = points[-1]
+            if not curve.isclosed():
+                if code in list(range(97, 123)) + [228, 246, 252, 255]:
+                    samples = [curve.point(i / 1000) for i in range(1001)]
+                    # Shared rises begin after the letter's baseline, keeping descenders intact.
+                    candidates = [i for i,p in enumerate(samples) if p.imag <= 1]
+                    cut = (max(candidates) / 1000) if candidates else 0
+                    if curve.end.imag > 200 and cut < .999:
+                        curve = curve.cropped(cut, 1) if cut else curve
+                        exit_points = [[round(curve.point(i / 128).real, 3), round(curve.point(i / 128).imag, 3)] for i in range(129)]
+        # Inserted TFM connector glyphs use their complete original centerline.
+        helper_points = []
+        if len(points) == 1 and not points[0].isclosed():
+            curve = points[0]
+            helper_points = [[round(curve.point(i / 128).real, 3), round(curve.point(i / 128).imag, 3)] for i in range(129)]
+        native_paths[code] = {'name': glyphname, 'exit': exit_points, 'helper': helper_points}
+    def anchors(code, medial=False):
+        key = (code, medial, True)
+        if key not in curves:
+            return None
+        candidates = [curve for curve in curves[key] if min(curve.point(i / 128).imag for i in range(129)) <= 343]
+        if not candidates:
+            return None
+        first, last = candidates[0], candidates[-1]
+        def point(p): return [round(p.real, 3), round(p.imag, 3)]
+        def direction(curve, t):
+            tangent = curve.unit_tangent(t)
+            return point(tangent)
+        entry = {'point': point(first.start), 'tangent': direction(first, 0)}
+        oval_entries = []
+        if first.isclosed() and max(first.point(i / 128).imag for i in range(129)) <= 354 or code in (99, 163) or kind == 'va' and code == 101:
+            samples = [first.point(i / 256) for i in range(257)]
+            middle_x = (min(p.real for p in samples) + max(p.real for p in samples)) / 2
+            middle_y = (min(p.imag for p in samples) + max(p.imag for p in samples)) / 2
+            for i,p in enumerate(samples):
+                tangent = first.unit_tangent(i / 256)
+                if tangent.real < 0: tangent = -tangent
+                if p.real <= middle_x and p.imag >= middle_y and tangent.real * tangent.imag > 0:
+                    oval_entries.append({'point': point(p), 'tangent': point(tangent)})
+        end = {'point': point(last.end), 'tangent': direction(last, 1)}
+        capital_end = end
+        if last.isclosed() or last.end.real < last.start.real or last.end.imag > 343:
+            samples = [(curve.point(i / 256), curve.unit_tangent(i / 256)) for curve in candidates for i in range(257)]
+            samples = [(p,t) for p,t in samples if -1 <= p.imag <= 334]
+            if samples:
+                p,t = max(samples, key=lambda pair: pair[0].real)
+                if t.imag < 0: t = -t
+                capital_end = {'point': point(p), 'tangent': point(t)}
+        return {'entry': entry, 'ovalEntries': oval_entries, 'end': end, 'capitalEnd': capital_end}
+    for code, data in native_paths.items():
+        data['anchors'] = anchors(code)
+        if 'native' + str(code) + '.medial' in glyphs:
+            data['medialName'] = 'native' + str(code) + '.medial'
+            data['medialAnchors'] = anchors(code, True)
+    native = {'codes': native_paths,
+        'cmap': {char: (255 if kind == 'va' and char == 'ß' else ord(char)) for char in alphabet},
+        'ligatures': tfm.ligatures,
+        'kerning': {a: {b: value * 1000 for b,value in pairs.items()} for a,pairs in tfm.kerning.items()}}
     return {'unitsPerEm': 1000, 'height': 1200, 'top': 825, 'glyphs': outlines,
-        'guides': [0, round(tfm.chars[97]['height'] * 1000, 3), round(tfm.chars[65]['height'] * 1000, 3)],
+        'guides': [0, round(tfm.chars[97]['height'] * 1000, 3), round(tfm.chars[65]['height'] * 1000, 3)], 'native': native,
         'initial': {c: c + '.init' for c in 'aiuo'} if kind == 'la' else {},
         'medial': {'m': 'm.med'} if kind == 'la' else {},
         'final': {g: g + '.fin' for g in variants if g + '.fin' in glyphs},
