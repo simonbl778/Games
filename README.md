@@ -79,7 +79,7 @@ Ein Blitzblick-Spiel für Erstklässler: schwarze Punkte auf einem weißen Zehne
 3. Nur vor dem ersten Rätsel einer Partie zählt das Spiel **3–2–1** herunter. Danach erscheint das Zahlbild. Das Feld wird zeilenweise von oben links nach unten rechts gefüllt: erst beide Punkte der obersten Reihe, dann die nächste Reihe. Bei ungeraden Zahlen steht der letzte Punkt links. Die Zahl selbst wird nicht verraten.
 4. Die Anzahl auf den Telefontasten **1–9** oder auf der mittigen Taste **10** wählen: bereits während der Punkteanzeige oder danach. Eine frühe Antwort blendet das Feld sofort aus und beendet die Frage. Ohne Antwort verschwindet es nach der gewählten Zeit; die Tasten bleiben danach frei. Zum Antworten gibt es keine Zeitbegrenzung.
 5. Richtig: **+1 Punkt**, weicher, glockenartiger „Bling“-Ton und lächelndes Gesicht. Falsch: **−5 Punkte** (höchstens bis null), kurzer absteigender „Zonk“-Ton, Daumen nach unten und die richtige Anzahl. Ein Fehler bei 15 Punkten führt zu 10 Punkten. Nach der kurzen Rückmeldung geht es direkt mit dem nächsten Zahlbild weiter. **Ton aus** schaltet alle Rückmeldetöne stumm. Bei der nächsten Aufgabe sehen alle Zahlentasten wieder gleich aus.
-6. Bei **30 Punkten** gibt es einen Pokal, Konfetti und eine fröhliche Siegermelodie mit aufsteigenden Glöckchen und einem Dur-Akkord. Danach erneut spielen oder die Stufe wechseln.
+6. Bei **40 Punkten** gibt es einen Pokal, Konfetti und eine fröhliche Siegermelodie mit aufsteigenden Glöckchen und einem Dur-Akkord. Danach erneut spielen oder die Stufe wechseln.
 
 | Stufe | Sichtbare Dauer |
 | --- | --- |
@@ -94,7 +94,11 @@ Ein Blitzblick-Spiel für Erstklässler: schwarze Punkte auf einem weißen Zehne
 | 9 | 0,5 s |
 | 10 · ganz schwer | 0,3 s |
 
-Jede Zahl ist anfangs gleich wahrscheinlich. Falsche Antworten erhöhen die Gewichtung der **gesuchten** Zahl schrittweise bis zum Dreifachen. Richtige Antworten senken die zusätzliche Gewichtung allmählich wieder. Alle Zahlen bleiben möglich; direkte Wiederholungen sind erlaubt. Diese Anpassung und die Punkte gelten nur für die aktuelle Partie. **Spiel beenden** führt jederzeit zur Schwierigkeitsauswahl zurück und stoppt die Partie samt Ton. **Noch einmal spielen** oder ein Neuladen beginnen ebenfalls eine neue Session. Nur die letzte Stufe und die Toneinstellung bleiben lokal gespeichert.
+Jede Zahl ist anfangs gleich wahrscheinlich. Die unmittelbar vorherige Zahl bleibt bei der nächsten Aufgabe immer ausgeschlossen: Zwischen zwei gleichen Karten liegt mindestens eine andere, auch nach einem Fehler. Falsche Antworten erhöhen weiterhin die Gewichtung der **gesuchten** Zahl. Richtige Antworten senken diesen Fehlerzuschlag allmählich wieder.
+
+Zusätzlich misst das Spiel im Hintergrund die aktive Zeit vom ersten sichtbaren Punktebild bis zur Antwort, auch wenn die Punkte inzwischen verdeckt sind. Countdown, Rückmeldungen und Pausen zählen nicht mit. Pro Zahl werden die letzten fünf Antwortzeiten mit den Durchschnittszeiten der anderen bereits geübten Zahlen verglichen. Überdurchschnittlich langsame Karten kommen häufiger vor; schnellere Antworten senken den Zeitzuschlag wieder. Die kombinierte Gewichtung aus Fehlern und Zeit ist auf das Fünffache begrenzt, alle anderen Zahlen bleiben möglich. Extreme Zeitwerte werden für diese Gewichtung begrenzt; beim Antworten gibt es weiterhin kein Zeitlimit.
+
+Diese Auswertung, die Fehler und die Punkte gelten nur für die aktuelle Partie und bleiben im Arbeitsspeicher. Es werden keine Lösungszeiten übertragen oder dauerhaft gespeichert. **Spiel beenden** führt jederzeit zur Schwierigkeitsauswahl zurück und stoppt die Partie samt Ton. **Noch einmal spielen** oder ein Neuladen beginnen ebenfalls eine neue Session. Nur die letzte Stufe und die Toneinstellung bleiben lokal gespeichert.
 
 Beim App-Wechsel wird das Spiel angehalten. Nach **Weiter geht’s** wird ein unterbrochenes Zahlbild erneut für die volle Dauer gezeigt. Eine bereits offene Antwort bleibt offen. Versteckte Zeit zählt nicht als Fehler. **Ton an/aus** schaltet die Melodien um. Am Computer entsprechen die Tasten `1`–`9` den Zahlen, `0` steht für `10`.
 
@@ -104,9 +108,11 @@ Die neuen Dateien stehen in [`docs/blitzblickzahlen/`](docs/blitzblickzahlen/): 
 
 ### APK herunterladen und teilen
 
-Im Spiel **APK herunterladen** wählen oder die [APK direkt von GitHub](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/blitzblickzahlen-1.1.0.apk) herunterladen. Wie beim Silbengenerator gibt es auch eine [ZIP-Datei mit APK und Installationsanleitung](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/docs/downloads/Blitzblickzahlen-Android-1.1.0.zip). ZIP auf dem Handy entpacken und die enthaltene APK öffnen und installieren. Die Dateien liegen unter [`docs/downloads/`](docs/downloads/). Die App bringt alle Spieldateien mit und braucht weder Internet noch eine ChatGPT-Anmeldung. Über **App teilen** in der installierten App lässt sich genau diese APK an andere Handys weitergeben. Voraussetzung ist Android 8.0 oder neuer mit aktuellem Android System WebView.
+Die Web-App ist auf Version **1.2.0** mit Zeitgewichtung und 40 Punkten aktualisiert. Die angebotene APK bleibt vorerst **1.1.0** mit 30 Punkten und der bisherigen Auswahlregel. Für ein darüber installierbares APK-Update wird der private Signaturschlüssel aus dem früheren Arbeitsbereich benötigt; er ist im aktuellen Arbeitsbereich nicht vorhanden. Die Browserinstallation über **Aufs Handy** verwendet bereits die neue Web-Version.
 
-Quellcode, Build-Befehl und Hinweise für zukünftige signierte Updates stehen in [`android/blitzblickzahlen/README.md`](android/blitzblickzahlen/README.md). Die APK wird zusammen mit einer SHA-256-Prüfsumme unter `docs/downloads/` ausgeliefert. Website, Browserinstallation und APK verwenden dieselbe Spiellogik; eine installierte APK wird durch eine neue APK aktualisiert.
+Im Spiel **APK 1.1.0** wählen oder die [APK direkt von GitHub](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/blitzblickzahlen-1.1.0.apk) herunterladen. Wie beim Silbengenerator gibt es auch eine [ZIP-Datei mit APK und Installationsanleitung](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/docs/downloads/Blitzblickzahlen-Android-1.1.0.zip). ZIP auf dem Handy entpacken und die enthaltene APK öffnen und installieren. Die Dateien liegen unter [`docs/downloads/`](docs/downloads/). Die App bringt alle Spieldateien mit und braucht weder Internet noch eine ChatGPT-Anmeldung. Über **App teilen** in der installierten App lässt sich genau diese APK an andere Handys weitergeben. Voraussetzung ist Android 8.0 oder neuer mit aktuellem Android System WebView.
+
+Quellcode, Build-Befehl und Hinweise für zukünftige signierte Updates stehen in [`android/blitzblickzahlen/README.md`](android/blitzblickzahlen/README.md). Die APK wird zusammen mit einer SHA-256-Prüfsumme unter `docs/downloads/` ausgeliefert und enthält die Spiellogik ihres jeweiligen Versionsstands. Eine installierte APK wird ausschließlich durch eine neue APK aktualisiert.
 
 ## GitHub Pages optional einschalten
 
@@ -179,7 +185,7 @@ npm run check
 - [GitHub: Eine Pages-Website erstellen](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
 - [MDN: Grenzen der Orientierungssperre](https://developer.mozilla.org/en-US/docs/Web/API/ScreenOrientation/lock)
 
-Games 1.1.0 · Silbengenerator 1.5.1 · Blitzblickzahlen 1.1.0 · 11. November 2026
+Games 1.1.0 · Silbengenerator 1.5.1 · Blitzblickzahlen-Web-App 1.2.0 · 11. November 2026
 
 ## Lernstufen und Motivation ab Version 1.5.0
 

@@ -20,6 +20,8 @@ let resumeAction;
 let deferredInstall = null;
 let waitingWorker = null;
 let updateRequested = false;
+let solveElapsed = 0;
+let solveStartedAt = null;
 
 try {
   const saved = Number(localStorage.getItem('blitzblickzahlen.level') || 1);
@@ -54,6 +56,14 @@ function cancelPending() { clearTimeout(timer); cancelAnimationFrame(paintFrame)
 function later(callback, delay) { cancelPending(); timer = setTimeout(callback, delay); }
 const canAnswer = () => phase === 'show' || phase === 'answer';
 
+function resetSolveClock() { solveElapsed = 0; solveStartedAt = null; }
+function startSolveClock() { if (solveStartedAt === null) solveStartedAt = performance.now(); }
+function stopSolveClock() {
+  if (solveStartedAt === null) return;
+  solveElapsed += Math.max(0, performance.now() - solveStartedAt);
+  solveStartedAt = null;
+}
+
 function setPhase(next, title, hint, icon = '', copy = '') {
   phase = next;
   $('display-area').className = `display-area ${next}`;
@@ -82,18 +92,21 @@ function showPoints() {
   // The field becomes visible inside an animation frame; no fading shortens the flash.
   paintFrame = requestAnimationFrame(() => {
     setPhase('show', 'Schau genau!', 'Tippe, sobald du die Anzahl erkennst.');
+    startSolveClock();
     timer = setTimeout(askForAnswer, durationForLevel(level));
   });
 }
 
 function askForAnswer() {
   setPhase('answer', 'Wie viele waren’s?', 'Du kannst dir beim Antworten Zeit lassen.', '?', 'Jetzt bist du dran.');
+  startSolveClock();
   // Move focus without scrolling; the answer remains secret in the accessible label.
   keys[0].focus({ preventScroll: true });
 }
 
 function nextRound() {
   session.next();
+  resetSolveClock();
   showPoints();
 }
 
@@ -112,6 +125,7 @@ async function enterPortrait() {
 function startGame() {
   cancelPending(); audio.stop(); audio.unlock();
   session = new Session();
+  resetSolveClock();
   setup.hidden = true; win.hidden = true; game.hidden = false;
   $('end-game-button').hidden = false; $('setup-spark').hidden = true; $('app-footer').hidden = true;
   $('confetti').replaceChildren();
@@ -130,9 +144,10 @@ form.addEventListener('submit', (event) => {
 
 function answer(number) {
   if (!canAnswer()) return;
+  stopSolveClock();
   // An early answer ends the flash. Its old timeout must not reopen the keypad.
   cancelPending();
-  const result = session.answer(number);
+  const result = session.answer(number, { responseMs: solveElapsed });
   updateProgress();
   if (result.correct) {
     setPhase('correct', 'Richtig!', 'Prima gesehen. +1 Punkt', '☺', `${result.score} von ${TARGET_SCORE} Punkten!`);
@@ -171,6 +186,7 @@ function celebrate() {
 
 function showSetup() {
   cancelPending(); audio.stop(); phase = 'setup'; session = null;
+  resetSolveClock();
   resumeAction = null;
   frame.hidden = true;
   for (const key of keys) key.disabled = true;
@@ -187,6 +203,7 @@ $('replay-button').addEventListener('click', startGame);
 function pauseGame() {
   if (['setup', 'win', 'paused'].includes(phase)) return;
   const previous = phase;
+  stopSolveClock();
   cancelPending(); audio.stop();
   resumeAction = previous === 'answer' ? askForAnswer
     : previous === 'countdown' ? startCountdown
