@@ -3,7 +3,7 @@
   "versionCode": 10501,
   "apk": "docs/downloads/silbengenerator-1.5.1.apk",
   "zip": "docs/downloads/Silbengenerator-Android-1.5.1.zip",
-  "sha256": "2f465f0d3c313f4afe0bcd36e750f194b5a1f21ae3e233ca7c51260b0734f573",
+  "sha256": "d1782fc12e77db398da7c08c4e5f27faec3b3e5ba3e130e01fc521d400ebe438",
   "certificateSha256": "5bbf9cbed816b44d3a5cfe3a7ccaf74651060647352f0fd9ad885d81acc4cfcd",
   "newSigningIdentity": false,
   "requiresReinstallFrom": "1.0.x",
@@ -31,7 +31,7 @@
     "presentation.js": "4f5a8b6f807be64193e20f2128051c485ebe994d2e7abe395b656890ed5276d4",
     "school-script.js": "7233a9602eeb771aed695bd896d45342b230d06cd48585a00879333dcc9da83d",
     "service-worker.js": "58119ea4fc19e470439cd2192f51f11dac5e18c338e329ce78f42f99282f598e",
-    "styles.css": "1405b4535aea70eb60e28c12feea87bf61335148c0c0467d1c5db53f5d9eba3b",
+    "styles.css": "f3d6f1d886d3f3aa99812d37590e116fcf992e686776f2b6112fc5136cc2c7db",
     "typography.js": "4144095cde948714806cfc12f2e8d06eda248516f3e6bd524e9075bbb2bdaa03"
   }
 }
