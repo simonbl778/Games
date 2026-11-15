@@ -3,13 +3,13 @@
 Für das zweite Spiel: [Blitzblickzahlen als APK oder ZIP](../android/blitzblickzahlen/README.md).
 
 **Direkter Download über die Spielseite:**
-[APK herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.5.1.apk) ·
-[ZIP zum Weitergeben](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/Silbengenerator-Android-1.5.1.zip).
+[APK herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.6.0.apk) ·
+[ZIP zum Weitergeben](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/Silbengenerator-Android-1.6.0.zip).
 Die gleichen Dateien liegen wie bei Blitzblickzahlen unter `docs/downloads/` und werden mit den Spielseiten veröffentlicht. Zum Spielen nach der Installation ist keine Anmeldung nötig.
 
-[**Installationsdatei herunterladen**](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.5.1.apk)
+[**Installationsdatei herunterladen**](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.6.0.apk)
 
-**Alternative bei Downloadproblemen:** [ZIP-Datei mit APK und Anleitung herunterladen](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/docs/downloads/Silbengenerator-Android-1.5.1.zip).
+**Alternative bei Downloadproblemen:** [ZIP-Datei mit APK und Anleitung herunterladen](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/docs/downloads/Silbengenerator-Android-1.6.0.zip).
 Die ZIP-Datei auf dem Handy entpacken und dann die enthaltene APK öffnen.
 Falls ein Download im eingebauten Chat-Browser nicht startet, den Link über
 **Im Browser öffnen** in Chrome öffnen und dort herunterladen.
@@ -29,9 +29,7 @@ Voraussetzung: **Android 8 oder neuer** und eine aktuelle Android-System-WebView
 Die App läuft von Anfang an offline, ohne Anmeldung, Werbung, Konten oder
 zusätzliche Berechtigungen. Alle Spieldateien sind in der APK enthalten.
 
-Die Auswahl bleibt unverändert: bei maximal 1 immer eine Silbe, bei maximal 2
-eine oder zwei, bei maximal 3 zwei oder drei, bei maximal 4 drei oder vier und
-bei maximal 5 vier oder fünf Silben.
+Für Zufallsketten gilt: bei maximal 1 immer eine Silbe, bei maximal 2 eine oder zwei, bei maximal 3 zwei oder drei, bei maximal 4 drei oder vier und bei maximal 5 vier oder fünf Silben. Ab Stufe 4 kommt spätestens jede vierte Aufgabe ein echtes Wort, ab Stufe 10 jede dritte und in Heft B jede zweite. Sind auf der gewählten Stufe noch keine langen echten Wörter vorhanden, dürfen Wortaufgaben kürzer ausfallen. Die Höchstzahl bleibt bestehen. Eigene Silbenauswahlen werden berücksichtigt; ohne passendes echtes Wort erklärt die Startseite die nötige Erweiterung.
 
 Vor dem Start **Druckschrift**, **Lateinische Ausgangsschrift (LA)** oder
 **Vereinfachte Ausgangsschrift (VA)** wählen. Standard ist Druckschrift.
@@ -45,7 +43,7 @@ erscheinen dezent rot, die übrigen dunkelgrün. Sie lässt sich vor dem Start a
 
 ## Aktualisieren
 
-**Version 1.5.1 lässt sich direkt über 1.1.x, 1.2.x, 1.3.x, 1.4.x und 1.5.x installieren.** Der Signierschlüssel ist unverändert. Die Druckschrift verwendet jetzt **Fibel Nord**, mit rundem, einstöckigem a wie auf den Fotovorlagen. Auch die übrigen Druckbuchstaben, die Auswahl und die Schriftprobe nutzen diese lokal eingebundene Schulschrift. Die gespeicherten Lernstufen, Timer, Klang und Schreibschriften bleiben erhalten. Auf der Startseite ist **Version 1.5.1** sichtbar. Quellen und Lizenz stehen in [der Schriftdokumentation](../docs/silbengenerator/fonts/README.md).
+**Version 1.6.0 lässt sich direkt über bestehende APKs ab 1.1.x installieren.** Der Signierschlüssel ist unverändert. Neu sind echte Wörter mit garantierter Mindesthäufigkeit, passend zu den bekannten Buchstaben und Lautverbindungen. Die Schreibweise und Silbenfarben entsprechen dem tatsächlichen Wort. Lernstufen, Timer, Klang und alle drei Schriften bleiben erhalten. Auf der Startseite ist **Version 1.6.0** sichtbar.
 
 Die Ausgabe 1.1.0 ist neu signiert. Der frühere lokale Schlüssel wurde beim
 Neustart der Arbeitsumgebung nicht übernommen. Beim Wechsel von 1.0.x ist

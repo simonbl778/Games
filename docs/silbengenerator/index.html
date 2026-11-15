@@ -25,7 +25,7 @@
           <span class="brand-mark" aria-hidden="true">mo<span class="brand-dot"></span></span>
           <div><span class="brand-name">Silbengenerator</span><span class="brand-subtitle">Ein kleines Lesespiel</span></div>
         </div>
-        <span id="practice-count" class="practice-stat practice-count" role="status" aria-live="polite" aria-atomic="true" hidden><strong id="completed-count">0</strong><span id="completed-label">Ketten gelesen</span></span>
+        <span id="practice-count" class="practice-stat practice-count" role="status" aria-live="polite" aria-atomic="true" hidden><strong id="completed-count">0</strong><span id="completed-label">Aufgaben gelesen</span></span>
         <div class="header-actions">
           <span id="calm-badge" class="calm-badge"><span aria-hidden="true">✦</span> In deinem Tempo</span>
           <button id="settings-button" class="soft-button" type="button" hidden>
@@ -56,6 +56,7 @@
                 <div id="syllable-options" class="syllable-options"></div>
               </details>
               <p id="selection-error" class="font-error" role="alert" hidden>Bitte mindestens eine Silbe auswählen.</p>
+              <p id="word-selection-error" class="font-error" role="alert" hidden>Für diese Auswahl gibt es noch kein passendes echtes Wort. Wähle weitere Silben oder eine höhere Silbenzahl.</p>
             </fieldset>
             <fieldset>
               <legend>Wie viele Silben<br> höchstens?</legend>
@@ -68,6 +69,7 @@
                 <label class="number-option"><input type="radio" name="max-syllables" value="5"><span class="number-face"><span>5</span><span class="option-dots" aria-hidden="true">●●●●●</span></span></label>
               </div>
               <p class="selection-summary" id="selection-summary">Zufällig 2 bis 3 Silben pro Kette</p>
+              <p id="word-help" class="level-help" hidden></p>
             </fieldset>
             <fieldset class="font-choice">
               <legend>Schrift zum Lesen</legend>
@@ -108,7 +110,7 @@
         </section>
       </main>
 
-      <footer class="app-footer" id="app-footer"><span>Neugierig bleiben. Weiterlesen.</span><div class="install-area"><span id="app-version">Version 1.5.1</span><span id="offline-status" role="status" aria-live="polite"></span><button id="install-button" type="button" class="text-button">Aufs Handy</button></div></footer>
+      <footer class="app-footer" id="app-footer"><span>Neugierig bleiben. Weiterlesen.</span><div class="install-area"><span id="app-version">Version 1.6.0</span><span id="offline-status" role="status" aria-live="polite"></span><button id="install-button" type="button" class="text-button">Aufs Handy</button></div></footer>
       <div id="update-notice" class="update-notice" role="status" hidden><span>Eine neue Version ist bereit.</span><button id="update-button" type="button">Jetzt laden</button></div>
       <dialog id="install-dialog" aria-labelledby="install-title">
         <button class="dialog-close" id="close-install" aria-label="Schließen" type="button">×</button>

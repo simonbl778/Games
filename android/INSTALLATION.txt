@@ -1,4 +1,4 @@
-Silbengenerator - Schul-Druckschrift nach den Fotovorlagen 1.5.1
+Silbengenerator - echte Woerter passend zur Lernstufe 1.6.0
 
 1. APK auf das Android-Handy herunterladen und oeffnen.
 2. Ist Version 1.1.x, 1.2.x, 1.3.x 1.4.x oder 1.5.x installiert: normal darueber installieren.
@@ -16,11 +16,14 @@ Alle Schriften, Lizenzen und Spieldateien sind lokal enthalten.
 Ohne Internet oder ChatGPT-Konto nutzbar.
 Android 8 oder neuer mit aktuellem Android System WebView erforderlich.
 
-Neu: Druckschrift verwendet die Schulschrift Fibel Nord von Peter Wiegel.
-Das kleine a hat einen runden Bauch und einen geraden rechten Strich wie
-auf den Fotovorlagen. Alle Druckbuchstaben und Silbenbeispiele nutzen die
-lokal mitgelieferte Schrift. Vor dem Lesestart wird ihre Ladebereitschaft geprueft.
-Die gespeicherten Stufen und eigenen Silben, Zaehler, Timer, Belohnungsklang,
-LA und VA bleiben erhalten. Schrift und Lizenz sind offline enthalten.
+Neu: Ab Stufe 4 ist spaetestens jede vierte Aufgabe ein echtes Wort.
+Ab Stufe 10 jede dritte, in Arbeitsheft B jede zweite Aufgabe.
+Das gilt auch bei maximal fuenf Silben. Fehlen noch lange echte Woerter,
+darf die Wortaufgabe kuerzer sein. Die gewaehlte Hoechstzahl gilt weiter.
+Echte Woerter haben korrekte Gross-/Kleinschreibung und echte Silbengrenzen.
+Eigene Silbenauswahlen bleiben beruecksichtigt. Ohne passendes echtes Wort
+bittet die Startseite um weitere Silben oder eine hoehere Silbenzahl.
+Die gespeicherten Stufen, Zaehler, Timer, Belohnungsklang und Schriften
+bleiben erhalten. Alle Woerter und Spieldateien funktionieren offline.
 
-Nach der Installation steht unten auf der Startseite: Version 1.5.1.
+Nach der Installation steht unten auf der Startseite: Version 1.6.0.

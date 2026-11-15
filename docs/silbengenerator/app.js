@@ -1,5 +1,6 @@
 import { DEFAULT_MAX_SYLLABLES } from './config.js';
-import { generateChain, getMinSyllables, validateMaxSyllables } from './generator.js';
+import { getMinSyllables, validateMaxSyllables } from './generator.js';
+import { ReadingGenerator, availableWords, wordInterval } from './reading-generator.js';
 import { renderChain } from './presentation.js';
 import { normalizeReadingFont, readingHeightFactor, ensureReadingFont } from './typography.js';
 
@@ -17,7 +18,7 @@ const colorOption = $('alternate-colors');
 let maximum = DEFAULT_MAX_SYLLABLES;
 let readingFont = 'print';
 let starting = false;
-let previousText = '';
+let readingGenerator;
 let deferredInstall = null;
 let waitingWorker = null;
 let updateRequested = false;
@@ -66,7 +67,7 @@ function refreshSelectedSyllables() {
   selection.syllables = [...form.querySelectorAll('input[name="known-syllable"]:checked')].map(input => input.value);
   $('selected-count').textContent = `(${selection.syllables.length})`;
   $('selection-error').hidden = selection.syllables.length > 0;
-  $('start-button').disabled = selection.syllables.length === 0;
+  refreshWordAvailability();
   $('syllable-preview').replaceChildren(...selection.syllables.slice(0, 8).map(syllable => {
     const tile = document.createElement('span'); tile.textContent = syllable; return tile;
   }));
@@ -74,6 +75,18 @@ function refreshSelectedSyllables() {
     const more = document.createElement('span'); more.textContent = `+${selection.syllables.length - 8}`; $('syllable-preview').append(more);
   }
   saveSelection(storage, selection);
+}
+function refreshWordAvailability() {
+  const interval = wordInterval(selection.levelId);
+  const empty = selection.syllables.length === 0;
+  const unavailable = !empty && interval > 0 && !availableWords(selection.levelId, selection.syllables, maximum).length;
+  $('word-selection-error').hidden = !unavailable;
+  $('start-button').disabled = empty || unavailable;
+  $('word-help').hidden = !interval;
+  const ordinal = {2: 'zweite', 3: 'dritte', 4: 'vierte'};
+  $('word-help').textContent = interval
+    ? `Spätestens jede ${ordinal[interval]} Aufgabe ist ein echtes Wort. Falls nötig, ist es kürzer als die gewählte Silbenlänge.`
+    : '';
 }
 levelSelect.addEventListener('change', () => {
   selection = { levelId: levelSelect.value, syllables: [...getLevel(levelSelect.value).syllables] };
@@ -103,6 +116,7 @@ function updateSelection() {
   $('selection-summary').textContent = maximum === 1
     ? 'Immer eine Silbe pro Kette'
     : `Zufällig ${getMinSyllables(maximum)} bis ${maximum} Silben pro Kette`;
+  refreshWordAvailability();
 }
 updateSelection();
 form.addEventListener('change', () => {
@@ -132,10 +146,10 @@ function scheduleFit() {
 }
 
 function showNextChain() {
-  const chain = generateChain(maximum, { previousText, syllables: selection.syllables });
-  previousText = chain.text;
+  const chain = readingGenerator.next(maximum);
+  chainText.dataset.kind = chain.isWord ? 'word' : 'syllables';
   renderChain(chainText, chain, colorOption.checked, readingFont);
-  chainButton.setAttribute('aria-label', `${chain.text}. Antippen für die nächste Silbenkette.`);
+  chainButton.setAttribute('aria-label', `${chain.text}. Antippen für die nächste Aufgabe.`);
   fitChain();
 }
 
@@ -156,7 +170,7 @@ form.addEventListener('submit', async (event) => {
   event.preventDefault();
   if (starting || !game.hidden) return;
   updateSelection();
-  if (!selection.syllables.length) return;
+  if ($('start-button').disabled) return;
   reward.enabled = $('reward-sound').checked;
   reward.unlock();
   starting = true;
@@ -174,14 +188,15 @@ form.addEventListener('submit', async (event) => {
   } finally {
     starting = false;
     inputs.forEach((input) => { input.disabled = false; });
-    $('start-button').disabled = false;
+    refreshWordAvailability();
     $('start-button').removeAttribute('aria-busy');
   }
   try { localStorage.setItem('silbengenerator.maximum', String(maximum)); } catch { /* Optional. */ }
   saveSelection(storage, selection);
   session.start();
   if (document.hidden) session.pause();
-  previousText = ''; lastAdvance = -Infinity;
+  readingGenerator = new ReadingGenerator({levelId: selection.levelId, syllables: selection.syllables});
+  lastAdvance = -Infinity;
   clockInterval = setInterval(updatePracticeHud, 250);
   $('practice-count').hidden = false; $('practice-clock').hidden = false;
   updatePracticeHud();
@@ -198,7 +213,7 @@ form.addEventListener('submit', async (event) => {
 
 function updatePracticeHud() {
   const state = session.snapshot();
-  const values = { 'completed-count': String(state.count), 'completed-label': state.count === 1 ? 'Kette gelesen' : 'Ketten gelesen', 'elapsed-time': formatPracticeTime(state.elapsedMs) };
+  const values = { 'completed-count': String(state.count), 'completed-label': state.count === 1 ? 'Aufgabe gelesen' : 'Aufgaben gelesen', 'elapsed-time': formatPracticeTime(state.elapsedMs) };
   for (const [id, value] of Object.entries(values)) if ($(id).textContent !== value) $(id).textContent = value;
 }
 chainButton.addEventListener('click', () => {

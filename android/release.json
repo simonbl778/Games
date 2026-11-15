@@ -1,14 +1,14 @@
 {
-  "versionName": "1.5.1",
-  "versionCode": 10501,
-  "apk": "docs/downloads/silbengenerator-1.5.1.apk",
-  "zip": "docs/downloads/Silbengenerator-Android-1.5.1.zip",
-  "sha256": "d1782fc12e77db398da7c08c4e5f27faec3b3e5ba3e130e01fc521d400ebe438",
+  "versionName": "1.6.0",
+  "versionCode": 10600,
+  "apk": "docs/downloads/silbengenerator-1.6.0.apk",
+  "zip": "docs/downloads/Silbengenerator-Android-1.6.0.zip",
+  "sha256": "d75c67907aa37b591e1aa8b5816b86f4e431eeb9f00afc345a9dd6dc30c6149d",
   "certificateSha256": "5bbf9cbed816b44d3a5cfe3a7ccaf74651060647352f0fd9ad885d81acc4cfcd",
   "newSigningIdentity": false,
   "requiresReinstallFrom": "1.0.x",
   "bundledGameFiles": {
-    "app.js": "39c1e4358b55e615d33be4040256b9b308d9ddf61ba0579a9da050aa929a4be7",
+    "app.js": "9037703827cfed2cccc9adbf01f6f70da7d2dc19d6651b3f509afe9706f60de1",
     "audio.js": "afeedd8b475819cbde6277c3b0fdcc91a4bab72f9b3a46373791a66fa825b7d7",
     "config.js": "624a8caa7dda6c0ee1128632cec3be9719c1a88a73ccd4c73f7c67a890c80ced",
     "curriculum.js": "9a7147957824ebfbf396840557da3d64cf7018812a07eb3cf22df49499cdcc34",
@@ -24,14 +24,16 @@
     "icons/icon-512.png": "77d3b5189dc10f438f16946ce71a2c84f917b823ef880604f11bda8d69989ef7",
     "icons/icon.svg": "a71f3418a67623f398a7dde29560a6ba169d9c4617ee052719928459fa98ca59",
     "icons/maskable-512.png": "db3459ff7c92dec695ca5d7a5b1a680d01644f9892ffae8fa10df323a0a71087",
-    "index.html": "59c56ba3690c1cfcae41a64f06ea6395dcd83b0ca65d4a5993af648f0266766f",
+    "index.html": "00476f54b6042b7083fd5952af1c89c5423951e4707065e234f360ef63cc26c2",
     "manifest.webmanifest": "db60908b2cb33edea58222172ba12dcd478ac35b3dc42048937f821fdd7d750d",
     "native-script.js": "fede5203fcf97b6d4ec25a8a3a855a27ec53e68a16dc0d8553a7cc0234e2be37",
     "practice.js": "d54d6dc409069744d7284220d74d88f16505210dc5d67f577e053df670c08c57",
     "presentation.js": "4f5a8b6f807be64193e20f2128051c485ebe994d2e7abe395b656890ed5276d4",
+    "reading-generator.js": "9857f395d39ff91875849ffb1fbd1f6a1628dc1f1c44feee622654b75672e84d",
     "school-script.js": "7233a9602eeb771aed695bd896d45342b230d06cd48585a00879333dcc9da83d",
-    "service-worker.js": "58119ea4fc19e470439cd2192f51f11dac5e18c338e329ce78f42f99282f598e",
+    "service-worker.js": "4e33b468f017ebcaa1e98fece7adda95841f9f96fd8ca37eaea1b818a9aa12e0",
     "styles.css": "f3d6f1d886d3f3aa99812d37590e116fcf992e686776f2b6112fc5136cc2c7db",
-    "typography.js": "4144095cde948714806cfc12f2e8d06eda248516f3e6bd524e9075bbb2bdaa03"
+    "typography.js": "4144095cde948714806cfc12f2e8d06eda248516f3e6bd524e9075bbb2bdaa03",
+    "words.js": "064018c4c34bd913659274934dd1f731ad514568a77bcf8e93cc84b58fd03bc9"
   }
 }

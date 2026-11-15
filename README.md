@@ -20,11 +20,11 @@ Eine große Silbenkette lesen, antippen und weiterlesen.
 ## Spielen
 
 **Eigenständige Silbengenerator-App ohne ChatGPT-Anmeldung:**
-[APK direkt über die Spielseite herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.5.1.apk) ·
-[GitHub-Download](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.5.1.apk).
+[APK direkt über die Spielseite herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.6.0.apk) ·
+[GitHub-Download](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.6.0.apk).
 Diese Datei lässt sich auch auf OneDrive ablegen und per Link weitergeben.
 Die App funktioniert ab Android 8 und von Anfang an vollständig offline.
-Version 1.5.1 lässt sich mit derselben Signatur über 1.1.x, 1.2.x, 1.3.x und 1.4.x installieren. Die Druckschrift verwendet jetzt die lokal eingebundene Schulschrift **Fibel Nord** von Peter Wiegel. Das kleine **a** hat den runden Bauch und geraden rechten Strich aus den Fotovorlagen; auch die übrigen Druckbuchstaben verwenden dieselbe Schrift. Silbenvorschau, Auswahl und Schriftprobe sind entsprechend angepasst. Unten auf der Startseite steht zur Kontrolle **Version 1.5.1**.
+Version 1.6.0 lässt sich mit derselben Signatur über bestehende APKs ab 1.1.x installieren. Neu ist der Wortschatz passend zur Lernstufe: ab Stufe 4 spätestens jede vierte Aufgabe ein echtes Wort, später häufiger. Echte Wörter behalten ihre korrekte Groß- und Kleinschreibung und ihre tatsächlichen Silbengrenzen. Bei fehlenden langen Wörtern kommen kürzere echte Wörter vor. Auf der Startseite steht zur Kontrolle **Version 1.6.0**.
 
 Beim Wechsel von einer alten Silbengenerator-APK (1.0.x) muss die alte App einmal deinstalliert werden: Version 1.1.0 hat einen neuen Signierschlüssel, weil der frühere private Schlüssel nach dem Neustart der Build-Umgebung nicht mehr vorlag. Dabei geht nur die letzte Silben-Auswahl verloren; es gibt keine gespeicherten Lernstände. Den neuen privaten Schlüssel für künftige Updates getrennt vom öffentlichen Repository aufbewahren.
 [Installation und Weitergabe](downloads/README.md) · [Android-Quellcode und Build](android/README.md)
@@ -61,12 +61,26 @@ Die Browseransicht in einer anderen App kann Installieren, Vollbild oder Drehen 
 - Vor dem Start lassen sich **Druckschrift**, **Lateinische Ausgangsschrift (LA)** oder **Vereinfachte Ausgangsschrift (VA)** wählen. Druckschrift ist vorausgewählt. Beide Schulschriften sind lokal und offline eingebunden; Anstriche, Großbuchstaben und Anschlüsse folgen dem jeweiligen Modell. Auch Anfangsgroßbuchstaben sind verbunden. Quellen und modellabhängige Besonderheiten stehen in [der Schriftdokumentation](docs/silbengenerator/fonts/README.md).
 - Gleiche Vokale direkt an einer Silbengrenze, etwa `oo`, `ii`, `uu`, `Moo` oder `Muu`, erscheinen nur als sehr seltene Ausnahme. 99 von 100 vorgeschlagenen gleichen Vokalgrenzen werden durch einen passenden anderen Baustein ersetzt.
 - **Silben dezent einfärben** ist standardmäßig eingeschaltet und lässt sich abwählen. Die erste, dritte und fünfte Silbe erscheinen dunkelgrün, die zweite und vierte in gedämpftem, gut lesbarem Rot. Die tatsächlichen Silbengrenzen bleiben ohne zusätzliche Abstände erkennbar, auch bei verbundenen Schreibschriften. Beim erneuten Öffnen gelten wieder Druckschrift und eingeschaltete Farbhilfe; innerhalb einer Partie bleiben Änderungen erhalten.
-- Nur der **erste Buchstabe der gesamten Kette** wird zufällig groß- oder kleingeschrieben. Alle weiteren Buchstaben bleiben klein: zum Beispiel `Momiu` oder `momiu`, aber nicht `MoMiU`.
+- Nur bei **Zufallsketten** wird der erste Buchstabe zufällig groß- oder kleingeschrieben. Echte Wörter behalten ihre richtige Schreibweise: `Mama`, `Omi`, `Wassermelone`, aber `lila` und `malen`.
 - Jede neue sichtbare Anzeige unterscheidet sich von der unmittelbar vorherigen.
 - Die App zeigt beim erneuten Öffnen zuerst die Auswahl. Die zuletzt verwendete Höchstzahl ist lediglich vorausgewählt.
 - Die Schriftgröße passt sich an die Kettenlänge und den verfügbaren Platz an. Die Kette bleibt in einer Zeile.
 
 Im Silbengenerator gibt es keinen Zeitdruck, keine Punkte, keine Werbung und keine Spielerkonten. Ein leiser, abschaltbarer Klang begleitet bestätigte Ketten. Das Spiel selbst sendet keine Lern- oder Nutzungsdaten. Es speichert lokal nur die letzte Auswahl und Lernstufe und die Dateien für den Offlinebetrieb; das Hosting hat seine üblichen technischen Zugriffs- und ggf. Anmeldedaten.
+
+### Echte Wörter passend zur Lernstufe
+
+Ab Version 1.6.0 mischt die App einen eigenen, begrenzten Kinderwortschatz mit vertrauten Namen und familiären Bezeichnungen unter die Zufallsketten. Frühere Kapitel sind enthalten; noch nicht eingeführte Lautverbindungen bleiben ausgeschlossen. Der Wortschatz und die echten Silbengrenzen stehen in `docs/silbengenerator/words.js`.
+
+- Stufen **4–9**: spätestens jede **vierte** Aufgabe ist ein echtes Wort.
+- Stufen **10–19**: spätestens jede **dritte** Aufgabe ist ein echtes Wort.
+- Arbeitsheft **B, Stufen 20–40**: spätestens jede **zweite** Aufgabe ist ein echtes Wort.
+- Diese Garantie gilt auch bei maximal fünf Silben und in jeder laufenden Vierergruppe. Zufällige Treffer werden ebenfalls erkannt und richtig geschrieben.
+- Echte Wörter haben Vorrang vor der Mindestlänge: Gibt es noch kein Wort mit vier oder fünf Silben, kommt bei dieser Wortaufgabe ein kürzeres Wort aus der Stufe vor. Die gewählte Höchstzahl wird eingehalten. Wiederholte Wörter werden nicht zu erfundenen langen Wörtern zusammengesetzt.
+- Bei eigener Silbenauswahl werden abgewählte Silben und Lautverbindungen berücksichtigt. Gibt es mit dieser Auswahl und Höchstzahl kein echtes Wort, erklärt die Startseite, welche Auswahl erweitert werden muss. Die App hebt die Wortgarantie nicht unbemerkt auf.
+- Die Farbhilfe verwendet bei echten Wörtern deren wirkliche Silben. Nomen und Namen bleiben groß, andere Wortarten behalten die im Wortschatz hinterlegte Kleinschreibung. Wortquote und zuletzt gelesene Aufgaben beginnen bei jeder neuen Übung von vorn.
+
+Der Wortschatz ist ein Übungsangebot, keine Aussage darüber, dass ein Kind bereits alle enthaltenen Wörter flüssig versteht. Kurze Sätze sind in dieser Version noch kein eigener Übungsmodus.
 
 ## Blitzblickzahlen
 
@@ -185,7 +199,7 @@ npm run check
 - [GitHub: Eine Pages-Website erstellen](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
 - [MDN: Grenzen der Orientierungssperre](https://developer.mozilla.org/en-US/docs/Web/API/ScreenOrientation/lock)
 
-Games 1.1.0 · Silbengenerator 1.5.1 · Blitzblickzahlen 1.2.1 · 11. November 2026
+Games 1.1.0 · Silbengenerator 1.6.0 · Blitzblickzahlen 1.2.1 · 15. November 2026
 
 ## Lernstufen und Motivation ab Version 1.5.0
 
