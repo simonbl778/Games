@@ -5,7 +5,7 @@ import { renderChain } from './presentation.js';
 import { normalizeReadingFont, readingHeightFactor, ensureReadingFont } from './typography.js';
 
 import { LEVELS, getLevel, readSelection, saveSelection } from './curriculum.js';
-import { PracticeSession, formatPracticeTime } from './practice.js';
+import { PracticeSession, formatPracticeTime, formatReadingSpeed } from './practice.js';
 import { RewardAudio } from './audio.js';
 
 const $ = (id) => document.getElementById(id);
@@ -19,6 +19,7 @@ let maximum = DEFAULT_MAX_SYLLABLES;
 let readingFont = 'print';
 let starting = false;
 let readingGenerator;
+let currentChain;
 let deferredInstall = null;
 let waitingWorker = null;
 let updateRequested = false;
@@ -147,10 +148,13 @@ function scheduleFit() {
 
 function showNextChain() {
   const chain = readingGenerator.next(maximum);
+  currentChain = chain;
   chainText.dataset.kind = chain.isWord ? 'word' : 'syllables';
+  chainText.dataset.syllableCount = String(chain.count);
   renderChain(chainText, chain, colorOption.checked, readingFont);
   chainButton.setAttribute('aria-label', `${chain.text}. Antippen für die nächste Aufgabe.`);
   fitChain();
+  session.beginTask();
 }
 
 async function enterLandscape() {
@@ -213,13 +217,13 @@ form.addEventListener('submit', async (event) => {
 
 function updatePracticeHud() {
   const state = session.snapshot();
-  const values = { 'completed-count': String(state.count), 'completed-label': state.count === 1 ? 'Aufgabe gelesen' : 'Aufgaben gelesen', 'elapsed-time': formatPracticeTime(state.elapsedMs) };
+  const values = { 'completed-count': String(state.count), 'completed-label': state.count === 1 ? 'Silbe gelesen' : 'Silben gelesen', 'elapsed-time': formatPracticeTime(state.elapsedMs), 'practice-speed': formatReadingSpeed(state.syllablesPerMinute) };
   for (const [id, value] of Object.entries(values)) if ($(id).textContent !== value) $(id).textContent = value;
 }
 chainButton.addEventListener('click', () => {
   if (game.hidden || document.hidden || performance.now() - lastAdvance < 220) return;
   lastAdvance = performance.now();
-  session.complete(); reward.play(); showNextChain(); updatePracticeHud();
+  session.complete(currentChain.count); reward.play(); showNextChain(); updatePracticeHud();
 });
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) { session.pause(); reward.stop(); } else if (!game.hidden) session.resume();
@@ -246,7 +250,9 @@ $('fullscreen-button').addEventListener('click', () => {
   }
 });
 document.addEventListener('fullscreenchange', () => {
-  $('fullscreen-button').querySelector('span').textContent = document.fullscreenElement ? 'Vollbild beenden' : 'Vollbild';
+  const label = document.fullscreenElement ? 'Vollbild beenden' : 'Vollbild';
+  $('fullscreen-button').querySelector('span').textContent = label;
+  $('fullscreen-button').setAttribute('aria-label', label);
   scheduleFit();
 });
 window.addEventListener('resize', scheduleFit);

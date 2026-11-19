@@ -25,7 +25,7 @@
           <span class="brand-mark" aria-hidden="true">mo<span class="brand-dot"></span></span>
           <div><span class="brand-name">Silbengenerator</span><span class="brand-subtitle">Ein kleines Lesespiel</span></div>
         </div>
-        <span id="practice-count" class="practice-stat practice-count" role="status" aria-live="polite" aria-atomic="true" hidden><strong id="completed-count">0</strong><span id="completed-label">Aufgaben gelesen</span></span>
+        <span id="practice-count" class="practice-stat practice-count" role="status" aria-live="polite" aria-atomic="true" hidden><strong id="completed-count">0</strong><span id="completed-label">Silben gelesen</span></span>
         <div class="header-actions">
           <span id="calm-badge" class="calm-badge"><span aria-hidden="true">✦</span> In deinem Tempo</span>
           <button id="settings-button" class="soft-button" type="button" hidden>
@@ -106,11 +106,11 @@
             <span id="chain-text" class="chain-text" aria-live="off"></span>
             <span class="tap-hint" id="tap-hint"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 12V5a2 2 0 0 1 4 0v5l1-1a2 2 0 0 1 3 1 2 2 0 0 1 3 2v4a6 6 0 0 1-6 6h-1a5 5 0 0 1-4-2l-5-6a2 2 0 0 1 3-2l2 2"/></svg> Antippen für die nächste Kette</span>
           </button>
-          <div class="game-footer"><p><span class="small-spark" aria-hidden="true">✦</span> Silbe für Silbe.</p><button id="fullscreen-button" type="button" class="text-button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/></svg><span>Vollbild</span></button></div>
+          <div class="game-footer"><p><span class="small-spark" aria-hidden="true">✦</span> Silbe für Silbe.</p><span id="practice-speed" class="practice-speed" aria-live="off" title="Geschätztes Tempo aus den letzten bis zu fünf bestätigten Aufgaben. Lesefehler werden nicht erfasst.">— Silben/min</span><button id="fullscreen-button" type="button" class="text-button" aria-label="Vollbild"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/></svg><span>Vollbild</span></button></div>
         </section>
       </main>
 
-      <footer class="app-footer" id="app-footer"><span>Neugierig bleiben. Weiterlesen.</span><div class="install-area"><span id="app-version">Version 1.6.0</span><span id="offline-status" role="status" aria-live="polite"></span><button id="install-button" type="button" class="text-button">Aufs Handy</button></div></footer>
+      <footer class="app-footer" id="app-footer"><span>Neugierig bleiben. Weiterlesen.</span><div class="install-area"><span id="app-version">Version 1.7.0</span><span id="offline-status" role="status" aria-live="polite"></span><button id="install-button" type="button" class="text-button">Aufs Handy</button></div></footer>
       <div id="update-notice" class="update-notice" role="status" hidden><span>Eine neue Version ist bereit.</span><button id="update-button" type="button">Jetzt laden</button></div>
       <dialog id="install-dialog" aria-labelledby="install-title">
         <button class="dialog-close" id="close-install" aria-label="Schließen" type="button">×</button>

@@ -20,11 +20,11 @@ Eine große Silbenkette lesen, antippen und weiterlesen.
 ## Spielen
 
 **Eigenständige Silbengenerator-App ohne ChatGPT-Anmeldung:**
-[APK direkt über die Spielseite herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.6.0.apk) ·
-[GitHub-Download](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.6.0.apk).
+[APK direkt über die Spielseite herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.7.0.apk) ·
+[GitHub-Download](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.7.0.apk).
 Diese Datei lässt sich auch auf OneDrive ablegen und per Link weitergeben.
 Die App funktioniert ab Android 8 und von Anfang an vollständig offline.
-Version 1.6.0 lässt sich mit derselben Signatur über bestehende APKs ab 1.1.x installieren. Neu ist der Wortschatz passend zur Lernstufe: ab Stufe 4 spätestens jede vierte Aufgabe ein echtes Wort, später häufiger. Echte Wörter behalten ihre korrekte Groß- und Kleinschreibung und ihre tatsächlichen Silbengrenzen. Bei fehlenden langen Wörtern kommen kürzere echte Wörter vor. Auf der Startseite steht zur Kontrolle **Version 1.6.0**.
+Version 1.7.0 lässt sich mit derselben Signatur über bestehende APKs ab 1.1.x installieren. Neu sind die vorausgewählten geschlossenen m-Silben ab Stufe 4, ein Zähler für tatsächlich gelesene Silben und das dezente Tempo aus den letzten fünf Aufgaben. Echte Wörter, ihre korrekte Schreibweise, alle Schriften und die gespeicherte eigene Auswahl bleiben erhalten. Auf der Startseite steht zur Kontrolle **Version 1.7.0**.
 
 Beim Wechsel von einer alten Silbengenerator-APK (1.0.x) muss die alte App einmal deinstalliert werden: Version 1.1.0 hat einen neuen Signierschlüssel, weil der frühere private Schlüssel nach dem Neustart der Build-Umgebung nicht mehr vorlag. Dabei geht nur die letzte Silben-Auswahl verloren; es gibt keine gespeicherten Lernstände. Den neuen privaten Schlüssel für künftige Updates getrennt vom öffentlichen Repository aufbewahren.
 [Installation und Weitergabe](downloads/README.md) · [Android-Quellcode und Build](android/README.md)
@@ -199,7 +199,7 @@ npm run check
 - [GitHub: Eine Pages-Website erstellen](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
 - [MDN: Grenzen der Orientierungssperre](https://developer.mozilla.org/en-US/docs/Web/API/ScreenOrientation/lock)
 
-Games 1.1.0 · Silbengenerator 1.6.0 · Blitzblickzahlen 1.2.1 · 15. November 2026
+Games 1.1.0 · Silbengenerator 1.7.0 · Blitzblickzahlen 1.2.1 · 19. November 2026
 
 ## Lernstufen und Motivation ab Version 1.5.0
 
@@ -211,10 +211,20 @@ werden aus bekannten Lauten gebildet, keine Buchaufgaben oder Kapiteltexte kopie
 „Bisherige Auswahl“ erhält die vertrauten Bausteine der älteren Version.
 
 Stufe und eigene Auswahl werden sofort auf dem Gerät gespeichert. Links steht
-die Zahl bereits bestätigter Silbenketten, rechts die aktive Übungszeit. Die erste
+die Zahl bereits bestätigter Silben, rechts die aktive Übungszeit. Die erste
 angezeigte Aufgabe zählt erst beim Weiterklicken als gelesen. Einstellungen und
 Hintergrundzeit werden nicht mitgezählt; „Lesen starten“ beginnt eine neue Runde.
 Der kurze Klang wird ohne Netzabruf erzeugt und lässt sich vor dem Start abschalten.
+
+## Geschlossene m-Silben, Silbenzähler und Übungstempo ab Version 1.7.0
+
+In Stufe 4 sind zusätzlich **am, im, um und om** vorausgewählt. Sie verwenden ausschließlich die bereits bekannten Buchstaben m, a, i, o und u. Die bekannten ma, mi, mo, mu und einzelnen Vokale bleiben enthalten. **em** kommt erst in Stufe 5 mit dem e dazu. Die Ergänzungen werden in spätere Stufen übernommen. Eine gespeicherte vollständige Standardauswahl aus der älteren Version erhält die neuen Bausteine einmalig; individuelle Auswahlen und spätere bewusste Abwahlen bleiben erhalten.
+
+Der Zähler oben links addiert beim Weiterklicken die **tatsächlichen Silben der gerade gelesenen Aufgabe**. Eine Kette mit drei Silben zählt drei, ein echtes fünfsilbiges Wort fünf. Das gilt auch für die kürzeren echten Wortaufgaben. Die neu angezeigte Aufgabe zählt noch nicht mit.
+
+Unten in der Mitte steht dezent **ca. … Silben/min**. Berechnet wird die Summe der Silben aus den letzten bis zu fünf bestätigten Aufgaben, geteilt durch deren gemeinsame aktive Lesezeit in Minuten. Einzelne Geschwindigkeiten werden nicht ungewichtet gemittelt. Die Anzeige aktualisiert sich beim Weiterklicken; vor der ersten Bestätigung steht ein Strich. Hintergrundzeit und die Vorbereitung einer Anzeige werden ausgeschlossen. Eine neue Übung setzt Zähler und Tempo zurück.
+
+Dieser Wert beschreibt das selbst bestätigte Übungstempo, ohne automatische Prüfung auf Lesefehler. Vergleichbar ist er am ehesten bei gleicher Lernstufe und ähnlichen Aufgaben. Er wird nicht mit schulischen Normwerten bewertet. Die BW-Diagnostik beschreibt beim Lautlesen korrekt gelesene **Wörter pro Minute** ([WSD/ZSL](https://www.wsd-bw.de/doku.php?id=wsd:didaktisierung:lesefluessigkeit)). Der standardisierte Test **Lernstand 2** erfasst die Worterkennung dagegen über Wort-Bild-Zuordnungen in drei Minuten und besitzt eigene Vergleichswerte ([IBBW, Erläuterungen](https://ibbw-bw.de/site/pbs-bw-rebrush2024/get/documents_E436792772/KULTUS.Dachmandant/KULTUS/Dienststellen/ibbw/Kompetenzmessung/dokumente/lst2docs/l2_d_l_erlaeuterungen_testbereiche_stufenmodell.pdf)). Diese Werte lassen sich nicht in einen Sollwert für die Silbenketten der App umrechnen.
 
 Die erweiterten LA-/VA-Schriften enthalten auch die späteren Buchstaben, Umlaute,
 ß und Lautverbindungen. Die Originalformen kommen weiterhin aus `schulschriften`.

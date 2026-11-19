@@ -6,8 +6,8 @@ const chapters = [
   ['a01','A','mu','mu',{blocks:['mu'],onsets:['m'],vowels:['u']}],
   ['a02','A','Mimi','Mi mi',{blocks:['mi'],vowels:['i']}],
   ['a03','A','Momo','Mo mo',{blocks:['mo'],vowels:['o']}],
-  ['a04','A','Mama','Ma ma',{blocks:['ma'],vowels:['a']}],
-  ['a05','A','Memo','Me me',{blocks:['me'],vowels:['e']}],
+  ['a04','A','Mama','Ma ma · am, im, um, om',{blocks:['ma','am','im','um','om'],vowels:['a']}],
+  ['a05','A','Memo','Me me · em',{blocks:['me','em'],vowels:['e']}],
   ['a06','A','A, E, I, O, U','A E I O U',{vowels:['a','e','i','o','u']}],
   ['a07','A','Lama','La la …',{onsets:['l']}],
   ['a08','A','Toto und Tila','Ta ta …',{onsets:['t']}],
@@ -68,6 +68,7 @@ export const LEVELS=Object.freeze([
 ]);
 export const DEFAULT_LEVEL='previous';
 const byId=new Map(LEVELS.map(level=>[level.id,level]));
+const SELECTION_VERSION=2;
 export function getLevel(id){return byId.get(id)||byId.get(DEFAULT_LEVEL);}
 export function normalizeSelection(input){
   const level=getLevel(input?.levelId);
@@ -76,9 +77,23 @@ export function normalizeSelection(input){
   return {levelId:level.id,syllables:[...(selected.length?selected:level.syllables)]};
 }
 export function readSelection(storage){
-  try{return normalizeSelection(JSON.parse(storage.getItem('silbengenerator.selection')));}catch{return normalizeSelection();}
+  try{
+    const saved=JSON.parse(storage.getItem('silbengenerator.selection'));
+    const level=getLevel(saved?.levelId);
+    if(saved?.version!==SELECTION_VERSION&&Array.isArray(saved?.syllables)&&level.number>=4){
+      const additions=new Set(['am','im','um','om',...(level.number>=5?['em']:[])]);
+      const previousDefaults=level.syllables.filter(s=>!additions.has(s));
+      const requested=new Set(saved.syllables);
+      // Upgrade a saved complete old default once. Preserve deliberate subsets,
+      // including choices that deselect these blocks after this update.
+      if(requested.size===previousDefaults.length&&previousDefaults.every(s=>requested.has(s))){
+        return normalizeSelection({levelId:level.id});
+      }
+    }
+    return normalizeSelection(saved);
+  }catch{return normalizeSelection();}
 }
 export function saveSelection(storage,selection){
   if(!selection.syllables.length)return;
-  try{storage.setItem('silbengenerator.selection',JSON.stringify(normalizeSelection(selection)));}catch{/* Optional on restricted devices. */}
+  try{storage.setItem('silbengenerator.selection',JSON.stringify({...normalizeSelection(selection),version:SELECTION_VERSION}));}catch{/* Optional on restricted devices. */}
 }

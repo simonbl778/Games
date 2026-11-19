@@ -123,6 +123,14 @@ process.stdout.write(JSON.stringify(outputs));
                     if key in style:style[key]=resolve(style[key])
                 computed[element]=style
             prefix=(case['model'],case['colors'],width,height)
+            speed=root.xpath('//*[@id="practice-speed"]')[0]
+            footer=speed.getparent()
+            assert computed[footer]['display']=='grid' and computed[speed]['grid-column']=='2', (prefix,'tempo must occupy the centered footer column')
+            assert computed[speed]['justify-self']=='center' and computed[speed]['font-size']=='.8125rem', (prefix,'quiet readable tempo estimate')
+            fullscreen=root.xpath('//*[@id="fullscreen-button"]')[0]
+            assert computed[fullscreen]['grid-column']=='3' and fullscreen.get('aria-label'), (prefix,'accessible fullscreen control')
+            if width<=520:
+                assert computed[footer[0]]['display']=='none' and computed[fullscreen[-1]]['display']=='none', (prefix,'narrow footer must not overlap its centered tempo')
             if case['model']!='print':
                 svg=target[0];assert computed[svg].get('stroke','none')=='none',(prefix,'icon outline leaked into word SVG',computed[svg].get('stroke'))
                 assert computed[svg]['width'].endswith('em') and computed[svg]['height']=='1.2em',prefix

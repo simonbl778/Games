@@ -145,3 +145,10 @@ dialog .eyebrow{font-size:9px;padding-right:18px}
 @media(orientation:landscape) and (max-height:560px){.level-choice{margin-bottom:15px;padding-bottom:12px}.level-choice legend{font-size:14px}.level-help{font-size:10px}#level-select{min-height:38px;padding:8px 10px;font-size:12px}.practice-stat strong{font-size:20px}.practice-clock strong{font-size:19px}}
 /* Keep the setup's compact syllable chips easy to scan in every reading mode. */
 .cursive-reading .syllable-preview span{font-family:"FibelNord",sans-serif;font-weight:400;font-variant-ligatures:none;font-feature-settings:normal}
+
+/* Equal outer columns keep the quiet tempo estimate centered in the whole footer. */
+.game-footer{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+.game-footer>p{grid-column:1;justify-self:start;min-width:0}
+.practice-speed{grid-column:2;justify-self:center;white-space:nowrap;color:#647266;font-size:.8125rem;font-variant-numeric:tabular-nums}
+.game-footer>#fullscreen-button{grid-column:3;justify-self:end}
+@media(max-width:520px){.game-footer>p{display:none}.game-footer>#fullscreen-button>span{display:none}}

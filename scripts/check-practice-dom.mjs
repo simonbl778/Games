@@ -30,13 +30,20 @@ async function open(saved){
  return {window,document,$:id=>document.getElementById(id)};
 }
 const flush=()=>new Promise(resolve=>setImmediate(resolve));
+const originalRandom=Math.random;
 try{
+ Math.random=()=>0.75;
+ const {LEVELS}=await import(pathToFileURL(resolve(game,'curriculum.js')).href);
+ const {WORDS}=await import(pathToFileURL(resolve(game,'words.js')).href);
+ const oldDefaults=LEVELS.find(level=>level.id==='a04').syllables.filter(s=>!['am','im','um','om'].includes(s));
+ const migrated=await open(JSON.stringify({levelId:'a04',syllables:oldDefaults}));
+ for(const part of ['am','im','um','om'])assert.equal(migrated.document.querySelector(`[name="known-syllable"][value="${part}"]`).checked,true);
  let view=await open();const {$,window}=view;
  assert.equal($('level-select').options.length,41);
  $('level-select').value='a06';$('level-select').dispatchEvent(new window.Event('change',{bubbles:true}));
  for(const input of view.document.querySelectorAll('[name="known-syllable"]'))input.checked=['ma','me'].includes(input.value);
  $('syllable-options').dispatchEvent(new window.Event('change',{bubbles:true}));
- const saved=window.localStorage.getItem('silbengenerator.selection');assert.deepEqual(JSON.parse(saved),{levelId:'a06',syllables:['ma','me']});
+ const saved=window.localStorage.getItem('silbengenerator.selection');assert.deepEqual(JSON.parse(saved),{levelId:'a06',syllables:['ma','me'],version:2});
  $('select-no-syllables').click();assert.equal($('start-button').disabled,true);assert.equal($('selection-error').hidden,false);
  view.document.querySelector('[name="known-syllable"][value="me"]').checked=true;
  $('syllable-options').dispatchEvent(new window.Event('change',{bubbles:true}));
@@ -46,12 +53,17 @@ try{
  view.document.querySelector('[name="reading-font"][value="va"]').checked=true;
  $('setup-form').dispatchEvent(new window.Event('submit',{bubbles:true,cancelable:true}));await flush();
  assert.equal($('game-screen').hidden,false);assert.equal($('completed-count').textContent,'0');assert.equal($('elapsed-time').textContent,'00:00');assert.equal(sounds,0);
+ assert.equal($('practice-speed').textContent,'— Silben/min');
  assert.ok($('chain-text').querySelectorAll('line').length===3);
- now=1000;$('chain-button').click();assert.equal($('completed-count').textContent,'1');assert.equal(sounds,3);
- $('chain-button').click();assert.equal($('completed-count').textContent,'1');assert.equal(sounds,3);
+ assert.equal($('chain-text').dataset.syllableCount,'3');
+ now=1000;$('chain-button').click();assert.equal($('completed-count').textContent,'3');assert.equal(sounds,3);
+ assert.equal($('completed-label').textContent,'Silben gelesen');assert.equal($('practice-speed').textContent,'ca. 180 Silben/min');
+ $('chain-button').click();assert.equal($('completed-count').textContent,'3');assert.equal(sounds,3);
  now=65000;intervals.at(-1)();assert.equal($('elapsed-time').textContent,'01:05');
  hidden=true;view.document.dispatchEvent(new window.Event('visibilitychange'));now+=60000;intervals.at(-1)();assert.equal($('elapsed-time').textContent,'01:05');
  hidden=false;view.document.dispatchEvent(new window.Event('visibilitychange'));now+=2000;intervals.at(-1)();assert.equal($('elapsed-time').textContent,'01:07');
+ assert.equal($('practice-speed').textContent,'ca. 180 Silben/min','Only completed tasks enter the rate.');
+ $('chain-button').click();assert.equal($('completed-count').textContent,'6');assert.equal($('practice-speed').textContent,'ca. 5 Silben/min');
  $('settings-button').click();assert.equal($('practice-clock').hidden,true);assert.equal($('setup-screen').hidden,false);
  const persisted=window.localStorage.getItem('silbengenerator.selection');
  view=await open(persisted);assert.equal(view.$('level-select').value,'a06');assert.deepEqual([...view.document.querySelectorAll('[name="known-syllable"]:checked')].map(n=>n.value),['ma','me']);
@@ -65,8 +77,6 @@ try{
  view.$('settings-button').click();
  view.document.fonts.load=async()=>[{}];
  // Exercise the actual app event path, not just the generator, for every stage and maximum.
- const {LEVELS}=await import(pathToFileURL(resolve(game,'curriculum.js')).href);
- const {WORDS}=await import(pathToFileURL(resolve(game,'words.js')).href);
  for(const level of LEVELS.filter(level=>level.number>=4))for(let maximum=1;maximum<=5;maximum++){
   const doc=view.document,w=view.window,$=view.$;
   $('level-select').value=level.id;$('level-select').dispatchEvent(new w.Event('change',{bubbles:true}));
@@ -74,20 +84,27 @@ try{
   assert.equal($('start-button').disabled,false);
   $('setup-form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));await flush();
   assert.equal($('game-screen').hidden,false);
-  let gap=0;
+  assert.equal($('completed-count').textContent,'0');assert.equal($('practice-speed').textContent,'— Silben/min');
+  let gap=0,total=0,recent=[];
   for(let i=0;i<12;i++){
    const node=$('chain-text');
    if(node.dataset.kind==='word'){
     gap=0;assert.ok(WORDS.some(word=>word.text===node.textContent));
    }else gap++;
    assert.ok(gap<4,`${level.title}, maximum ${maximum}: too many random chains`);
+   const syllables=Number(node.dataset.syllableCount);total+=syllables;recent=[...recent,syllables].slice(-5);
    now+=300;$('chain-button').click();
+   assert.equal($('completed-count').textContent,String(total));
+   const rate=Math.round(recent.reduce((sum,count)=>sum+count,0)*200/recent.length).toLocaleString('de-DE');
+   assert.equal($('practice-speed').textContent,`ca. ${rate} Silben/min`);
+   assert.equal($('completed-label').textContent,total===1?'Silbe gelesen':'Silben gelesen');
   }
-  assert.equal($('completed-count').textContent,'12');
+  assert.equal($('completed-count').textContent,String(total));
   $('settings-button').click();
  }
- console.log('Actual app DOM passed: real-word guarantee at every stage/maximum, canonical case, impossible custom choices, selection persistence, fonts, counter, sound, debounce and timer.');
+ console.log('Actual app DOM passed: new default blocks, storage migration, syllable totals and last-five speed at every stage/maximum, real-word quota, fonts, debounce, sound and active timer.');
 }finally{
+ Math.random=originalRandom;
  for(const window of windows)window.close();
  for(const [name,descriptor] of originals){if(descriptor)Object.defineProperty(globalThis,name,descriptor);else delete globalThis[name];}
 }
