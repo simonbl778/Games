@@ -84,7 +84,7 @@ test('alte vollständige Standardauswahlen erhalten neue Silben einmalig; eigene
  const map=new Map();const storage={getItem:k=>map.get(k)||null,setItem:(k,v)=>map.set(k,v)};
  for(const id of ['a04','a05','b01','b21']){
   const level=getLevel(id),additions=new Set(['am','im','um','om','em']);
-  const old=level.syllables.filter(s=>!additions.has(s));
+  const old=level.legacySyllables.filter(s=>!additions.has(s));
   storage.setItem('silbengenerator.selection',JSON.stringify({levelId:id,syllables:old}));
   assert.deepEqual(readSelection(storage),{levelId:id,syllables:[...level.syllables]});
   saveSelection(storage,{levelId:id,syllables:old});
@@ -92,4 +92,19 @@ test('alte vollständige Standardauswahlen erhalten neue Silben einmalig; eigene
  }
  storage.setItem('silbengenerator.selection',JSON.stringify({levelId:'a04',syllables:['ma','a']}));
  assert.deepEqual(readSelection(storage),{levelId:'a04',syllables:['ma','a']});
+});
+
+test('vollständige Auswahl aus Version 2 erhält Wortendsilben; eigene Abwahlen bleiben beim Update erhalten',()=>{
+ const map=new Map();const storage={getItem:k=>map.get(k)||null,setItem:(k,v)=>map.set(k,v)};
+ for(const id of ['a07','a13','a19','b21']){
+  const level=getLevel(id);
+  storage.setItem('silbengenerator.selection',JSON.stringify({levelId:id,syllables:level.legacySyllables,version:2}));
+  assert.deepEqual(readSelection(storage).syllables,level.syllables);
+  assert.ok(level.syllables.length>level.legacySyllables.length);
+  const own=level.legacySyllables.filter(s=>s!=='ma');
+  storage.setItem('silbengenerator.selection',JSON.stringify({levelId:id,syllables:own,version:2}));
+  assert.deepEqual(readSelection(storage).syllables,own);
+  saveSelection(storage,{levelId:id,syllables:level.legacySyllables});
+  assert.deepEqual(readSelection(storage).syllables,level.legacySyllables);
+ }
 });

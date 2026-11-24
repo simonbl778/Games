@@ -31,6 +31,10 @@ function makeChain(maxSyllables, random, pool) {
   const syllables = [];
   for (let index = 0; index < count; index += 1) {
     let next = pool[randomIndex(pool.length, random)];
+    if(index===0&&next.startsWith('ß')){
+      const alternatives=pool.filter(part=>!part.startsWith('ß'));
+      if(alternatives.length)next=alternatives[randomIndex(alternatives.length,random)];
+    }
     const previousVowel = syllables[syllables.length - 1]?.slice(-1);
     if (previousVowel === 'm' && next.startsWith('m')) {
       const alternatives = pool.filter(part => !part.startsWith('m'));
@@ -49,7 +53,7 @@ function makeChain(maxSyllables, random, pool) {
   }
   const lowercaseText = syllables.join('');
   const uppercaseStart = randomIndex(2, random) === 0;
-  const text = uppercaseStart
+  const text = uppercaseStart && lowercaseText.charAt(0).toUpperCase().length === 1
     ? lowercaseText.charAt(0).toUpperCase() + lowercaseText.slice(1)
     : lowercaseText;
 
@@ -88,5 +92,5 @@ export function generateChain(maxSyllables, { random = Math.random, previousText
   const swappedInitial = initial === initial.toUpperCase()
     ? initial.toLowerCase()
     : initial.toUpperCase();
-  return { ...chain, text: swappedInitial + chain.text.slice(1) };
+  return { ...chain, text: swappedInitial.length === 1 ? swappedInitial + chain.text.slice(1) : chain.text };
 }

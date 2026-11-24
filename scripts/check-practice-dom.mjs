@@ -58,7 +58,7 @@ try{
  $('level-select').value='a06';$('level-select').dispatchEvent(new window.Event('change',{bubbles:true}));
  for(const input of view.document.querySelectorAll('[name="known-syllable"]'))input.checked=['ma','me'].includes(input.value);
  $('syllable-options').dispatchEvent(new window.Event('change',{bubbles:true}));
- const saved=window.localStorage.getItem('silbengenerator.selection');assert.deepEqual(JSON.parse(saved),{levelId:'a06',syllables:['ma','me'],version:2});
+ const saved=window.localStorage.getItem('silbengenerator.selection');assert.deepEqual(JSON.parse(saved),{levelId:'a06',syllables:['ma','me'],version:3});
  $('select-no-syllables').click();assert.equal($('start-button').disabled,true);assert.equal($('selection-error').hidden,false);
  view.document.querySelector('[name="known-syllable"][value="me"]').checked=true;
  $('syllable-options').dispatchEvent(new window.Event('change',{bubbles:true}));
@@ -117,7 +117,7 @@ try{
   const option=doc.querySelector(`[name="max-syllables"][value="${maximum}"]`);option.checked=true;option.dispatchEvent(new w.Event('change',{bubbles:true}));
   const matching=availableWords(level.id,level.syllables,maximum).map(word=>word.text).sort(new Intl.Collator('de',{sensitivity:'accent'}).compare);
   assert.deepEqual([...$('word-list').children].map(item=>item.textContent),matching);
-  assert.equal($('word-count-summary').textContent,matching.length===1?'1 passendes Wort':`${matching.length} passende Wörter`);
+  assert.equal($('word-count-summary').textContent,matching.length===1?'1 passendes Wort':`${matching.length.toLocaleString('de-DE')} passende Wörter`);
   assert.equal(new Set(matching.map(word=>word.toLowerCase())).size,matching.length);
   assert.ok(matching.every(word=>!/mm/i.test(word)));
   if(level.id==='b21'&&maximum>=2){

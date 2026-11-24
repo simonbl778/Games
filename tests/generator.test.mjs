@@ -11,6 +11,15 @@ function sequence(...values) {
   };
 }
 
+test('Wortendsilben mit ß werden weder zu SS noch zu einer anderen Silbe großgeschrieben',()=>{
+  for(const syllables of [['ßen'],['ße','ma'],['hei','ßen']])for(const random of [()=>0,()=>0.75]){
+    const chain=generateChain(5,{syllables,random,previousText:'ßenßenßenßen'});
+    assert.equal(chain.text.toLowerCase(),chain.syllables.join(''));
+    assert.equal(chain.text.length,chain.syllables.join('').length);
+    if(syllables.some(part=>!part.startsWith('ß')))assert.ok(!chain.text.startsWith('ß'));
+  }
+});
+
 test('die konfigurierbaren Bausteine entsprechen der Vorgabe', () => {
   assert.deepEqual(SYLLABLES, ['Mo', 'Mi', 'Mu', 'i', 'o', 'u', 'a']);
   assert.ok(Object.isFrozen(SYLLABLES));

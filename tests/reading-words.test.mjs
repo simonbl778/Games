@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {LEVELS, getLevel} from '../docs/silbengenerator/curriculum.js';
 import {ReadingGenerator, availableWords, wordInterval} from '../docs/silbengenerator/reading-generator.js';
 import {WORDS} from '../docs/silbengenerator/words.js';
+import {hasLearnedUnits} from '../docs/silbengenerator/reading-units.js';
 import {layoutSchoolChain} from '../docs/silbengenerator/school-script.js';
 
 function randomSource(seed = 37) {
@@ -101,15 +102,52 @@ test('Mumm aus den Screenshots ist weder bei kompletter Stufe 4 noch bei mu alle
   assert.ok(!availableWords('a05', ['em', 'ma']).some(word => /mm/i.test(word.text)));
 });
 
-test('lange Wörter mit nicht gewählten Endsilben werden nicht eingeschmuggelt', () => {
+test('vollständige Kapitel bieten echte Wortendsilben an; eigene Abwahlen bleiben verbindlich', () => {
   assert.ok(!availableWords('a04').some(word => word.text === 'Mumm'));
-  assert.ok(!availableWords('a09').some(word => word.text === 'Material'));
-  assert.ok(!availableWords('a13').some(word => word.text === 'Wassermelone'));
+  assert.ok(availableWords('a09').some(word => word.text === 'Material'));
+  assert.ok(availableWords('a13').some(word => word.text === 'Wassermelone'));
+  assert.ok(!availableWords('a09', ['ma','te','ri']).some(word => word.text === 'Material'));
+  const noSer=getLevel('a13').syllables.filter(part=>part!=='ser');
+  assert.ok(!availableWords('a13',noSer).some(word => word.text === 'Wassermelone'));
   const generator = new ReadingGenerator({levelId: 'a13', random: () => 0});
-  const first = generator.drawWord(5);assert.equal(first.text, 'Limonade');
+  const first = generator.drawWord(5);assert.ok(first.count>=4);
   generator.recentWords = [first.text];generator.previousText = 'mamamama';
   const next = generator.drawWord(5);assert.notEqual(next.text, first.text);
   assert.ok(next.syllables.every(part => getLevel('a13').syllables.includes(part.toLowerCase())));
+});
+
+test('jedes Kapitel von Teil A enthält alle freigegebenen Wörter; Listen bleiben bei gleicher Höchstzahl geschachtelt',()=>{
+ const chapters=LEVELS.filter(level=>level.part==='A');
+ assert.equal(chapters.length,19);
+ for(let maximum=1;maximum<=5;maximum++){
+  let previous=new Set();
+  for(const level of chapters){
+   const words=availableWords(level.id,level.syllables,maximum);
+   const texts=new Set(words.map(word=>word.text));
+   for(const text of previous)assert.ok(texts.has(text),`${level.title}: ${text} verloren`);
+   for(const word of words){
+    assert.ok(hasLearnedUnits(word,new Set(level.units)),`${level.title}: ${word.text} noch nicht lesbar`);
+    assert.ok(word.count<=maximum);
+   }
+   if(level.number>=7)assert.deepEqual(texts,new Set(WORDS.filter(word=>word.firstLevel<=level.number&&word.count<=maximum).map(word=>word.text)));
+   previous=texts;
+  }
+ }
+ for(const [id,text] of [['a07','mal'],['a08','mit'],['a11','wir'],['a13','Wassermelone'],['a18','Ball'],['a19','Schaufel']]){
+  const word=availableWords(id).find(word=>word.text===text);assert.ok(word,`${id}: ${text}`);
+  for(const part of word.syllables){
+   const reduced=getLevel(id).syllables.filter(s=>s!==part.toLowerCase());
+   assert.ok(!availableWords(id,reduced).some(w=>w.text===text),`${text}: Abwahl ${part} ignoriert`);
+  }
+ }
+ assert.deepEqual(getLevel('a14').syllables,getLevel('a15').syllables);
+ assert.ok(!getLevel('a19').syllables.some(part=>part.includes('ng')||part.includes('ch')&&!part.includes('sch')));
+});
+
+test('neue Namen mit einzelnen Vokalen erhalten tatsächliche Silben für Zähler und Farbhilfe',()=>{
+ for(const [text,parts] of [['Matteo',['Mat','te','o']],['Maria',['Ma','ri','a']],['Lia',['Li','a']],['Emilia',['E','mi','li','a']]]){
+  assert.deepEqual(WORDS.find(word=>word.text===text)?.syllables,parts);
+ }
 });
 
 test('Nomen und Namen bleiben groß, Verben und Adjektive klein, auch bei Zufallstreffern', () => {

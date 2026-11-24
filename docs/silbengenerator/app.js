@@ -63,7 +63,7 @@ function renderSyllableChoices() {
     const text = document.createElement('span'); text.textContent = syllable;
     label.append(input, text); return label;
   }));
-  $('level-help').textContent = level.number ? `Neu: ${level.introduction} · Vorherige Stufen sind enthalten.` : 'Deine vertrauten Silben aus der bisherigen Version.';
+  $('level-help').textContent = level.number ? `Neu: ${level.introduction} · Vorherige Stufen sind enthalten.${level.number>=7?' Passende Wort- und Endsilben sind mit ausgewählt.':''}` : 'Deine vertrauten Silben aus der bisherigen Version.';
   refreshSelectedSyllables();
 }
 function refreshSelectedSyllables() {

@@ -1,22 +1,7 @@
 import {getLevel} from './curriculum.js';
 import {generateChain, getMinSyllables, validateMaxSyllables} from './generator.js';
 import {WORDS} from './words.js';
-
-const GROUPS = ['sch', 'chs', 'ei', 'ie', 'ai', 'au', 'eu', 'äu', 'ch', 'ck', 'pf', 'qu', 'ng', 'nk', 'tz'];
-
-function units(part) {
-  const text = part.toLowerCase();
-  const found = [];
-  for (let i = 0; i < text.length;) {
-    // Final st is literal s+t (ist); st/sp at the start are later learning units.
-    const unit = i === 0 && /^(st|sp)/.test(text)
-      ? text.slice(0, 2)
-      : GROUPS.find(group => text.startsWith(group, i)) || text[i];
-    found.push(unit);
-    i += unit.length;
-  }
-  return found;
-}
+import {readingUnits, hasLearnedUnits} from './reading-units.js';
 
 /** A fixed upper gap, rather than a chance of drawing a word. */
 export function wordInterval(levelId) {
@@ -29,10 +14,9 @@ export function availableWords(levelId, selected = getLevel(levelId).syllables, 
   validateMaxSyllables(maximum);
   const level = getLevel(levelId);
   const selectedSet = new Set(selected.map(s => s.toLowerCase()));
-  const activeUnits = new Set([...selectedSet].flatMap(units));
+  const activeUnits = new Set([...selectedSet].flatMap(readingUnits));
   return WORDS.filter(word => word.firstLevel <= (level.number || 4) && word.count <= maximum && !/mm/i.test(word.text) &&
-    word.syllables.every(syllable => units(syllable).every(unit => activeUnits.has(unit))) &&
-    ['ng', 'nk', 'chs'].every(group => !word.text.toLowerCase().includes(group) || activeUnits.has(group)) &&
+    hasLearnedUnits(word, activeUnits) &&
     // Complete selection is not permission to invent codas or other syllables.
     // Every real, correctly separated word syllable must be explicitly selected.
     word.syllables.every(syllable => selectedSet.has(syllable.toLowerCase()))

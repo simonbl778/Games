@@ -1,4 +1,4 @@
-Silbengenerator - Wortzahl und alphabetische Wortliste 1.8.0
+Silbengenerator - Gepruefter Wortschatz fuer Teil A 1.9.0
 
 1. APK auf das Android-Handy herunterladen und oeffnen.
 2. Ist bereits eine APK ab Version 1.1.0 installiert: normal darueber installieren.
@@ -16,7 +16,13 @@ Alle Schriften, Lizenzen und Spieldateien sind lokal enthalten.
 Ohne Internet oder ChatGPT-Konto nutzbar.
 Android 8 oder neuer mit aktuellem Android System WebView erforderlich.
 
-Neu: Im Startmenue steht die Anzahl passender Woerter im Spielwortschatz.
+Neu: Alle 19 Kapitel von Teil A wurden geprueft. Der Wortschatz waechst
+bei vollstaendiger Auswahl und hoechstens fuenf Silben auf 1.141 Woerter.
+Ab Kapitel 7 werden die benoetigten geschlossenen Silben und Wortendsilben
+sichtbar zur Auswahl angeboten. Vollstaendige alte Standardauswahlen
+werden ergaenzt; individuelle Abwahlen bleiben erhalten.
+
+Weiterhin: Im Startmenue steht die Anzahl passender Woerter im Spielwortschatz.
 Unter "Woerter von A bis Z ansehen" laesst sich die vollstaendige Liste oeffnen.
 Die Liste ist alphabetisch sortiert und zaehlt Namen und Spitznamen mit.
 Zahl und Liste folgen der Lernstufe, den gewaehlten Silben und der Hoechstzahl.
@@ -45,4 +51,4 @@ bittet die Startseite um weitere Silben oder eine hoehere Silbenzahl.
 Die gespeicherten Stufen, Zaehler, Timer, Belohnungsklang und Schriften
 bleiben erhalten. Alle Woerter und Spieldateien funktionieren offline.
 
-Nach der Installation steht unten auf der Startseite: Version 1.8.0.
+Nach der Installation steht unten auf der Startseite: Version 1.9.0.

@@ -1,4 +1,6 @@
 import { SYLLABLES } from './config.js';
+import { WORDS } from './words.js';
+import { hasLearnedUnits } from './reading-units.js';
 
 // Kapitelreihenfolge und neue Lerninhalte aus der bereitgestellten Inhaltsübersicht.
 // Silbenketten sind Leseübungen; die Kapiteltexte und Aufgaben werden nicht übernommen.
@@ -63,12 +65,21 @@ export const LEVELS=Object.freeze([
     for(const ending of endings)for(const vowel of vowels){
       if(vowel.length===1)pool.add(vowel+ending);
     }
-    return Object.freeze({id,part,number:index+1,title,introduction,syllables:Object.freeze([...pool])});
+    const legacySyllables=Object.freeze([...pool]);
+    const learnedUnits=new Set([...vowels,...onsets,...endings]);
+    // Geschlossene Silben und Wortendsilben waren früher nicht auswählbar.
+    // Ab Kapitel 7 werden die tatsächlich benötigten Wortbausteine sichtbar
+    // angeboten und standardmäßig gewählt. Die frühe Auswahl bleibt erhalten.
+    if(index+1>=7)for(const word of WORDS){
+      if(word.firstLevel>index+1||/mm/i.test(word.text)||!hasLearnedUnits(word,learnedUnits))continue;
+      for(const syllable of word.syllables)pool.add(syllable.toLowerCase());
+    }
+    return Object.freeze({id,part,number:index+1,title,introduction,legacySyllables,units:Object.freeze([...learnedUnits]),syllables:Object.freeze([...pool])});
   }),
 ]);
 export const DEFAULT_LEVEL='previous';
 const byId=new Map(LEVELS.map(level=>[level.id,level]));
-const SELECTION_VERSION=2;
+const SELECTION_VERSION=3;
 export function getLevel(id){return byId.get(id)||byId.get(DEFAULT_LEVEL);}
 export function normalizeSelection(input){
   const level=getLevel(input?.levelId);
@@ -82,11 +93,13 @@ export function readSelection(storage){
     const level=getLevel(saved?.levelId);
     if(saved?.version!==SELECTION_VERSION&&Array.isArray(saved?.syllables)&&level.number>=4){
       const additions=new Set(['am','im','um','om',...(level.number>=5?['em']:[])]);
-      const previousDefaults=level.syllables.filter(s=>!additions.has(s));
+      const oldDefaults=level.legacySyllables;
+      const previousDefaults=oldDefaults.filter(s=>!additions.has(s));
       const requested=new Set(saved.syllables);
-      // Upgrade a saved complete old default once. Preserve deliberate subsets,
-      // including choices that deselect these blocks after this update.
-      if(requested.size===previousDefaults.length&&previousDefaults.every(s=>requested.has(s))){
+      const matches=defaults=>requested.size===defaults.length&&defaults.every(s=>requested.has(s));
+      // Only a complete historical default gains new word syllables. A custom
+      // subset keeps every deselection, including after saving with version 3.
+      if(matches(oldDefaults)||(saved?.version!==2&&matches(previousDefaults))){
         return normalizeSelection({levelId:level.id});
       }
     }
