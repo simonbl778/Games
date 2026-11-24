@@ -18,8 +18,9 @@ test('der Wortschatz enthält reale Schreibungen, eindeutige Einträge und volls
     seen.add(word.text.toLowerCase());
     assert.equal(word.text, word.syllables.join(''));
     assert.ok(word.count >= 1 && word.count <= 5);
-    assert.ok(availableWords(LEVELS.find(level => level.number === word.firstLevel).id).includes(word),
-      `${word.text} ist auf seiner angegebenen Stufe noch nicht lesbar`);
+    const learnedCharacters = new Set(LEVELS.find(level => level.number === word.firstLevel).syllables.join(''));
+    assert.ok([...word.text.toLowerCase()].every(character => learnedCharacters.has(character)),
+      `${word.text} enthält auf seiner Mindeststufe noch unbekannte Buchstaben`);
   }
   for (const [text, parts] of [
     ['Mama', ['Ma', 'ma']], ['Omi', ['O', 'mi']], ['lila', ['li', 'la']],
@@ -30,11 +31,11 @@ test('der Wortschatz enthält reale Schreibungen, eindeutige Einträge und volls
 
 test('Lautverbindungen werden erst auf ihrer eigenen Lernstufe verwendet', () => {
   for (const [before, after, text] of [
-    ['a03', 'a04', 'Mama'], ['a15', 'a16', 'Ei'], ['a16', 'a17', 'Socke'],
-    ['b01', 'b02', 'Biene'], ['b02', 'b03', 'Pferd'], ['b03', 'b04', 'Fuß'],
-    ['b04', 'b05', 'Buch'], ['b06', 'b07', 'Stein'], ['b07', 'b08', 'Katze'],
-    ['b08', 'b09', 'Mai'], ['b09', 'b10', 'Bank'], ['b11', 'b12', 'Eule'],
-    ['b13', 'b14', 'Mäuse'], ['b14', 'b15', 'Qualle'], ['b16', 'b17', 'Fuchs'],
+    ['a03', 'a04', 'Mama'], ['a15', 'a16', 'Ei'], ['a16', 'a17', 'Kakao'],
+    ['b01', 'b02', 'Biene'], ['b02', 'b03', 'Papa'], ['b03', 'b04', 'aß'],
+    ['b04', 'b05', 'ich'], ['b06', 'b07', 'Spiele'], ['b07', 'b08', 'Ziege'],
+    ['b08', 'b09', 'Mai'], ['b09', 'b10', 'eng'], ['b11', 'b12', 'Eule'],
+    ['b13', 'b14', 'Mäuse'], ['b14', 'b15', 'quasi'], ['b16', 'b17', 'Ochse'],
   ]) {
     assert.ok(!availableWords(before).some(word => word.text === text), text);
     assert.ok(availableWords(after).some(word => word.text === text), text);
@@ -55,6 +56,8 @@ test('in jeder laufenden Vierergruppe steht ab Stufe 4 ein echtes Wort, auch bei
       }
       for (const chain of displayed) {
         assert.ok(chain.count <= maximum);
+        assert.ok(!/mm/i.test(chain.text), `${level.id}: ${chain.text}`);
+        assert.ok(chain.syllables.every(part => level.syllables.includes(part.toLowerCase())), `${level.id}: ungewählte Silbe in ${chain.text}`);
         assert.equal(chain.text.toLowerCase(), chain.syllables.join('').toLowerCase());
         if (chain.isWord) {
           assert.ok(availableWords(level.id, level.syllables, maximum).some(word => word.text === chain.text));
@@ -67,7 +70,7 @@ test('in jeder laufenden Vierergruppe steht ab Stufe 4 ein echtes Wort, auch bei
   }
 });
 
-test('frühe Wörter bleiben echt und kürzer, spätere Vier-/Fünfsilber nutzen die gewählte Länge', () => {
+test('frühe Wörter bleiben kürzer; lange Wörter nutzen ausschließlich tatsächlich gewählte Silben', () => {
   const early = new ReadingGenerator({levelId: 'a04', random: () => 0});
   const chains = Array.from({length: 4}, () => early.next(5));
   assert.ok(chains[3].isWord);
@@ -78,6 +81,35 @@ test('frühe Wörter bleiben echt und kürzer, spätere Vier-/Fünfsilber nutzen
     const forced = generator.drawWord(5);
     assert.ok(forced.count >= 4 && forced.count <= 5, `${id}: ${forced.text}`);
   }
+  const syllables = ['feu', 'er', 'wehr', 'au', 'to'];
+  const selected = new ReadingGenerator({levelId: 'b21', syllables, random: () => 0});
+  const five = selected.drawWord(5);
+  assert.equal(five.text, 'Feuerwehrauto');assert.equal(five.count, 5);
+  assert.ok(five.syllables.every(part => syllables.includes(part.toLowerCase())));
+});
+
+test('Mumm aus den Screenshots ist weder bei kompletter Stufe 4 noch bei mu allein zulässig', () => {
+  assert.ok(!WORDS.some(word => word.text === 'Mumm'));
+  assert.deepEqual(availableWords('a04', ['mu'], 1), []);
+  assert.throws(() => new ReadingGenerator({levelId: 'a04', syllables: ['mu']}).next(1), /kein passendes echtes Wort/);
+  assert.deepEqual(new Set(availableWords('a04', undefined, 1).map(word => word.text)), new Set(['um', 'im', 'am']));
+  for (const level of LEVELS) for (const word of availableWords(level.id)) {
+    assert.ok(!/mm/i.test(word.text));
+    assert.ok(word.syllables.every(part => level.syllables.includes(part.toLowerCase())));
+  }
+  assert.ok(!availableWords('b21', ['mu', 'um']).some(word => word.text === 'Mumm'));
+  assert.ok(!availableWords('a05', ['em', 'ma']).some(word => /mm/i.test(word.text)));
+});
+
+test('lange Wörter mit nicht gewählten Endsilben werden nicht eingeschmuggelt', () => {
+  assert.ok(!availableWords('a04').some(word => word.text === 'Mumm'));
+  assert.ok(!availableWords('a09').some(word => word.text === 'Material'));
+  assert.ok(!availableWords('a13').some(word => word.text === 'Wassermelone'));
+  const generator = new ReadingGenerator({levelId: 'a13', random: () => 0});
+  const first = generator.drawWord(5);assert.equal(first.text, 'Limonade');
+  generator.recentWords = [first.text];generator.previousText = 'mamamama';
+  const next = generator.drawWord(5);assert.notEqual(next.text, first.text);
+  assert.ok(next.syllables.every(part => getLevel('a13').syllables.includes(part.toLowerCase())));
 });
 
 test('Nomen und Namen bleiben groß, Verben und Adjektive klein, auch bei Zufallstreffern', () => {

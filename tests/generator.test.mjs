@@ -150,3 +150,17 @@ test('a zählt als eigene Silbe und kann am Kettenanfang auch groß erscheinen',
     assert.deepEqual(chain,{text:letter,syllables:['a'],count:1});
   }
 });
+
+test('am + ma und im + mu erzeugen an Silbengrenzen niemals mm', () => {
+  const chain = generateChain(3, {syllables: ['am', 'ma'], random: sequence(.9, 0, .9, 0, .9, 0, .9)});
+  assert.equal(chain.text, 'amamam');assert.equal(chain.count, 3);
+  for (const pool of [['am', 'ma'], ['im', 'mu'], ['om', 'mo'], ['em', 'me']]) {
+    for (const value of [0, .2, .6, .99999]) {
+      const result = generateChain(5, {syllables: pool, random: () => value});
+      assert.ok(!/mm/i.test(result.text));assert.ok(result.syllables.every(part => pool.includes(part)));
+      assert.ok(result.count >= 4 && result.count <= 5);
+    }
+  }
+  assert.throws(() => generateChain(1, {syllables: ['amm']}), /doppeltes m/);
+  assert.throws(() => generateChain(5, {syllables: ['mam']}), /doppeltes m/);
+});

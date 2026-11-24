@@ -3,7 +3,6 @@ import {generateChain, getMinSyllables, validateMaxSyllables} from './generator.
 import {WORDS} from './words.js';
 
 const GROUPS = ['sch', 'chs', 'ei', 'ie', 'ai', 'au', 'eu', 'äu', 'ch', 'ck', 'pf', 'qu', 'ng', 'nk', 'tz'];
-const CONSONANTS = /^[bcdfghjklmnpqrstvwxzß]*$/;
 
 function units(part) {
   const text = part.toLowerCase();
@@ -30,15 +29,13 @@ export function availableWords(levelId, selected = getLevel(levelId).syllables, 
   validateMaxSyllables(maximum);
   const level = getLevel(levelId);
   const selectedSet = new Set(selected.map(s => s.toLowerCase()));
-  const complete = level.syllables.every(s => selectedSet.has(s));
   const activeUnits = new Set([...selectedSet].flatMap(units));
-  return WORDS.filter(word => word.firstLevel <= (level.number || 4) && word.count <= maximum &&
+  return WORDS.filter(word => word.firstLevel <= (level.number || 4) && word.count <= maximum && !/mm/i.test(word.text) &&
     word.syllables.every(syllable => units(syllable).every(unit => activeUnits.has(unit))) &&
     ['ng', 'nk', 'chs'].every(group => !word.text.toLowerCase().includes(group) || activeUnits.has(group)) &&
-    (complete || word.syllables.every(syllable => {
-      const part = syllable.toLowerCase();
-      return [...selectedSet].some(block => part.startsWith(block) && CONSONANTS.test(part.slice(block.length)));
-    }))
+    // Complete selection is not permission to invent codas or other syllables.
+    // Every real, correctly separated word syllable must be explicitly selected.
+    word.syllables.every(syllable => selectedSet.has(syllable.toLowerCase()))
   );
 }
 
@@ -75,10 +72,11 @@ export class ReadingGenerator {
     const nonRepeating = allowed.filter(word => word.text !== this.previousText);
     const eligible = nonRepeating.length ? nonRepeating : allowed;
     const matchingLength = eligible.filter(word => word.count >= getMinSyllables(maximum));
-    const choices = matchingLength.length ? matchingLength : eligible;
-    const fresh = choices.filter(word => !this.recentWords.includes(word.text));
-    const different = choices.filter(word => word.text !== this.previousText);
-    const pool = fresh.length ? fresh : different.length ? different : choices;
+    const freshLong = matchingLength.filter(word => !this.recentWords.includes(word.text));
+    const fresh = eligible.filter(word => !this.recentWords.includes(word.text));
+    // A lone long word must not monopolize every word task. A shorter selected
+    // word is preferable to repeating it throughout the session.
+    const pool = freshLong.length ? freshLong : fresh.length ? fresh : matchingLength.length ? matchingLength : eligible;
     return this.asWord(pool[drawIndex(pool.length, this.random)]);
   }
 
@@ -105,7 +103,7 @@ export class ReadingGenerator {
           search: for (let count = getMinSyllables(maximum); count <= maximum; count++) {
             for (const part of this.syllables) {
               const text = part.repeat(count);
-              if (text.toLowerCase() !== this.previousText.toLowerCase() && !this.byText.has(text.toLowerCase())) {
+              if (!/mm/i.test(text) && text.toLowerCase() !== this.previousText.toLowerCase() && !this.byText.has(text.toLowerCase())) {
                 chain = {text, syllables: Array(count).fill(part), count, isWord: false};
                 break search;
               }

@@ -76,6 +76,25 @@ try{
  assert.equal(view.$('completed-count').textContent,'0');assert.equal(view.$('elapsed-time').textContent,'00:00');assert.equal(view.$('chain-text').querySelector('svg'),null);
  view.$('settings-button').click();
  view.document.fonts.load=async()=>[{}];
+ // Reproduce the reported one-syllable Mumm bug through the actual setup form.
+ view.$('level-select').value='a04';view.$('level-select').dispatchEvent(new view.window.Event('change',{bubbles:true}));
+ for(const input of view.document.querySelectorAll('[name="known-syllable"]'))input.checked=input.value==='mu';
+ view.$('syllable-options').dispatchEvent(new view.window.Event('change',{bubbles:true}));
+ const one=view.document.querySelector('[name="max-syllables"][value="1"]');one.checked=true;one.dispatchEvent(new view.window.Event('change',{bubbles:true}));
+ assert.equal(view.$('start-button').disabled,true);assert.equal(view.$('word-selection-error').hidden,false);
+ view.$('setup-form').dispatchEvent(new view.window.Event('submit',{bubbles:true,cancelable:true}));await flush();
+ assert.equal(view.$('game-screen').hidden,true);
+ view.document.querySelector('[name="known-syllable"][value="um"]').checked=true;
+ view.$('syllable-options').dispatchEvent(new view.window.Event('change',{bubbles:true}));
+ assert.equal(view.$('start-button').disabled,false);
+ view.$('setup-form').dispatchEvent(new view.window.Event('submit',{bubbles:true,cancelable:true}));await flush();
+ for(let i=0;i<16;i++){
+  const node=view.$('chain-text');assert.ok(!/mm/i.test(node.textContent));
+  assert.ok(['mu','um'].includes(node.textContent.toLowerCase()));
+  if(node.dataset.kind==='word')assert.equal(node.textContent,'um');
+  now+=300;view.$('chain-button').click();
+ }
+ view.$('settings-button').click();
  // Exercise the actual app event path, not just the generator, for every stage and maximum.
  for(const level of LEVELS.filter(level=>level.number>=4))for(let maximum=1;maximum<=5;maximum++){
   const doc=view.document,w=view.window,$=view.$;
@@ -88,8 +107,10 @@ try{
   let gap=0,total=0,recent=[];
   for(let i=0;i<12;i++){
    const node=$('chain-text');
+   assert.ok(!/mm/i.test(node.textContent),`${level.title}: ${node.textContent}`);
    if(node.dataset.kind==='word'){
-    gap=0;assert.ok(WORDS.some(word=>word.text===node.textContent));
+    gap=0;const word=WORDS.find(word=>word.text===node.textContent);assert.ok(word);
+    assert.ok(word.syllables.every(part=>level.syllables.includes(part.toLowerCase())));
    }else gap++;
    assert.ok(gap<4,`${level.title}, maximum ${maximum}: too many random chains`);
    const syllables=Number(node.dataset.syllableCount);total+=syllables;recent=[...recent,syllables].slice(-5);

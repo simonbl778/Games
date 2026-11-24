@@ -1,4 +1,4 @@
-Silbengenerator - Silbenzaehler und Live-Tempo 1.7.0
+Silbengenerator - korrigierte Silbenauswahl 1.7.1
 
 1. APK auf das Android-Handy herunterladen und oeffnen.
 2. Ist bereits eine APK ab Version 1.1.0 installiert: normal darueber installieren.
@@ -16,7 +16,13 @@ Alle Schriften, Lizenzen und Spieldateien sind lokal enthalten.
 Ohne Internet oder ChatGPT-Konto nutzbar.
 Android 8 oder neuer mit aktuellem Android System WebView erforderlich.
 
-Neu: In Stufe 4 sind am, im, um und om standardmaessig ausgewaehlt.
+Korrektur: Jedes echte Wort verwendet nur ausdruecklich ausgewaehlte Silben.
+Es werden keine zusaetzlichen Endkonsonanten angehaengt.
+Mumm und andere Woerter mit mm werden ausgelassen. Auch zufaellige
+Silbenketten erzeugen kein mm an den Verbindungsstellen.
+Ohne passendes echtes Wort bittet die Startseite um eine erweiterte Auswahl.
+
+Weiterhin: In Stufe 4 sind am, im, um und om standardmaessig ausgewaehlt.
 Mit dem e in Stufe 5 kommt em dazu. Eigene Silbenauswahlen bleiben erhalten.
 Der Zaehler oben links zaehlt gelesene Silben statt Aufgaben.
 Unten mittig steht ein geschaetztes Tempo aus den letzten bis zu fuenf Aufgaben.
@@ -33,4 +39,4 @@ bittet die Startseite um weitere Silben oder eine hoehere Silbenzahl.
 Die gespeicherten Stufen, Zaehler, Timer, Belohnungsklang und Schriften
 bleiben erhalten. Alle Woerter und Spieldateien funktionieren offline.
 
-Nach der Installation steht unten auf der Startseite: Version 1.7.0.
+Nach der Installation steht unten auf der Startseite: Version 1.7.1.

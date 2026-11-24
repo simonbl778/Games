@@ -32,6 +32,11 @@ function makeChain(maxSyllables, random, pool) {
   for (let index = 0; index < count; index += 1) {
     let next = pool[randomIndex(pool.length, random)];
     const previousVowel = syllables[syllables.length - 1]?.slice(-1);
+    if (previousVowel === 'm' && next.startsWith('m')) {
+      const alternatives = pool.filter(part => !part.startsWith('m'));
+      if (!alternatives.length) throw new RangeError('Diese Silben lassen sich ohne doppeltes m nicht verbinden.');
+      next = alternatives[randomIndex(alternatives.length, random)];
+    }
     if (VOWELS.has(previousVowel) && next.startsWith(previousVowel)) {
       // Accept only one in a hundred proposed doubled vowels. Otherwise choose
       // once from the compatible blocks; constant random sources still finish.
@@ -54,7 +59,7 @@ function makeChain(maxSyllables, random, pool) {
 /**
  * Neue Kette aus max(1, maxSyllables - 1) bis maxSyllables Bausteinen.
  * Die Länge wird gleichverteilt gezogen. Gleiche Vokale an Silbengrenzen werden
- * stark seltener gewählt; sonst sind alle Bausteine gleich wahrscheinlich.
+ * stark seltener gewählt. Doppeltes m an einer Silbengrenze ist ausgeschlossen.
  * Wiederholungen innerhalb einer Kette sind erlaubt. Nur der erste Buchstabe der gesamten
  * Kette wird zufällig groß- oder kleingeschrieben.
  *
@@ -72,6 +77,7 @@ export function generateChain(maxSyllables, { random = Math.random, previousText
     throw new RangeError('Mindestens eine verfügbare Silbe auswählen.');
   }
   const pool = [...new Set(syllables.map(s => s.toLowerCase()))];
+  if (pool.some(part => part.includes('mm'))) throw new RangeError('Eine ausgewählte Silbe enthält ein doppeltes m.');
   let chain;
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
     chain = makeChain(maxSyllables, random, pool);

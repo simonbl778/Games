@@ -3,13 +3,13 @@
 Für das zweite Spiel: [Blitzblickzahlen als APK oder ZIP](../android/blitzblickzahlen/README.md).
 
 **Direkter Download über die Spielseite:**
-[APK herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.7.0.apk) ·
-[ZIP zum Weitergeben](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/Silbengenerator-Android-1.7.0.zip).
+[APK herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.7.1.apk) ·
+[ZIP zum Weitergeben](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/Silbengenerator-Android-1.7.1.zip).
 Die gleichen Dateien liegen wie bei Blitzblickzahlen unter `docs/downloads/` und werden mit den Spielseiten veröffentlicht. Zum Spielen nach der Installation ist keine Anmeldung nötig.
 
-[**Installationsdatei herunterladen**](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.7.0.apk)
+[**Installationsdatei herunterladen**](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.7.1.apk)
 
-**Alternative bei Downloadproblemen:** [ZIP-Datei mit APK und Anleitung herunterladen](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/docs/downloads/Silbengenerator-Android-1.7.0.zip).
+**Alternative bei Downloadproblemen:** [ZIP-Datei mit APK und Anleitung herunterladen](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/docs/downloads/Silbengenerator-Android-1.7.1.zip).
 Die ZIP-Datei auf dem Handy entpacken und dann die enthaltene APK öffnen.
 Falls ein Download im eingebauten Chat-Browser nicht startet, den Link über
 **Im Browser öffnen** in Chrome öffnen und dort herunterladen.
@@ -43,7 +43,7 @@ erscheinen dezent rot, die übrigen dunkelgrün. Sie lässt sich vor dem Start a
 
 ## Aktualisieren
 
-**Version 1.7.0 lässt sich direkt über bestehende APKs ab 1.1.x installieren.** Der Signierschlüssel ist unverändert. Neu: am, im, um und om sind ab Stufe 4 vorausgewählt, em ab Stufe 5. Der Zähler addiert die tatsächlichen Silben pro bestätigter Aufgabe. Unten mittig erscheint ein geschätztes Tempo in Silben/min aus den letzten bis zu fünf Aufgaben; Hintergrundzeiten zählen nicht mit. Die App erkennt keine Lesefehler und vergibt keine schulische Normbewertung. Auf der Startseite ist **Version 1.7.0** sichtbar.
+**Version 1.7.1 lässt sich direkt über bestehende APKs ab 1.1.x installieren.** Der Signierschlüssel ist unverändert. Korrigiert: Echte Wörter bestehen ausschließlich aus den gewählten Silben. Mumm und andere Wörter mit mm werden nicht angezeigt; zusätzliche Endkonsonanten werden nicht angehängt. Auch zufällige Silbenketten bilden kein mm mehr. Zähler, Tempo, gespeicherte Auswahl und Schriften bleiben erhalten. Auf der Startseite steht **Version 1.7.1**.
 
 Die Ausgabe 1.1.0 ist neu signiert. Der frühere lokale Schlüssel wurde beim
 Neustart der Arbeitsumgebung nicht übernommen. Beim Wechsel von 1.0.x ist
