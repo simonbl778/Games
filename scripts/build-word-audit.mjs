@@ -34,7 +34,7 @@ writeFileSync(new URL('reports/word-audit-part-a.json',root),JSON.stringify(audi
 const csvCell=value=>'"'+String(value).replaceAll('"','""')+'"';
 const csv=[['Kapitel','Titel','Neue Lerninhalte','Bis 1 Silbe','Bis 2 Silben','Bis 3 Silben','Bis 4 Silben','Bis 5 Silben','Neu gegenüber vorherigem Kapitel','Bisher bis 5 Silben'],
   ...rows.map(row=>[row.number,row.title,row.introduction,...row.counts,row.introduced.length,row.before[4]])];
-writeFileSync(new URL('docs/downloads/Silbengenerator-Wortpruefung-Teil-A.csv',root),'\uFEFF'+csv.map(row=>row.map(csvCell).join(';')).join('\r\n')+'\r\n');
+writeFileSync(new URL('docs/downloads/Silbengenerator-Wortpruefung-Teil-A.csv',root),'\uFEFF'+csv.map(row=>row.map(csvCell).join(';')).join('\n')+'\n');
 const escape=text=>String(text).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 const html=`<!doctype html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Wortprüfung · Arbeitsheft Teil A · Silbengenerator</title>
