@@ -15,6 +15,8 @@ const form = $('setup-form');
 const chainButton = $('chain-button');
 const chainText = $('chain-text');
 const colorOption = $('alternate-colors');
+const wordCollator = new Intl.Collator('de', {usage: 'sort', sensitivity: 'accent'});
+let wordListSignature = null;
 let maximum = DEFAULT_MAX_SYLLABLES;
 let readingFont = 'print';
 let starting = false;
@@ -80,7 +82,9 @@ function refreshSelectedSyllables() {
 function refreshWordAvailability() {
   const interval = wordInterval(selection.levelId);
   const empty = selection.syllables.length === 0;
-  const unavailable = !empty && interval > 0 && !availableWords(selection.levelId, selection.syllables, maximum).length;
+  const words = availableWords(selection.levelId, selection.syllables, maximum);
+  const unavailable = !empty && interval > 0 && words.length === 0;
+  renderWordCatalog(words);
   $('word-selection-error').hidden = !unavailable;
   $('start-button').disabled = empty || unavailable;
   $('word-help').hidden = !interval;
@@ -88,6 +92,23 @@ function refreshWordAvailability() {
   $('word-help').textContent = interval
     ? `Spätestens jede ${ordinal[interval]} Aufgabe ist ein echtes Wort. Falls nötig, ist es kürzer als die gewählte Silbenlänge.`
     : '';
+}
+function renderWordCatalog(words) {
+  const texts = words.map(word => word.text).sort(wordCollator.compare);
+  const label = texts.length === 1 ? '1 passendes Wort' : `${texts.length.toLocaleString('de-DE')} passende Wörter`;
+  if ($('word-count-summary').textContent !== label) $('word-count-summary').textContent = label;
+  $('word-count-limit').textContent = maximum === 1 ? 'bis zu 1 Silbe' : `bis zu ${maximum} Silben`;
+  $('word-list-empty').hidden = texts.length > 0;
+  $('word-list').hidden = texts.length === 0;
+  const signature = texts.join('|');
+  if (signature === wordListSignature) return;
+  wordListSignature = signature;
+  $('word-list').replaceChildren(...texts.map(text => {
+    const item = document.createElement('li');
+    item.textContent = text;
+    return item;
+  }));
+  $('word-list').scrollTop = 0;
 }
 levelSelect.addEventListener('change', () => {
   selection = { levelId: levelSelect.value, syllables: [...getLevel(levelSelect.value).syllables] };

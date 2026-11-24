@@ -3,13 +3,13 @@
 Für das zweite Spiel: [Blitzblickzahlen als APK oder ZIP](../android/blitzblickzahlen/README.md).
 
 **Direkter Download über die Spielseite:**
-[APK herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.7.1.apk) ·
-[ZIP zum Weitergeben](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/Silbengenerator-Android-1.7.1.zip).
+[APK herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.8.0.apk) ·
+[ZIP zum Weitergeben](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/Silbengenerator-Android-1.8.0.zip).
 Die gleichen Dateien liegen wie bei Blitzblickzahlen unter `docs/downloads/` und werden mit den Spielseiten veröffentlicht. Zum Spielen nach der Installation ist keine Anmeldung nötig.
 
-[**Installationsdatei herunterladen**](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.7.1.apk)
+[**Installationsdatei herunterladen**](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.8.0.apk)
 
-**Alternative bei Downloadproblemen:** [ZIP-Datei mit APK und Anleitung herunterladen](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/docs/downloads/Silbengenerator-Android-1.7.1.zip).
+**Alternative bei Downloadproblemen:** [ZIP-Datei mit APK und Anleitung herunterladen](https://raw.githubusercontent.com/simonbl778/Games/refs/heads/main/docs/downloads/Silbengenerator-Android-1.8.0.zip).
 Die ZIP-Datei auf dem Handy entpacken und dann die enthaltene APK öffnen.
 Falls ein Download im eingebauten Chat-Browser nicht startet, den Link über
 **Im Browser öffnen** in Chrome öffnen und dort herunterladen.
@@ -43,7 +43,7 @@ erscheinen dezent rot, die übrigen dunkelgrün. Sie lässt sich vor dem Start a
 
 ## Aktualisieren
 
-**Version 1.7.1 lässt sich direkt über bestehende APKs ab 1.1.x installieren.** Der Signierschlüssel ist unverändert. Korrigiert: Echte Wörter bestehen ausschließlich aus den gewählten Silben. Mumm und andere Wörter mit mm werden nicht angezeigt; zusätzliche Endkonsonanten werden nicht angehängt. Auch zufällige Silbenketten bilden kein mm mehr. Zähler, Tempo, gespeicherte Auswahl und Schriften bleiben erhalten. Auf der Startseite steht **Version 1.7.1**.
+**Version 1.8.0 lässt sich direkt über bestehende APKs ab 1.1.x installieren.** Der Signierschlüssel ist unverändert. Das Startmenü zeigt die Anzahl passender Wörter im Spielwortschatz und eine aufklappbare alphabetische Liste. Namen und Spitznamen zählen mit. Die Übersicht aktualisiert sich bei Lernstufe, Silbenauswahl und Höchstzahl. Es gelten dieselben Regeln wie im Spiel, einschließlich des Ausschlusses von mm. Alles funktioniert offline. Auf der Startseite steht **Version 1.8.0**.
 
 Die Ausgabe 1.1.0 ist neu signiert. Der frühere lokale Schlüssel wurde beim
 Neustart der Arbeitsumgebung nicht übernommen. Beim Wechsel von 1.0.x ist

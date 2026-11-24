@@ -152,3 +152,16 @@ dialog .eyebrow{font-size:9px;padding-right:18px}
 .practice-speed{grid-column:2;justify-self:center;white-space:nowrap;color:#647266;font-size:.8125rem;font-variant-numeric:tabular-nums}
 .game-footer>#fullscreen-button{grid-column:3;justify-self:end}
 @media(max-width:520px){.game-footer>p{display:none}.game-footer>#fullscreen-button>span{display:none}}
+
+/* The overview uses the same eligible words as the practice generator. */
+.word-catalog{margin:14px 0 24px;padding:13px 14px;background:var(--paper);border:1px solid var(--line);border-radius:12px}
+.word-catalog-heading{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:5px 12px}
+#word-count-summary{margin:0;color:var(--green);font-size:1rem;font-weight:600;font-variant-numeric:tabular-nums}
+#word-count-limit{color:#647266;font-size:.8125rem;white-space:nowrap}
+.word-catalog-scope{margin:6px 0;color:#647266;font-size:.8125rem;line-height:1.5}
+.word-catalog summary{cursor:pointer;min-height:38px;padding:9px 0;color:var(--green);font-size:.875rem;line-height:1.4}
+.word-catalog summary:focus-visible,.word-list:focus-visible{outline:3px solid #b18124;outline-offset:3px;border-radius:4px}
+.word-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px 12px;max-height:18rem;overflow:auto;overscroll-behavior:contain;list-style:none;padding:2px 8px 2px 2px;margin:8px 0 0}
+.word-list li{min-width:0;font-family:"FibelNord",sans-serif;font-size:1.125rem;font-weight:400;line-height:1.5;color:var(--ink);overflow-wrap:anywhere}
+.word-list-empty{margin:8px 0 0;color:#647266;font-size:.875rem;line-height:1.5}
+@media(orientation:landscape) and (max-height:560px){.word-catalog{margin:12px 0;padding:10px 12px}}

@@ -56,7 +56,7 @@
                 <div id="syllable-options" class="syllable-options"></div>
               </details>
               <p id="selection-error" class="font-error" role="alert" hidden>Bitte mindestens eine Silbe auswählen.</p>
-              <p id="word-selection-error" class="font-error" role="alert" hidden>Für diese Auswahl gibt es noch kein passendes echtes Wort. Wähle weitere Silben oder eine höhere Silbenzahl.</p>
+              <p id="word-selection-error" class="font-error" role="alert" hidden>Für diese Auswahl gibt es im Spielwortschatz noch kein passendes Wort. Wähle weitere Silben oder eine höhere Silbenzahl.</p>
             </fieldset>
             <fieldset>
               <legend>Wie viele Silben<br> höchstens?</legend>
@@ -70,6 +70,15 @@
               </div>
               <p class="selection-summary" id="selection-summary">Zufällig 2 bis 3 Silben pro Kette</p>
               <p id="word-help" class="level-help" hidden></p>
+              <div class="word-catalog">
+                <div class="word-catalog-heading"><p id="word-count-summary" role="status" aria-live="polite" aria-atomic="true">0 passende Wörter</p><span id="word-count-limit">bis zu 3 Silben</span></div>
+                <p class="word-catalog-scope">Im Spielwortschatz, mit Namen und Spitznamen.</p>
+                <details id="word-list-details">
+                  <summary>Wörter von A bis Z ansehen</summary>
+                  <ul id="word-list" class="word-list" aria-label="Alle passenden Wörter in alphabetischer Reihenfolge" tabindex="0"></ul>
+                  <p id="word-list-empty" class="word-list-empty" hidden>Für diese Silbenauswahl und Höchstzahl sind noch keine Wörter im Spielwortschatz vorhanden.</p>
+                </details>
+              </div>
             </fieldset>
             <fieldset class="font-choice">
               <legend>Schrift zum Lesen</legend>
@@ -110,7 +119,7 @@
         </section>
       </main>
 
-      <footer class="app-footer" id="app-footer"><span>Neugierig bleiben. Weiterlesen.</span><div class="install-area"><span id="app-version">Version 1.7.1</span><span id="offline-status" role="status" aria-live="polite"></span><button id="install-button" type="button" class="text-button">Aufs Handy</button></div></footer>
+      <footer class="app-footer" id="app-footer"><span>Neugierig bleiben. Weiterlesen.</span><div class="install-area"><span id="app-version">Version 1.8.0</span><span id="offline-status" role="status" aria-live="polite"></span><button id="install-button" type="button" class="text-button">Aufs Handy</button></div></footer>
       <div id="update-notice" class="update-notice" role="status" hidden><span>Eine neue Version ist bereit.</span><button id="update-button" type="button">Jetzt laden</button></div>
       <dialog id="install-dialog" aria-labelledby="install-title">
         <button class="dialog-close" id="close-install" aria-label="Schließen" type="button">×</button>

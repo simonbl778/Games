@@ -35,9 +35,24 @@ try{
  Math.random=()=>0.75;
  const {LEVELS}=await import(pathToFileURL(resolve(game,'curriculum.js')).href);
  const {WORDS}=await import(pathToFileURL(resolve(game,'words.js')).href);
+ const {availableWords}=await import(pathToFileURL(resolve(game,'reading-generator.js')).href);
  const oldDefaults=LEVELS.find(level=>level.id==='a04').syllables.filter(s=>!['am','im','um','om'].includes(s));
  const migrated=await open(JSON.stringify({levelId:'a04',syllables:oldDefaults}));
  for(const part of ['am','im','um','om'])assert.equal(migrated.document.querySelector(`[name="known-syllable"][value="${part}"]`).checked,true);
+ const catalogView=await open(JSON.stringify({levelId:'a04',syllables:LEVELS.find(level=>level.id==='a04').syllables,version:2}));
+ const catalogWords=()=>[...catalogView.$('word-list').children].map(item=>item.textContent);
+ assert.equal(catalogView.$('word-count-summary').textContent,'11 passende Wörter');
+ assert.deepEqual(catalogWords(),['am','im','Mama','Mami','Mia','Mimi','Mio','Momo','Oma','Omi','um']);
+ catalogView.$('word-list-details').querySelector('summary').click();
+ assert.equal(catalogView.$('word-list-details').open,true);
+ const maxOne=catalogView.document.querySelector('[name="max-syllables"][value="1"]');maxOne.checked=true;maxOne.dispatchEvent(new catalogView.window.Event('change',{bubbles:true}));
+ assert.equal(catalogView.$('word-count-summary').textContent,'3 passende Wörter');assert.equal(catalogView.$('word-count-limit').textContent,'bis zu 1 Silbe');
+ assert.deepEqual(catalogWords(),['am','im','um']);assert.equal(catalogView.$('word-list-details').open,true);
+ for(const input of catalogView.document.querySelectorAll('[name="known-syllable"]'))input.checked=input.value==='um';
+ catalogView.$('syllable-options').dispatchEvent(new catalogView.window.Event('change',{bubbles:true}));
+ assert.equal(catalogView.$('word-count-summary').textContent,'1 passendes Wort');assert.deepEqual(catalogWords(),['um']);
+ catalogView.$('select-no-syllables').click();assert.equal(catalogView.$('word-count-summary').textContent,'0 passende Wörter');
+ assert.deepEqual(catalogWords(),[]);assert.equal(catalogView.$('word-list').hidden,true);assert.equal(catalogView.$('word-list-empty').hidden,false);
  let view=await open();const {$,window}=view;
  assert.equal($('level-select').options.length,41);
  $('level-select').value='a06';$('level-select').dispatchEvent(new window.Event('change',{bubbles:true}));
@@ -100,6 +115,15 @@ try{
   const doc=view.document,w=view.window,$=view.$;
   $('level-select').value=level.id;$('level-select').dispatchEvent(new w.Event('change',{bubbles:true}));
   const option=doc.querySelector(`[name="max-syllables"][value="${maximum}"]`);option.checked=true;option.dispatchEvent(new w.Event('change',{bubbles:true}));
+  const matching=availableWords(level.id,level.syllables,maximum).map(word=>word.text).sort(new Intl.Collator('de',{sensitivity:'accent'}).compare);
+  assert.deepEqual([...$('word-list').children].map(item=>item.textContent),matching);
+  assert.equal($('word-count-summary').textContent,matching.length===1?'1 passendes Wort':`${matching.length} passende Wörter`);
+  assert.equal(new Set(matching.map(word=>word.toLowerCase())).size,matching.length);
+  assert.ok(matching.every(word=>!/mm/i.test(word)));
+  if(level.id==='b21'&&maximum>=2){
+   const listed=[...$('word-list').children].map(item=>item.textContent);
+   assert.ok(listed.indexOf('Ole')<listed.indexOf('Öle'));assert.ok(listed.indexOf('Öle')<listed.indexOf('Oma'));
+  }
   assert.equal($('start-button').disabled,false);
   $('setup-form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));await flush();
   assert.equal($('game-screen').hidden,false);

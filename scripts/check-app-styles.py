@@ -123,6 +123,12 @@ process.stdout.write(JSON.stringify(outputs));
                     if key in style:style[key]=resolve(style[key])
                 computed[element]=style
             prefix=(case['model'],case['colors'],width,height)
+            word_count=root.xpath('//*[@id="word-count-summary"]')[0]
+            catalog_list=root.xpath('//*[@id="word-list"]')[0]
+            catalog_summary=root.xpath('//*[@id="word-list-details"]/summary')[0]
+            assert computed[word_count]['font-size']=='1rem', (prefix,'readable word count')
+            assert computed[catalog_list]['max-height']=='18rem' and computed[catalog_list]['overflow']=='auto', (prefix,'bounded scrollable complete word list')
+            assert computed[catalog_summary]['font-size']=='.875rem', (prefix,'readable word list control')
             speed=root.xpath('//*[@id="practice-speed"]')[0]
             footer=speed.getparent()
             assert computed[footer]['display']=='grid' and computed[speed]['grid-column']=='2', (prefix,'tempo must occupy the centered footer column')

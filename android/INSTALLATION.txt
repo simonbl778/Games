@@ -1,4 +1,4 @@
-Silbengenerator - korrigierte Silbenauswahl 1.7.1
+Silbengenerator - Wortzahl und alphabetische Wortliste 1.8.0
 
 1. APK auf das Android-Handy herunterladen und oeffnen.
 2. Ist bereits eine APK ab Version 1.1.0 installiert: normal darueber installieren.
@@ -16,7 +16,13 @@ Alle Schriften, Lizenzen und Spieldateien sind lokal enthalten.
 Ohne Internet oder ChatGPT-Konto nutzbar.
 Android 8 oder neuer mit aktuellem Android System WebView erforderlich.
 
-Korrektur: Jedes echte Wort verwendet nur ausdruecklich ausgewaehlte Silben.
+Neu: Im Startmenue steht die Anzahl passender Woerter im Spielwortschatz.
+Unter "Woerter von A bis Z ansehen" laesst sich die vollstaendige Liste oeffnen.
+Die Liste ist alphabetisch sortiert und zaehlt Namen und Spitznamen mit.
+Zahl und Liste folgen der Lernstufe, den gewaehlten Silben und der Hoechstzahl.
+Die Wortuebersicht funktioniert ebenfalls ohne Internet.
+
+Weiterhin: Jedes echte Wort verwendet nur ausdruecklich ausgewaehlte Silben.
 Es werden keine zusaetzlichen Endkonsonanten angehaengt.
 Mumm und andere Woerter mit mm werden ausgelassen. Auch zufaellige
 Silbenketten erzeugen kein mm an den Verbindungsstellen.
@@ -39,4 +45,4 @@ bittet die Startseite um weitere Silben oder eine hoehere Silbenzahl.
 Die gespeicherten Stufen, Zaehler, Timer, Belohnungsklang und Schriften
 bleiben erhalten. Alle Woerter und Spieldateien funktionieren offline.
 
-Nach der Installation steht unten auf der Startseite: Version 1.7.1.
+Nach der Installation steht unten auf der Startseite: Version 1.8.0.

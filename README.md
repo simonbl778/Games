@@ -20,11 +20,11 @@ Eine große Silbenkette lesen, antippen und weiterlesen.
 ## Spielen
 
 **Eigenständige Silbengenerator-App ohne ChatGPT-Anmeldung:**
-[APK direkt über die Spielseite herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.7.1.apk) ·
-[GitHub-Download](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.7.1.apk).
+[APK direkt über die Spielseite herunterladen](https://silbengenerator-simonbl778.simon-bl778.chatgpt.site/downloads/silbengenerator-1.8.0.apk) ·
+[GitHub-Download](https://github.com/simonbl778/Games/raw/refs/heads/main/docs/downloads/silbengenerator-1.8.0.apk).
 Diese Datei lässt sich auch auf OneDrive ablegen und per Link weitergeben.
 Die App funktioniert ab Android 8 und von Anfang an vollständig offline.
-Version 1.7.1 lässt sich mit derselben Signatur über bestehende APKs ab 1.1.x installieren. Korrigiert ist die Auswahl echter Wörter: Jede tatsächliche Silbe muss ausdrücklich ausgewählt sein. Zusätzliche Endkonsonanten werden nicht ergänzt; Mumm und andere Wörter mit mm werden ausgelassen. Auch Zufallsketten vermeiden mm. Die Mindesthäufigkeit echter Wörter, der Silbenzähler, das Tempo und alle Schriften bleiben erhalten. Auf der Startseite steht **Version 1.7.1**.
+Version 1.8.0 lässt sich mit derselben Signatur über bestehende APKs ab 1.1.x installieren. Neu ist die Wortübersicht im Startmenü: Die Anzahl passender Wörter aus dem Spielwortschatz und eine aufklappbare Liste von A bis Z berücksichtigen Lernstufe, gewählte Silben und Höchstzahl. Namen und Spitznamen zählen mit. Auf der Startseite steht **Version 1.8.0**.
 
 Beim Wechsel von einer alten Silbengenerator-APK (1.0.x) muss die alte App einmal deinstalliert werden: Version 1.1.0 hat einen neuen Signierschlüssel, weil der frühere private Schlüssel nach dem Neustart der Build-Umgebung nicht mehr vorlag. Dabei geht nur die letzte Silben-Auswahl verloren; es gibt keine gespeicherten Lernstände. Den neuen privaten Schlüssel für künftige Updates getrennt vom öffentlichen Repository aufbewahren.
 [Installation und Weitergabe](downloads/README.md) · [Android-Quellcode und Build](android/README.md)
@@ -69,6 +69,10 @@ Die Browseransicht in einer anderen App kann Installieren, Vollbild oder Drehen 
 Im Silbengenerator gibt es keinen Zeitdruck, keine Punkte, keine Werbung und keine Spielerkonten. Ein leiser, abschaltbarer Klang begleitet bestätigte Ketten. Das Spiel selbst sendet keine Lern- oder Nutzungsdaten. Es speichert lokal nur die letzte Auswahl und Lernstufe und die Dateien für den Offlinebetrieb; das Hosting hat seine üblichen technischen Zugriffs- und ggf. Anmeldedaten.
 
 ### Echte Wörter passend zur Lernstufe
+
+Seit Version 1.8.0 zeigt das Startmenü unter der Silben-Höchstzahl die **Anzahl passender Wörter im Spielwortschatz**. Unter **Wörter von A bis Z ansehen** lässt sich die vollständige alphabetische Liste dieser passenden Einträge aufklappen. Die Liste verwendet die deutsche alphabetische Sortierung und erhält die korrekte Groß- und Kleinschreibung. Namen und Spitznamen wie **Mimi, Omi und Mami** zählen mit, wenn ihre tatsächlichen Silben ausgewählt sind und die eingestellte Höchstzahl ausreicht.
+
+Zahl und Liste aktualisieren sich unmittelbar bei Änderungen an Lernstufe, Silbenauswahl und Höchstzahl. Grundlage ist derselbe feste Wortschatz und dieselbe Freigabeprüfung wie bei den Wortaufgaben des Spiels. Es werden keine zusätzlichen Silben oder Endkonsonanten ergänzt; der Ausschluss von mm bleibt bestehen. Leere Auswahlen zeigen null Wörter und eine verständliche Erklärung. Auf dem Handy ist die komplette Liste in einem begrenzten Bereich scrollbar. Die Übersicht funktioniert auch in der vollständig offline gebauten APK.
 
 Seit Version 1.7.1 ist jede wirkliche Silbe eines Wortes an die ausdrücklich gewählte Silbenauswahl gebunden, auch bei vollständig gewählten Lernstufen. Es werden keine Konsonanten an ausgewählte Bausteine angehängt. Aus **mu** wird kein **Mumm**, aus **ma** kein **mal**. Wörter mit **mm** werden übersprungen, ihre Schreibweise wird nicht verändert. Zufallsketten vermeiden **mm** auch an Silbengrenzen wie **am + ma**. Gibt es in der gewünschten Länge nur ein langes Wort, sorgen noch nicht verwendete kürzere Wörter aus der erlaubten Auswahl für Abwechslung.
 
@@ -201,7 +205,7 @@ npm run check
 - [GitHub: Eine Pages-Website erstellen](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
 - [MDN: Grenzen der Orientierungssperre](https://developer.mozilla.org/en-US/docs/Web/API/ScreenOrientation/lock)
 
-Games 1.1.0 · Silbengenerator 1.7.1 · Blitzblickzahlen 1.2.1 · 24. November 2026
+Games 1.1.0 · Silbengenerator 1.8.0 · Blitzblickzahlen 1.2.1 · 24. November 2026
 
 ## Lernstufen und Motivation ab Version 1.5.0
 
